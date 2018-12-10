@@ -120,7 +120,7 @@ RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip &
     apk del build-dependencies && \
     rm "/tmp/"*
 
-RUN apk add --no-cache git openssh-client curl unzip bash ttf-dejavu coreutils tini
+RUN apk add --no-cache git openssh-client curl unzip bash ttf-dejavu coreutils tini docker
 
 ARG user=jenkins
 ARG group=jenkins
