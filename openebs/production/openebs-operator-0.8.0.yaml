@@ -103,7 +103,7 @@ spec:
         # configured as a part of openebs installation.
         # If "true" a default cstor sparse pool will be configured, if "false" it will not be configured.
         - name: OPENEBS_IO_INSTALL_DEFAULT_CSTOR_SPARSE_POOL
-          value: "true"
+          value: "false"
         # OPENEBS_NAMESPACE provides the namespace of this deployment as an
         # environment variable
         - name: OPENEBS_NAMESPACE
@@ -141,7 +141,7 @@ spec:
         # OPENEBS_IO_ENABLE_ANALYTICS if set to true sends anonymous usage
         # events to Google Analytics
         - name: OPENEBS_IO_ENABLE_ANALYTICS
-          value: "true"
+          value: "false"
         # OPENEBS_IO_ANALYTICS_PING_INTERVAL can be used to specify the duration (in hours)
         # for periodic ping events sent to Google Analytics. Default is 24 hours.
         #- name: OPENEBS_IO_ANALYTICS_PING_INTERVAL
