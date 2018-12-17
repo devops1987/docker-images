@@ -33,10 +33,10 @@ metadata:
       #- name: ReplicaNodeSelector
       #  value: |-
       #      node: openebs
-      - name: TargetResourceLimits
-        value: |-
-            memory: 1Gi
-            cpu: 1
+      #- name: TargetResourceLimits
+      #  value: |-
+      #      memory: 1Gi
+      #      cpu: 1
       #- name: AuxResourceLimits
       #  value: |-
       #      memory: 0.5Gi
@@ -72,10 +72,10 @@ metadata:
       #- name: ReplicaNodeSelector
       #  value: |-
       #      node: openebs
-      - name: TargetResourceLimits
-        value: |-
-            memory: 1Gi
-            cpu: 1
+      #- name: TargetResourceLimits
+      #  value: |-
+      #      memory: 1Gi
+      #      cpu: 1
       #- name: AuxResourceLimits
       #  value: |-
       #      memory: 0.5Gi
