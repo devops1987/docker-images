@@ -385,6 +385,7 @@ RUN /usr/local/bin/install-plugins.sh       \
   ssh-agent:latest               \
   ssh-credentials:latest         \
   ssh-slaves:latest              \
+  ssh2easy:latest                \
   slave-setup:latest             \
   structs:latest                 \
   subversion:latest              \
