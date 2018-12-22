@@ -31,6 +31,7 @@ RUN set -ex \
 
 ENV UID=1000 \
     GID=1000 \
+    DEBUG_LEVEL=err \
     AWS_ACCESSKEY=minio \
     AWS_SECRETKEY=minio123 \
     MOUNT_POINT=/mnt/s3 \
