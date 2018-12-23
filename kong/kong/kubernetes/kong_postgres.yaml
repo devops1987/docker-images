@@ -2,10 +2,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kong-proxy
+  namespace: kong
 spec:
-  type: LoadBalancer
-  loadBalancerSourceRanges:
-  - 0.0.0.0/0
+  type: NodePort
+  #loadBalancerSourceRanges:
+  #- 0.0.0.0/0
   ports:
   - name: kong-proxy
     port: 8000
@@ -19,10 +20,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kong-proxy-ssl
+  namespace: kong
 spec:
-  type: LoadBalancer
-  loadBalancerSourceRanges:
-  - 0.0.0.0/0
+  type: NodePort
+  #loadBalancerSourceRanges:
+  #- 0.0.0.0/0
   ports:
   - name: kong-proxy-ssl
     port: 8443
@@ -36,10 +38,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kong-admin
+  namespace: kong
 spec:
-  type: LoadBalancer
-  loadBalancerSourceRanges:
-  - 0.0.0.0/0
+  #type: LoadBalancer
+  #loadBalancerSourceRanges:
+  #- 0.0.0.0/0
   ports:
   - name: kong-admin
     port: 8001
@@ -53,10 +56,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kong-admin-ssl
+  namespace: kong
 spec:
-  type: LoadBalancer
-  loadBalancerSourceRanges:
-  - 0.0.0.0/0
+  #type: LoadBalancer
+  #loadBalancerSourceRanges:
+  #- 0.0.0.0/0
   ports:
   - name: kong-admin-ssl
     port: 8444
@@ -69,7 +73,8 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kong-rc
+  name: kong
+  namespace: kong
   labels:
     app: kong
 spec:
@@ -80,7 +85,7 @@ spec:
   template:
     metadata:
       labels:
-        name: kong-rc
+        name: kong
         app: kong
     spec:
       securityContext:
@@ -140,14 +145,16 @@ spec:
             value: "1"
       containers:
       - name: kong
-        image: slpcat/kong:alpine
+        #image: kong:0.14.1-centos
+        image: slpcat/kong:0.14.1-alpine
+        imagePullPolicy: Always
         env:
           - name: KONG_ADMIN_LISTEN
             value: "0.0.0.0:8001"
           - name: KONG_DATABASE
             value: "postgres"
           - name: KONG_PG_HOST
-            value: "pgsqlhost"
+            value: "postgres"
           - name: KONG_PG_PORT
             value: "5432"
           - name: KONG_PG_DATABASE
@@ -155,7 +162,9 @@ spec:
           - name: KONG_PG_USER
             value: "kong"
           - name: KONG_PG_PASSWORD
-            value: "password"
+            value: "kong"
+          #- name: KONG_DNS_RESOLVER
+          #  value: "127.0.0.1:53"
           - name: KONG_DNS_ORDER
             value: "A,SRV,LAST,CNAME"
           - name: KONG_PROXY_ACCESS_LOG
@@ -166,6 +175,18 @@ spec:
             value: "/dev/stderr"
           - name: KONG_ADMIN_ERROR_LOG
             value: "/dev/stderr"
+          - name: KONG_ANONYMOUS_REPORTS
+            value: "off"
+          - name: KONG_HEADERS
+            value: "off"
+          - name: KONG_CLIENT_MAX_BODY_SIZE
+            value: "0"
+          #- name: KONG_WORKER_CONNECTIONS
+          #  value: "20000"
+          - name: KONG_CLIENT_BODY_BUFFER_SIZE
+            value: "8m"
+          - name: KONG_PROXY_LISTEN
+            value: "0.0.0.0:8000, 0.0.0.0:8443 ssl http2"
         ports:
         - name: admin
           containerPort: 8001

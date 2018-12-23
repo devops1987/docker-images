@@ -86,11 +86,13 @@ spec:
         - name: DB_ADAPTER
           value: "mysql"
         - name: DB_HOST
-          value: "db-hostnam"
+          value: "mysql-server"
+        - name: DB_PORT
+          value: "3306"
         - name: DB_USER
-          value: "db-port"
+          value: "root"
         - name: DB_PASSWORD
-          value: "db-password"
+          value: "password"
         #Defaults to 'konga_database'
         - name: DB_DATABASE
           value: "konga_database"

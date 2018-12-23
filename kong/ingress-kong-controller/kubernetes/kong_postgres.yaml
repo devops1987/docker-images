@@ -91,6 +91,8 @@ spec:
             value: "kong"
           - name: KONG_PG_PASSWORD
             value: "kong"
+          #- name: KONG_DNS_RESOLVER
+          #  value: "127.0.0.1:53"
           - name: KONG_DNS_ORDER
             value: "A,SRV,LAST,CNAME"
           - name: KONG_PROXY_ACCESS_LOG

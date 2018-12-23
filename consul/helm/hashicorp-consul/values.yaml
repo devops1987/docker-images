@@ -16,12 +16,12 @@ global:
 
   # Image is the name (and tag) of the Consul Docker image for clients and
   # servers below. This can be overridden per component.
-  image: "consul:1.3.0"
+  image: "consul:1.3.1"
 
   # imageK8S is the name (and tag) of the consul-k8s Docker image that
   # is used for functionality such as the catalog sync. This can be overridden
   # per component below.
-  imageK8S: "hashicorp/consul-k8s:0.2.0"
+  imageK8S: "hashicorp/consul-k8s:0.3.0"
 
   # Datacenter is the name of the datacenter that the agents should register
   # as. This shouldn't be changed once the Consul cluster is up and running
@@ -48,9 +48,10 @@ server:
   connect: true
 
   # Resource requests, limits, etc. for the server cluster placement. This
-  # should map directly to the value of the resources field for a PodSpec.
-  # By default no direct resource request is made.
-  resources: {}
+  # should map directly to the value of the resources field for a PodSpec,
+  # formatted as a multi-line string. By default no direct resource request
+  # is made.
+  resources: null
 
   # updatePartition is used to control a careful rolling update of Consul
   # servers. This should be done particularly when changing the version
@@ -79,6 +80,19 @@ server:
     #   name: my-secret
     #   load: false # if true, will add to `-config-dir` to load by Consul
 
+  # Affinity Settings
+  # Commenting out or setting as empty the affinity variable, will allow
+  # deployment to single node services such as Minikube
+  affinity: |
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app: {{ template "consul.name" . }}
+              release: "{{ .Release.Name }}"
+              component: server
+          topologyKey: kubernetes.io/hostname
+
 # Client, when enabled, configures Consul clients to run on every node
 # within the Kube cluster. The current deployment model follows a traditional
 # DC where a single agent is deployed per node.
@@ -92,9 +106,10 @@ client:
   grpc: false
 
   # Resource requests, limits, etc. for the client cluster placement. This
-  # should map directly to the value of the resources field for a PodSpec.
-  # By default no direct resource request is made.
-  resources: {}
+  # should map directly to the value of the resources field for a PodSpec,
+  # formatted as a multi-line string. By default no direct resource request
+  # is made.
+  resources: null
 
   # extraConfig is a raw string of extra configuration to set with the
   # server. This should be JSON.
@@ -144,18 +159,24 @@ ui:
 # Consul agent.
 syncCatalog:
   # True if you want to enable the catalog sync. "-" for default.
-  enabled: false
+  enabled: true
   image: null
+  default: true # true will sync by default, otherwise requires annotation
 
   # toConsul and toK8S control whether syncing is enabled to Consul or K8S
   # as a destination. If both of these are disabled, the sync will do nothing.
   toConsul: true
-  toK8S: true
+  toK8S: false
 
   # k8sPrefix is the service prefix to prepend to services before registering
   # with Kubernetes. For example "consul-" will register all services
   # prepended with "consul-".
   k8sPrefix: null
+
+  # syncClusterIPServices syncs services of the ClusterIP type, which may
+  # or may not be broadly accessible depending on your Kubernetes cluster.
+  # Set this to false to skip syncing ClusterIP services.
+  syncClusterIPServices: true
 
 # ConnectInject will enable the automatic Connect sidecar injector.
 connectInject:
@@ -183,7 +204,8 @@ connectInject:
   certs:
     # secretName is the name of the secret that has the TLS certificate and
     # private key to serve the injector webhook. If this is null, then the
-    # injector will default to its automatic management mode.
+    # injector will default to its automatic management mode that will assign
+    # a service account to the injector to generate its own certificates.
     secretName: null
 
     # caBundle is a base64-encoded PEM-encoded certificate bundle for the

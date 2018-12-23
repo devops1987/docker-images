@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: kong-migration
+  namespace: kong
 spec:
   template:
     metadata:
@@ -9,13 +10,13 @@ spec:
     spec:
       containers:
       - name: kong-migration
-        image: kong
+        image: slpcat/kong:0.14.1-alpine
         env:
           - name: KONG_NGINX_DAEMON
             value: 'off'
           - name: KONG_PG_PASSWORD
             value: kong
           - name: KONG_PG_HOST
-            value: postgres.default.svc.cluster.local
+            value: postgres
         command: [ "/bin/sh", "-c", "kong migrations up" ]
       restartPolicy: Never

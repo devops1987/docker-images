@@ -4,6 +4,7 @@ apiVersion: admissionregistration.k8s.io/v1beta1
 kind: MutatingWebhookConfiguration
 metadata:
   name: {{ template "consul.fullname" . }}-connect-injector-cfg
+  namespace: {{ .Release.Namespace }}
   labels:
     app: {{ template "consul.name" . }}
     chart: {{ template "consul.chart" . }}
@@ -14,7 +15,7 @@ webhooks:
     clientConfig:
       service:
         name: {{ template "consul.fullname" . }}-connect-injector-svc
-        namespace: default
+        namespace: {{ .Release.Namespace }}
         path: "/mutate"
       caBundle: {{ .Values.connectInject.certs.caBundle }}
     rules:

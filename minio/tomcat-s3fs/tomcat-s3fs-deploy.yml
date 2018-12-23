@@ -90,6 +90,13 @@ spec:
         image: slpcat/s3fs:alpine
         securityContext:
           privileged: true
+        lifecycle:
+          preStop:
+            exec:
+              command:
+                - "umount"
+                - "-l"
+                - "/usr/local/tomcat/webapps/ROOT"
         env:
         - name: UID
           value: "1000"

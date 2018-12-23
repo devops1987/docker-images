@@ -4,6 +4,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: {{ template "consul.fullname" . }}-server
+  namespace: {{ .Release.Namespace }}
   labels:
     app: {{ template "consul.name" . }}
     chart: {{ template "consul.chart" . }}
@@ -37,15 +38,10 @@ spec:
       annotations:
         "consul.hashicorp.com/connect-inject": "false"
     spec:
+    {{- if .Values.server.affinity }}
       affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchLabels:
-                  app: {{ template "consul.name" . }}
-                  release: "{{ .Release.Name }}"
-                  component: server
-              topologyKey: kubernetes.io/hostname
+        {{ tpl .Values.server.affinity . | nindent 8 | trim }}
+    {{- end }}
       terminationGracePeriodSeconds: 10
       securityContext:
         fsGroup: 1000
@@ -88,7 +84,7 @@ spec:
                 -config-dir=/consul/config \
                 {{- range .Values.server.extraVolumes }}
                 {{- if .load }}
-                -config-dir=/consul/userconfig/{{ .name }}
+                -config-dir=/consul/userconfig/{{ .name }} \
                 {{- end }}
                 {{- end }}
                 -datacenter={{ .Values.global.datacenter }} \
@@ -151,6 +147,10 @@ spec:
             periodSeconds: 3
             successThreshold: 1
             timeoutSeconds: 5
+          {{- if .Values.server.resources }}
+          resources:
+            {{ tpl .Values.server.resources . | nindent 12 | trim }}
+          {{- end }}
   volumeClaimTemplates:
     - metadata:
         name: data

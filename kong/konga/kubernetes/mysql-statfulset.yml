@@ -1,30 +1,24 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  #命名规范:应用名称-版本
-  name: nginx-php-s3fs-v1
-  namespace: default
+  name: mysql
+  namespace: kong
   labels:
-    app: nginx-php-s3fs
+    app: mysql
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      app: nginx-php-s3fs
-      version: v1
+      app: mysql
+  serviceName: mysql-server
+  replicas: 1
 #  minReadySeconds: 60     #滚动升级时60s后认为该pod就绪
-  strategy:
-    rollingUpdate:  ##由于replicas为3,则整个升级,pod个数在2-4个之间
-      maxSurge: 1      #滚动升级时会先启动1个pod
-      maxUnavailable: 1 #滚动升级时允许的最大Unavailable的pod个数
   template:
     metadata:
       labels:
-        app: nginx-php-s3fs
-        version: v1
+        app: mysql
       annotations:
-        #enable istio sidecar injection
-        sidecar.istio.io/inject: "true"
+        #disable istio sidecar injection
+        sidecar.istio.io/inject: "false"
     spec:
       terminationGracePeriodSeconds: 60 ##k8s将会给应用发送SIGTERM信号，可以用来正确、优雅地关闭应用,默认为30秒
       #imagePullSecrets:
@@ -85,68 +79,53 @@ spec:
           - name: net.ipv4.fwmark_reflect
             value: "1"
       containers:
-      - name: s3fs
-        #image: slpcat/s3fs:ubuntu16.04
-        image: slpcat/s3fs:alpine
-        securityContext:
-          privileged: true
-        lifecycle:
-          preStop:
-            exec:
-              command:
-                - "umount"
-                - "-l"
-                - "/app"
-        env:
-        - name: UID
-          value: "1000"
-        - name: GID
-          value: "1000"
-        - name: DEBUG_LEVEL
-          value: err
-        - name: S3_URL
-          value: "http://minio-static.minio:9000"
-        - name: AWS_ACCESSKEY
-          valueFrom:
-            secretKeyRef:
-              name: s3fs-secret
-              key: aws_accesskey
-        - name: AWS_SECRETKEY
-          valueFrom:
-            secretKeyRef:
-              name: s3fs-secret
-              key: aws_secretkey
-        - name: S3_REGION
-          value: us-east-1
-        - name: S3_BUCKET
-          value: bucket
-        - name: S3_KEY
-          value: /
-        - name: MOUNT_POINT
-          value: /app
-        volumeMounts:
-         - name: app
-           mountPath: /app
-           mountPropagation: Bidirectional
-      - name: nginx-php-s3fs
-        #image: webdevops/php:centos-7-php7
-        image: slpcat/php:centos-7-php7
+      - name: mysql
+        image: slpcat/percona-5.6
         imagePullPolicy: Always
+        #livenessProbe:
+        #  exec:
+        #    command: ["mysqladmin", "ping"]
+        #  initialDelaySeconds: 30
+        #  periodSeconds: 10
+        #  timeoutSeconds: 5
+        #readinessProbe:
+        #  exec:
+        #    # Check we can execute queries over TCP (skip-networking is off).
+        #    command: ["mysql", "-h", "127.0.0.1", "-e", "SELECT 1"]
+        #  initialDelaySeconds: 5
+        #  periodSeconds: 2
+        #  timeoutSeconds: 1
         resources:
           # keep request = limit to keep this container in guaranteed class
           requests:
-            cpu: 500m
+            cpu: 100m
             memory: 512Mi
           limits:
-            cpu: 4
+            cpu: 4000m
             memory: 8Gi
+        env:
+          # Use secret in real usage
+        - name: MYSQL_ROOT_PASSWORD
+          value: password
         ports:
-          - name: http
-            containerPort: 80
+        - containerPort: 3306
+          name: mysql
         volumeMounts:
-         - name: app
-           mountPath: /app
-           mountPropagation: HostToContainer
+        - name: config
+          mountPath: /etc/mysql
+        - name: mysql-data
+          mountPath: /var/lib/mysql
       volumes:
-      - name: app
-        emptyDir: {}
+      - name: config
+        configMap:
+          name: mysql-etc-configmap
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-data
+    spec:
+      accessModes:
+        - "ReadWriteOnce"
+      #storageClassName: openebs-standard
+      resources:
+        requests:
+          storage: "16Gi"
