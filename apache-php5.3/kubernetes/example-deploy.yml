@@ -27,8 +27,16 @@ spec:
         #sidecar.istio.io/inject: "false"
     spec:
       #nodeName: k8s.node1 #指定调度节点为k8s.node1
-      #nodeSelector:  #调度特定的节点
-      #  env: test-team
+      #调度特定的节点,用于集群弹性伸缩
+      #nodeSelector:
+      #  kubernetes.io/role: agent
+      #  beta.kubernetes.io/os: linux
+      #  type: virtual-kubelet
+      #tolerations:
+      #- key: virtual-kubelet.io/provider
+      #  operator: Exists
+      #- key: alibabacloud.com/eci
+         effect: NoSchedule
       terminationGracePeriodSeconds: 60 #k8s将会给应用发送SIGTERM信号，可以用来正确、优雅地关闭应用,默认为30秒
       #imagePullSecrets:
       #- name: registrykey-ali-ext
@@ -46,9 +54,9 @@ spec:
           - name: net.ipv4.ip_unprivileged_port_start
             value: "0"
           - name: net.ipv4.tcp_tw_reuse
-            value: "1"
+            value: "2"
           - name: net.ipv4.tcp_fin_timeout
-            value: "30"
+            value: "20"
           - name: net.ipv4.tcp_keepalive_intvl
             value: "10"
           - name: net.ipv4.tcp_keepalive_probes
@@ -62,17 +70,17 @@ spec:
           - name: net.ipv4.tcp_rfc1337
             value: "1"
           - name: net.ipv4.tcp_slow_start_after_idle
-            value: "0"
+            value: "1"
           - name: net.ipv4.tcp_fack
             value: "1"
           - name: net.ipv4.tcp_max_tw_buckets
-            value: "262144"
+            value: "1048576"
           - name: net.ipv4.tcp_fastopen
             value: "3"
           - name: net.ipv4.icmp_ratelimit
             value: "100"
           - name: net.ipv4.tcp_abort_on_overflow
-            value: "1"
+            value: "0"
           - name: net.ipv4.tcp_adv_win_scale
             value: "2"
           - name: net.ipv4.tcp_retries2

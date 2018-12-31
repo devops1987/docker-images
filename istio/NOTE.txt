@@ -45,6 +45,7 @@ https://raw.githubusercontent.com/cilium/cilium/1.3.0/examples/kubernetes-istio/
 
 #启用sidecar自动注入
 kubectl label namespace default istio-injection=enabled
+3.istio cilium增强版 所有配置符合knative规范
 
 示例:
 支持蓝绿发布，灰度发布，支持2个或多个版本切换，并且能够瞬时回滚
