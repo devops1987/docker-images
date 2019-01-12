@@ -104,7 +104,7 @@ spec:
           - name: net.ipv4.tcp_tw_reuse
             value: "2"
           - name: net.ipv4.tcp_fin_timeout
-            value: "10"
+            value: "20"
           - name: net.ipv4.tcp_keepalive_intvl
             value: "10"
           - name: net.ipv4.tcp_keepalive_probes
@@ -118,7 +118,7 @@ spec:
           - name: net.ipv4.tcp_rfc1337
             value: "1"
           - name: net.ipv4.tcp_slow_start_after_idle
-            value: "1"
+            value: "0"
           - name: net.ipv4.tcp_fack
             value: "1"
           - name: net.ipv4.tcp_max_tw_buckets
@@ -128,7 +128,7 @@ spec:
           - name: net.ipv4.icmp_ratelimit
             value: "100"
           - name: net.ipv4.tcp_abort_on_overflow
-            value: "0"
+            value: "1"
           - name: net.ipv4.tcp_adv_win_scale
             value: "2"
           - name: net.ipv4.tcp_retries2

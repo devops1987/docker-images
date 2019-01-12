@@ -45,7 +45,7 @@ spec:
           - name: net.ipv4.tcp_tw_reuse
             value: "2"
           - name: net.ipv4.tcp_fin_timeout
-            value: "10"
+            value: "20"
           - name: net.ipv4.tcp_keepalive_intvl
             value: "10"
           - name: net.ipv4.tcp_keepalive_probes
@@ -59,7 +59,7 @@ spec:
           - name: net.ipv4.tcp_rfc1337
             value: "1"
           - name: net.ipv4.tcp_slow_start_after_idle
-            value: "1"
+            value: "0"
           - name: net.ipv4.tcp_fack
             value: "1"
           - name: net.ipv4.tcp_max_tw_buckets

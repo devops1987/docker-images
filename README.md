@@ -19,7 +19,7 @@ NoSQL数据库/缓存/存储: memcache,rethinkdb,redis,ssdb,mongodb,cassandra
 NewSQL数据库: TiDB,cockroachdb,VoltDB,Clustrix, NuoDB,TokuDB, MemSQL,Couchbase,CouchDB,Riak
 时间序列数据库: influxdb,opentsdb,m3db
 消息队列/流存储: rabbitmq,rocketmq,rocketmq-console-ng,kafka,kafka-manager
-配置管理: zookeeper,zkui,qconf,etcd
+配置管理: zookeeper,zkui,qconf,etcd,apollo,disconf,spring-cloud-config
 定时任务管理: xxl-job
 项目管理: jira,zentao
 企业ERP: odoo
@@ -32,7 +32,7 @@ FAAS: fission,fnproject,funktion,kubeless,nuclio,open-lambda,openfaas,openwhisk,
 监控/APM: appdash,apm-server,cadvisor,heapster,kube-state-metrics,metrics-server,prometheus,thanos,pinpoint,jaeger,zipkin,skywalking,kubewatch,searchlight
 动态性能追踪: bcc-tools,systemtap,sysdig
 kubernetes集群安装/升级: kubespray
-kubernetes可视化管理工具: kubernetes-dashboard,weavescope,kubebox,kubedash,kube-ops-view,cabin
+kubernetes可视化管理工具: kubernetes-dashboard,weavescope,kubebox,kubedash,kube-ops-view,cabin,wayne(360)
 kubernetes灾难恢复: ark
 kubernetes扩容:virtual-kubelet
 开发工具: Telepresence,Keel,Apollo,Deis Workflow,Kel,
