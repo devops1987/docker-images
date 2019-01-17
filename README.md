@@ -32,7 +32,7 @@ NewSQL数据库: TiDB,cockroachdb,VoltDB,Clustrix, NuoDB,TokuDB, MemSQL,Couchbas
 FAAS: fission,fnproject,funktion,kubeless,nuclio,open-lambda,openfaas,openwhisk,vmware-dispatch
 日志集群: elastic-stack(elasticsearch+cerebro+kibana)
 日志采集: logstash,filebeat,logtail,log-pilot,logspout,auditbeat
-监控/APM: appdash,apm-server,bosun,cadvisor,cortex,heapster,kube-state-metrics,metrics-server,searchlight,prometheus,thanos,pinpoint,jaeger,zipkin,skywalking,kubewatch,searchlight
+监控/APM: appdash,apm-server,bosun,cadvisor,cortex,heapster,kube-state-metrics,metrics-server,searchlight,prometheus,thanos,pinpoint,jaeger,zipkin,skywalking,kubewatch,searchlight,Molten
 动态性能追踪: bcc-tools,systemtap,sysdig
 kubernetes集群安装/升级: kubespray
 kubernetes可视化管理工具: kubernetes-dashboard,weavescope,kubebox,kubedash,kube-ops-view,cabin,wayne(360)
