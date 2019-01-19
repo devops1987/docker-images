@@ -146,7 +146,7 @@ spec:
       containers:
       - name: kong
         #image: kong:0.14.1-centos
-        image: slpcat/kong:0.14.1-alpine
+        image: slpcat/kong:0.14.1-alpine3.8
         imagePullPolicy: Always
         env:
           - name: KONG_ADMIN_LISTEN

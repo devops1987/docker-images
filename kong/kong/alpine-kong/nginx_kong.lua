@@ -74,8 +74,8 @@ error_log ${{PROXY_ERROR_LOG}} ${{LOG_LEVEL}};
   gzip_min_length  4k;
   gzip_buffers     32 8k;
   gzip_http_version 1.1;
-  gzip_comp_level 4;
-  gzip_types       text/plain text/css text/xml text/javascript application/json application/x-javascript application/javascript application/xml application/xml+rss;
+  gzip_comp_level 2;
+  gzip_types       text/plain text/css text/xml text/javascript application/json application/x-javascript application/javascript application/xml application/xml+rss font/ttf font/otf image/svg+xml;
   gzip_vary on;
 
 
