@@ -69,7 +69,7 @@ error_log ${{PROXY_ERROR_LOG}} ${{LOG_LEVEL}};
 
   gzip  on;
   gzip_disable "msie6";
-  gzip_static on;
+  #gzip_static on;
   gzip_proxied any;
   gzip_min_length  4k;
   gzip_buffers     32 8k;
