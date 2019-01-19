@@ -1,5 +1,5 @@
 #upstream: https://github.com/Kong/docker-kong/raw/9bbc9e8b4a61cba5cc4e4e4562a802dace4348ff/alpine/Dockerfile
-FROM alpine:3.6
+FROM alpine:3.8
 LABEL maintainer Marco Palladino, marco@mashape.com
 
 ENV KONG_VERSION 0.14.1

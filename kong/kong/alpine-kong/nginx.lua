@@ -16,7 +16,8 @@ worker_rlimit_nofile ${{WORKER_RLIMIT}};
 events {
     use epoll;
 > if nginx_optimizations then
-    worker_connections ${{WORKER_CONNECTIONS}};
+    #worker_connections ${{WORKER_CONNECTIONS}};
+    worker_connections 50000;
     multi_accept on;
 > end
     accept_mutex off;

@@ -67,16 +67,16 @@ error_log ${{PROXY_ERROR_LOG}} ${{LOG_LEVEL}};
   #proxy_temp_path  /var/lib/nginx/tmp/proxy;
   proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
 
-  #gzip  on;
-  #gzip_disable "msie6";
-  #gzip_static on;
-  #gzip_proxied any;
-  #gzip_min_length  4k;
-  #gzip_buffers     32 8k;
-  #gzip_http_version 1.1;
-  #gzip_comp_level 4;
-  #gzip_types       text/plain text/css text/xml text/javascript application/json application/x-javascript application/javascript application/xml application/xml+rss;
-  #gzip_vary on;
+  gzip  on;
+  gzip_disable "msie6";
+  gzip_static on;
+  gzip_proxied any;
+  gzip_min_length  4k;
+  gzip_buffers     32 8k;
+  gzip_http_version 1.1;
+  gzip_comp_level 4;
+  gzip_types       text/plain text/css text/xml text/javascript application/json application/x-javascript application/javascript application/xml application/xml+rss;
+  gzip_vary on;
 
 
 client_max_body_size ${{CLIENT_MAX_BODY_SIZE}};

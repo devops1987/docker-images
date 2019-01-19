@@ -35,6 +35,7 @@ helm repo add rook-beta https://charts.rook.io/beta
 helm repo add agones https://agones.dev/chart/stable
 helm repo add svc-cat https://svc-catalog-charts.storage.googleapis.com
 helm repo add appscode https://charts.appscode.com/stable/
+helm repo add m3db https://s3.amazonaws.com/m3-helm-charts-repository/stable
 #helm repo add aliyun https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
 helm install --name wordpress-test --set "persistence.enabled=false,mariadb.persistence.enabled=false" stable/wordpress
 https://kubeapps.com/ 你可以寻找和发现已有的Charts
