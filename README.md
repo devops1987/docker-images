@@ -28,7 +28,7 @@ NewSQL数据库: TiDB,cockroachdb,VoltDB,Clustrix, NuoDB,TokuDB, MemSQL,Couchbas
 企业ERP: odoo
 开发环境SDK: golang,golang-gvm,oracle-jdk,oracle-jdk-maven
 微服务管理与持续发布: fabric8,jenkins-x,draft,knative,service-fabric
-微服务框架/组件: istio,naftis,dubbo,dubbokeeper,kong,kong-dashboard,consul,openlambda,linkerd2/Conduit
+微服务框架/组件: istio,naftis,dubbo,dubbokeeper,kong,kong-dashboard,consul,openlambda,linkerd2/Conduit,registrator
 FAAS: fission,fnproject,funktion,kubeless,nuclio,open-lambda,openfaas,openwhisk,vmware-dispatch
 日志集群: elastic-stack(elasticsearch+cerebro+kibana)
 日志采集: logstash,filebeat,logtail,log-pilot,logspout,auditbeat

@@ -95,6 +95,16 @@ spec:
             value: "1"
           - name: net.ipv4.fwmark_reflect
             value: "1"
+      #Kubernetes-managed hosts file: /etc/hosts
+      #hostAliases:
+      #- ip: "127.0.0.1"
+      #  hostnames:
+      #  - "foo.local"
+      #  - "bar.local"
+      #- ip: "10.1.2.3"
+      #  hostnames:
+      #  - "foo.remote"
+      #  - "bar.remote"
       containers:
       - name: example-web
         image: registry.cn-beijing.aliyuncs.com/example/example_web:${BUILD_NUMBER}
