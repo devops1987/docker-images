@@ -20,6 +20,7 @@ NoSQL数据库/缓存/存储: memcache,rethinkdb,redis,ssdb,mongodb,cassandra,Lu
 数据仓库: Infobright
 GPU-Powered Database: Kinetica,MapD,BlazingDB,Brytlyt,PG-Strom,Blazegraph,SQream
 NewSQL数据库: TiDB,cockroachdb,VoltDB,Clustrix, NuoDB,TokuDB, MemSQL,Couchbase,CouchDB,Riak
+API查询语言: GraphQL,prisma.io
 时间序列数据库: influxdb,opentsdb,m3db
 消息队列/流存储: rabbitmq,rocketmq,rocketmq-console-ng,kafka,kafka-manager
 配置管理: zookeeper,zkui,qconf,etcd,apollo,disconf,spring-cloud-config
@@ -54,3 +55,8 @@ ubuntu-xfce-vnc
 ubuntu-icewm-vnc
 centos-xfce-vnc
 centos-icewm-vnc
+
+device plugin framework
+Graphics Processing Unit (GPU) plugin
+Field Programmable Gate Array (FPGA) plugin
+Intel® QuickAssist Technology (QAT) plugin

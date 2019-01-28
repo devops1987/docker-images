@@ -1,0 +1,5 @@
+1.log-pilot daemonset 采集端
+收集工具 fluentd，filebeat
+输出到日志集群elasticsearch，graylog2,kafka或者阿里sls日志服务
+2.app pod接入规范
+https://github.com/AliyunContainerService/log-pilot/blob/master/docs/filebeat/docs.md
