@@ -7,7 +7,7 @@ kubernetes网络方案推荐使用cilium,支持vxlan,bgp以及eBPF引擎
 
 代码仓库: gitlab-ce,gogs
 代码审核: gerrit
-持续集成/发布: jenkins,spinnaker,gitlab-ci,drone
+持续集成/发布: jenkins,spinnaker,gitlab-ci,drone,makisu
 测试: chaos-monkey,chaoskube,k8s-testsuite,test-infra,sonobuoy,PowerfulSeal,twemperf(memcached)
 artifactory仓库: nexus2,nexus3,harbor,registry
 helm应用商店: chartmuseum,kubeapps
@@ -24,7 +24,8 @@ API查询语言: GraphQL,prisma.io
 时间序列数据库: influxdb,opentsdb,m3db
 消息队列/流存储: rabbitmq,rocketmq,rocketmq-console-ng,kafka,kafka-manager
 配置管理: zookeeper,zkui,qconf,etcd,apollo,disconf,spring-cloud-config
-定时任务管理: xxl-job
+定时/任务管理: xxl-job,elasticjob,escalator
+集群管理: nomad
 项目管理: jira,zentao
 企业ERP: odoo
 开发环境SDK: golang,golang-gvm,oracle-jdk,oracle-jdk-maven
@@ -43,6 +44,8 @@ kubernetes扩容:virtual-kubelet
 安全工具: anchore,clair,cert-manager,docker-bench-security,magic-namespace,notary,OpenSCAP,trireme,NeuVector,Deepfence,StackRox,Tenable,Cavirin,Kube-Bench,Sysdig Falco,Sysdig Secure,Kubesec.io;付费 Aquasec,flawcheck
 编排转换：kompose
 备份/恢复/迁移: mydumper,zkcopy,mongodb_consistent_backup
+PaaS:flynn,tsuru
+负载均衡: gimbal
 
 云原生（CloudNative）应用
 分布式存储: rook-ceph,rook-minio,openebs
