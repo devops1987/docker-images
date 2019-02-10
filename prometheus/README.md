@@ -9,6 +9,16 @@ https://github.com/mgxian/k8s-monitor.git
 
 https://github.com/coreos/prometheus-operator
 
+具体exporter见每个程序目录
+blackbox_exporter
+aliyun-exporter
+zk-exporter
+hadoop_exporter
+influxdb_exporter
+php-fpm-exporter
+process-exporter
+kong-plugin-prometheus
+
 无限数据存储的可伸缩Prometheus
 https://github.com/improbable-eng/thanos
 
