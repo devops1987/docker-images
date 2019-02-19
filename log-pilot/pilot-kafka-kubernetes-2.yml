@@ -2,6 +2,7 @@ apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
   name: log-pilot
+  namespace: kube-system
   labels:
     k8s-app: log-pilot
 spec:
