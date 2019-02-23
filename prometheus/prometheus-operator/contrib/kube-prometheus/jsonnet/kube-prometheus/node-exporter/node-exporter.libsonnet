@@ -5,13 +5,17 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
     namespace: 'default',
 
     versions+:: {
-      nodeExporter: 'v0.16.0',
-      kubeRbacProxy: 'v0.3.1',
+      nodeExporter: 'v0.17.0',
+      kubeRbacProxy: 'v0.4.1',
     },
 
     imageRepos+:: {
       nodeExporter: 'quay.io/prometheus/node-exporter',
       kubeRbacProxy: 'quay.io/coreos/kube-rbac-proxy',
+    },
+
+    nodeExporter+:: {
+      port: 9100,
     },
   },
 
@@ -58,6 +62,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       local containerVolumeMount = container.volumeMountsType;
       local podSelector = daemonset.mixin.spec.template.spec.selectorType;
       local toleration = daemonset.mixin.spec.template.spec.tolerationsType;
+      local containerEnv = container.envType;
 
       local podLabels = { app: 'node-exporter' };
 
@@ -82,9 +87,10 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       local nodeExporter =
         container.new('node-exporter', $._config.imageRepos.nodeExporter + ':' + $._config.versions.nodeExporter) +
         container.withArgs([
-          '--web.listen-address=127.0.0.1:9101',
+          '--web.listen-address=127.0.0.1:' + $._config.nodeExporter.port,
           '--path.procfs=/host/proc',
           '--path.sysfs=/host/sys',
+          '--path.rootfs=/host/root',
 
           // The following settings have been taken from
           // https://github.com/prometheus/node_exporter/blob/0662673/collector/filesystem_linux.go#L30-L31
@@ -94,17 +100,29 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
         ]) +
         container.withVolumeMounts([procVolumeMount, sysVolumeMount, rootVolumeMount]) +
         container.mixin.resources.withRequests({ cpu: '102m', memory: '180Mi' }) +
-        container.mixin.resources.withLimits({ cpu: '102m', memory: '180Mi' });
+        container.mixin.resources.withLimits({ cpu: '250m', memory: '180Mi' });
 
+      local ip = containerEnv.fromFieldPath('IP', 'status.podIP');
       local proxy =
         container.new('kube-rbac-proxy', $._config.imageRepos.kubeRbacProxy + ':' + $._config.versions.kubeRbacProxy) +
         container.withArgs([
-          '--secure-listen-address=:9100',
-          '--upstream=http://127.0.0.1:9101/',
+          '--logtostderr',
+          '--secure-listen-address=$(IP):' + $._config.nodeExporter.port,
+          '--tls-cipher-suites=' + std.join(',', $._config.tlsCipherSuites),
+          '--upstream=http://127.0.0.1:' + $._config.nodeExporter.port + '/',
         ]) +
-        container.withPorts(containerPort.new(9100) + containerPort.withHostPort(9100) + containerPort.withName('https')) +
+        // Keep `hostPort` here, rather than in the node-exporter container
+        // because Kubernetes mandates that if you define a `hostPort` then
+        // `containerPort` must match. In our case, we are splitting the
+        // host port and container port between the two containers.
+        // We'll keep the port specification here so that the named port
+        // used by the service is tied to the proxy container. We *could*
+        // forgo declaring the host port, however it is important to declare
+        // it so that the scheduler can decide if the pod is schedulable.
+        container.withPorts(containerPort.new($._config.nodeExporter.port) + containerPort.withHostPort($._config.nodeExporter.port) + containerPort.withName('https')) +
         container.mixin.resources.withRequests({ cpu: '10m', memory: '20Mi' }) +
-        container.mixin.resources.withLimits({ cpu: '20m', memory: '40Mi' });
+        container.mixin.resources.withLimits({ cpu: '20m', memory: '40Mi' }) +
+        container.withEnv([ip]);
 
       local c = [nodeExporter, proxy];
 
@@ -166,7 +184,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       local service = k.core.v1.service;
       local servicePort = k.core.v1.service.mixin.spec.portsType;
 
-      local nodeExporterPort = servicePort.newNamed('https', 9100, 'https');
+      local nodeExporterPort = servicePort.newNamed('https', $._config.nodeExporter.port, 'https');
 
       service.new('node-exporter', $.nodeExporter.daemonset.spec.selector.matchLabels, nodeExporterPort) +
       service.mixin.metadata.withNamespace($._config.namespace) +

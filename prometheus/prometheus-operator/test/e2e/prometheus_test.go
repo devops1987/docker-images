@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"bytes"
+	"compress/gzip"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -35,10 +36,11 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 
 	"github.com/coreos/prometheus-operator/pkg/alertmanager"
-	monitoringv1 "github.com/coreos/prometheus-operator/pkg/client/monitoring/v1"
+	monitoringv1 "github.com/coreos/prometheus-operator/pkg/apis/monitoring/v1"
 	"github.com/coreos/prometheus-operator/pkg/prometheus"
 	testFramework "github.com/coreos/prometheus-operator/test/framework"
 
+	"github.com/golang/protobuf/proto"
 	"github.com/kylelemons/godebug/pretty"
 	"github.com/pkg/errors"
 )
@@ -56,7 +58,7 @@ func testPromCreateDeleteCluster(t *testing.T) {
 	prometheusCRD := framework.MakeBasicPrometheus(ns, name, name, 1)
 	prometheusCRD.Namespace = ns
 
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, prometheusCRD); err != nil {
+	if _, err := framework.CreatePrometheusAndWaitUntilReady(ns, prometheusCRD); err != nil {
 		t.Fatal(err)
 	}
 
@@ -75,15 +77,20 @@ func testPromScaleUpDownCluster(t *testing.T) {
 
 	name := "test"
 
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, framework.MakeBasicPrometheus(ns, name, name, 1)); err != nil {
+	p, err := framework.CreatePrometheusAndWaitUntilReady(ns, framework.MakeBasicPrometheus(ns, name, name, 1))
+	if err != nil {
 		t.Fatal(err)
 	}
 
-	if err := framework.UpdatePrometheusAndWaitUntilReady(ns, framework.MakeBasicPrometheus(ns, name, name, 3)); err != nil {
+	p.Spec.Replicas = proto.Int32(3)
+	p, err = framework.UpdatePrometheusAndWaitUntilReady(ns, p)
+	if err != nil {
 		t.Fatal(err)
 	}
 
-	if err := framework.UpdatePrometheusAndWaitUntilReady(ns, framework.MakeBasicPrometheus(ns, name, name, 2)); err != nil {
+	p.Spec.Replicas = proto.Int32(2)
+	p, err = framework.UpdatePrometheusAndWaitUntilReady(ns, p)
+	if err != nil {
 		t.Fatal(err)
 	}
 }
@@ -99,7 +106,7 @@ func testPromNoServiceMonitorSelector(t *testing.T) {
 	name := "test"
 	p := framework.MakeBasicPrometheus(ns, name, name, 1)
 	p.Spec.ServiceMonitorSelector = nil
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
+	if _, err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
 		t.Fatal(err)
 	}
 }
@@ -118,13 +125,15 @@ func testPromVersionMigration(t *testing.T) {
 
 	p := framework.MakeBasicPrometheus(ns, name, name, 1)
 	p.Spec.Version = startVersion
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
+	p, err := framework.CreatePrometheusAndWaitUntilReady(ns, p)
+	if err != nil {
 		t.Fatal(err)
 	}
 
 	for _, v := range compatibilityMatrix {
 		p.Spec.Version = v
-		if err := framework.UpdatePrometheusAndWaitUntilReady(ns, p); err != nil {
+		p, err = framework.UpdatePrometheusAndWaitUntilReady(ns, p)
+		if err != nil {
 			t.Fatal(err)
 		}
 		if err := framework.WaitForPrometheusRunImageAndReady(ns, p); err != nil {
@@ -150,11 +159,12 @@ func testPromResourceUpdate(t *testing.T) {
 			v1.ResourceMemory: resource.MustParse("100Mi"),
 		},
 	}
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
+	p, err := framework.CreatePrometheusAndWaitUntilReady(ns, p)
+	if err != nil {
 		t.Fatal(err)
 	}
 
-	pods, err := framework.KubeClient.Core().Pods(ns).List(prometheus.ListOptions(name))
+	pods, err := framework.KubeClient.CoreV1().Pods(ns).List(prometheus.ListOptions(name))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -169,13 +179,13 @@ func testPromResourceUpdate(t *testing.T) {
 			v1.ResourceMemory: resource.MustParse("200Mi"),
 		},
 	}
-	_, err = framework.MonClientV1.Prometheuses(ns).Update(p)
+	p, err = framework.MonClientV1.Prometheuses(ns).Update(p)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	err = wait.Poll(5*time.Second, 2*time.Minute, func() (bool, error) {
-		pods, err := framework.KubeClient.Core().Pods(ns).List(prometheus.ListOptions(name))
+		pods, err := framework.KubeClient.CoreV1().Pods(ns).List(prometheus.ListOptions(name))
 		if err != nil {
 			return false, err
 		}
@@ -209,12 +219,16 @@ func testPromStorageUpdate(t *testing.T) {
 
 	p := framework.MakeBasicPrometheus(ns, name, name, 1)
 
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
+	p, err := framework.CreatePrometheusAndWaitUntilReady(ns, p)
+	if err != nil {
 		t.Fatal(err)
 	}
 
 	p.Spec.Storage = &monitoringv1.StorageSpec{
 		VolumeClaimTemplate: v1.PersistentVolumeClaim{
+			ObjectMeta: metav1.ObjectMeta{
+				CreationTimestamp: metav1.Now(),
+			},
 			Spec: v1.PersistentVolumeClaimSpec{
 				AccessModes: []v1.PersistentVolumeAccessMode{v1.ReadWriteOnce},
 				Resources: v1.ResourceRequirements{
@@ -225,13 +239,13 @@ func testPromStorageUpdate(t *testing.T) {
 			},
 		},
 	}
-	_, err := framework.MonClientV1.Prometheuses(ns).Update(p)
+	p, err = framework.MonClientV1.Prometheuses(ns).Update(p)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	err = wait.Poll(5*time.Second, 2*time.Minute, func() (bool, error) {
-		pods, err := framework.KubeClient.Core().Pods(ns).List(prometheus.ListOptions(name))
+		pods, err := framework.KubeClient.CoreV1().Pods(ns).List(prometheus.ListOptions(name))
 		if err != nil {
 			return false, err
 		}
@@ -277,13 +291,19 @@ scrape_configs:
         - 111.111.111.111:9090
 `
 
+	var bufOne bytes.Buffer
+	if err := gzipConfig(&bufOne, []byte(firstConfig)); err != nil {
+		t.Fatal(err)
+	}
+	firstConfigCompressed := bufOne.Bytes()
+
 	cfg := &v1.Secret{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: fmt.Sprintf("prometheus-%s", name),
 		},
 		Data: map[string][]byte{
-			"prometheus.yaml": []byte(firstConfig),
-			"configmaps.json": []byte("{}"),
+			"prometheus.yaml.gz": firstConfigCompressed,
+			"configmaps.json":    []byte("{}"),
 		},
 	}
 
@@ -293,7 +313,7 @@ scrape_configs:
 		t.Fatal(err)
 	}
 
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
+	if _, err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
 		t.Fatal(err)
 	}
 
@@ -319,12 +339,18 @@ scrape_configs:
         - 111.111.111.112:9090
 `
 
+	var bufTwo bytes.Buffer
+	if err := gzipConfig(&bufTwo, []byte(secondConfig)); err != nil {
+		t.Fatal(err)
+	}
+	secondConfigCompressed := bufTwo.Bytes()
+
 	cfg, err := framework.KubeClient.CoreV1().Secrets(ns).Get(cfg.Name, metav1.GetOptions{})
 	if err != nil {
 		t.Fatal(errors.Wrap(err, "could not retrieve previous secret"))
 	}
 
-	cfg.Data["prometheus.yaml"] = []byte(secondConfig)
+	cfg.Data["prometheus.yaml.gz"] = secondConfigCompressed
 	if _, err := framework.KubeClient.CoreV1().Secrets(ns).Update(cfg); err != nil {
 		t.Fatal(err)
 	}
@@ -376,7 +402,7 @@ func testPromAdditionalScrapeConfig(t *testing.T) {
 		},
 		Key: "prometheus-additional.yaml",
 	}
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
+	if _, err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
 		t.Fatal(err)
 	}
 
@@ -435,7 +461,7 @@ func testPromAdditionalAlertManagerConfig(t *testing.T) {
 		},
 		Key: "prometheus-additional.yaml",
 	}
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
+	if _, err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
 		t.Fatal(err)
 	}
 
@@ -492,7 +518,8 @@ func testPromReloadRules(t *testing.T) {
 
 	p := framework.MakeBasicPrometheus(ns, name, name, 1)
 	p.Spec.EvaluationInterval = "1s"
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
+	p, err = framework.CreatePrometheusAndWaitUntilReady(ns, p)
+	if err != nil {
 		t.Fatal(err)
 	}
 
@@ -519,7 +546,7 @@ func testPromReloadRules(t *testing.T) {
 			},
 		},
 	}
-	err = framework.UpdateRule(ns, ruleFile)
+	ruleFile, err = framework.UpdateRule(ns, ruleFile)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -550,7 +577,8 @@ func testPromMultiplePrometheusRulesSameNS(t *testing.T) {
 
 	p := framework.MakeBasicPrometheus(ns, name, name, 1)
 	p.Spec.EvaluationInterval = "1s"
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
+	p, err := framework.CreatePrometheusAndWaitUntilReady(ns, p)
+	if err != nil {
 		t.Fatal(err)
 	}
 
@@ -606,7 +634,8 @@ func testPromMultiplePrometheusRulesDifferentNS(t *testing.T) {
 	p.Spec.RuleNamespaceSelector = &metav1.LabelSelector{
 		MatchLabels: ruleFilesNamespaceSelector,
 	}
-	if err := framework.CreatePrometheusAndWaitUntilReady(rootNS, p); err != nil {
+	p, err := framework.CreatePrometheusAndWaitUntilReady(rootNS, p)
+	if err != nil {
 		t.Fatal(err)
 	}
 
@@ -633,10 +662,10 @@ func testPromRulesExceedingConfigMapLimit(t *testing.T) {
 	ns := ctx.CreateNamespace(t, framework.KubeClient)
 	ctx.SetupPrometheusRBAC(t, ns, framework.KubeClient)
 
-	prometheusRules := []monitoringv1.PrometheusRule{}
+	prometheusRules := []*monitoringv1.PrometheusRule{}
 	for i := 0; i < 2; i++ {
 		rule := generateHugePrometheusRule(ns, strconv.Itoa(i))
-		err := framework.CreateRule(ns, rule)
+		rule, err := framework.CreateRule(ns, rule)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -647,7 +676,8 @@ func testPromRulesExceedingConfigMapLimit(t *testing.T) {
 
 	p := framework.MakeBasicPrometheus(ns, name, name, 1)
 	p.Spec.EvaluationInterval = "1s"
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
+	p, err := framework.CreatePrometheusAndWaitUntilReady(ns, p)
+	if err != nil {
 		t.Fatal(err)
 	}
 
@@ -681,7 +711,7 @@ func testPromRulesExceedingConfigMapLimit(t *testing.T) {
 		}
 	}
 
-	err := framework.DeleteRule(ns, prometheusRules[1].Name)
+	err = framework.DeleteRule(ns, prometheusRules[1].Name)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -703,7 +733,7 @@ func testPromRulesExceedingConfigMapLimit(t *testing.T) {
 
 // generateHugePrometheusRule returns a Prometheus rule instance that would fill
 // more than half of the space of a Kubernetes ConfigMap.
-func generateHugePrometheusRule(ns, identifier string) monitoringv1.PrometheusRule {
+func generateHugePrometheusRule(ns, identifier string) *monitoringv1.PrometheusRule {
 	alertName := "my-alert"
 	groups := []monitoringv1.RuleGroup{
 		{
@@ -859,7 +889,8 @@ func testPromOnlyUpdatedOnRelevantChanges(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, prometheus); err != nil {
+	prometheus, err := framework.CreatePrometheusAndWaitUntilReady(ns, prometheus)
+	if err != nil {
 		t.Fatal(err)
 	}
 
@@ -875,7 +906,7 @@ func testPromOnlyUpdatedOnRelevantChanges(t *testing.T) {
 		t.Fatal("Creating ServiceMonitor failed: ", err)
 	}
 
-	err := framework.WaitForPrometheusFiringAlert(prometheus.Namespace, pSVC.Name, alertName)
+	err = framework.WaitForPrometheusFiringAlert(prometheus.Namespace, pSVC.Name, alertName)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -924,13 +955,14 @@ func testPromWhenDeleteCRDCleanUpViaOwnerRef(t *testing.T) {
 	name := "test"
 
 	p := framework.MakeBasicPrometheus(ns, name, name, 1)
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
+	p, err := framework.CreatePrometheusAndWaitUntilReady(ns, p)
+	if err != nil {
 		t.Fatal(err)
 	}
 
 	configMapName := fmt.Sprintf("prometheus-%v-rulefiles-0", p.Name)
 
-	_, err := framework.WaitForConfigMapExist(ns, configMapName)
+	_, err = framework.WaitForConfigMapExist(ns, configMapName)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -965,7 +997,8 @@ func testPromDiscovery(t *testing.T) {
 	}
 
 	p := framework.MakeBasicPrometheus(ns, prometheusName, group, 1)
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
+	p, err := framework.CreatePrometheusAndWaitUntilReady(ns, p)
+	if err != nil {
 		t.Fatal(err)
 	}
 
@@ -975,7 +1008,7 @@ func testPromDiscovery(t *testing.T) {
 		ctx.AddFinalizerFn(finalizerFn)
 	}
 
-	_, err := framework.KubeClient.CoreV1().Secrets(ns).Get(fmt.Sprintf("prometheus-%s", prometheusName), metav1.GetOptions{})
+	_, err = framework.KubeClient.CoreV1().Secrets(ns).Get(fmt.Sprintf("prometheus-%s", prometheusName), metav1.GetOptions{})
 	if err != nil {
 		t.Fatal("Generated Secret could not be retrieved: ", err)
 	}
@@ -1002,7 +1035,8 @@ func testPromAlertmanagerDiscovery(t *testing.T) {
 
 	p := framework.MakeBasicPrometheus(ns, prometheusName, group, 1)
 	framework.AddAlertingToPrometheus(p, ns, alertmanagerName)
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
+	p, err := framework.CreatePrometheusAndWaitUntilReady(ns, p)
+	if err != nil {
 		t.Fatal(err)
 	}
 
@@ -1017,12 +1051,12 @@ func testPromAlertmanagerDiscovery(t *testing.T) {
 		t.Fatalf("Creating ServiceMonitor failed: %v", err)
 	}
 
-	_, err := framework.KubeClient.CoreV1().Secrets(ns).Get(fmt.Sprintf("prometheus-%s", prometheusName), metav1.GetOptions{})
+	_, err = framework.KubeClient.CoreV1().Secrets(ns).Get(fmt.Sprintf("prometheus-%s", prometheusName), metav1.GetOptions{})
 	if err != nil {
 		t.Fatalf("Generated Secret could not be retrieved: %v", err)
 	}
 
-	if err := framework.CreateAlertmanagerAndWaitUntilReady(ns, framework.MakeBasicAlertmanager(alertmanagerName, 3)); err != nil {
+	if _, err := framework.CreateAlertmanagerAndWaitUntilReady(ns, framework.MakeBasicAlertmanager(alertmanagerName, 3)); err != nil {
 		t.Fatal(err)
 	}
 
@@ -1047,7 +1081,7 @@ func testPromExposingWithKubernetesAPI(t *testing.T) {
 	basicPrometheus := framework.MakeBasicPrometheus(ns, "basic-prometheus", "test-group", 1)
 	service := framework.MakePrometheusService(basicPrometheus.Name, "test-group", v1.ServiceTypeClusterIP)
 
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, basicPrometheus); err != nil {
+	if _, err := framework.CreatePrometheusAndWaitUntilReady(ns, basicPrometheus); err != nil {
 		t.Fatal("Creating prometheus failed: ", err)
 	}
 
@@ -1075,6 +1109,7 @@ func testPromDiscoverTargetPort(t *testing.T) {
 	group := "servicediscovery-test"
 	svc := framework.MakePrometheusService(prometheusName, group, v1.ServiceTypeClusterIP)
 
+	targetPort := intstr.FromInt(9090)
 	if _, err := framework.MonClientV1.ServiceMonitors(ns).Create(&monitoringv1.ServiceMonitor{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: prometheusName,
@@ -1090,7 +1125,7 @@ func testPromDiscoverTargetPort(t *testing.T) {
 			},
 			Endpoints: []monitoringv1.Endpoint{
 				{
-					TargetPort: intstr.FromInt(9090),
+					TargetPort: &targetPort,
 					Interval:   "30s",
 				},
 			},
@@ -1100,7 +1135,7 @@ func testPromDiscoverTargetPort(t *testing.T) {
 	}
 
 	p := framework.MakeBasicPrometheus(ns, prometheusName, group, 1)
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
+	if _, err := framework.CreatePrometheusAndWaitUntilReady(ns, p); err != nil {
 		t.Fatal(err)
 	}
 
@@ -1157,7 +1192,7 @@ func testPromOpMatchPromAndServMonInDiffNSs(t *testing.T) {
 			"team": "frontend",
 		},
 	}
-	if err := framework.CreatePrometheusAndWaitUntilReady(prometheusNSName, p); err != nil {
+	if _, err := framework.CreatePrometheusAndWaitUntilReady(prometheusNSName, p); err != nil {
 		t.Fatal(err)
 	}
 
@@ -1195,6 +1230,7 @@ func testThanos(t *testing.T) {
 		Version: &version,
 	}
 	basicPrometheus.Spec.PodMetadata = &metav1.ObjectMeta{
+		CreationTimestamp: metav1.Now(),
 		Labels: map[string]string{
 			"thanos-peer": "true",
 		},
@@ -1295,7 +1331,7 @@ func testPromGetBasicAuthSecret(t *testing.T) {
 		MatchLabels: maptest,
 	}
 
-	if err := framework.CreatePrometheusAndWaitUntilReady(ns, prometheusCRD); err != nil {
+	if _, err := framework.CreatePrometheusAndWaitUntilReady(ns, prometheusCRD); err != nil {
 		t.Fatal(err)
 	}
 	testNamespace := ctx.CreateNamespace(t, framework.KubeClient)
@@ -1434,7 +1470,8 @@ func testOperatorNSScope(t *testing.T) {
 			MatchLabels: prometheusNamespaceSelector,
 		}
 		p.Spec.EvaluationInterval = "1s"
-		if err := framework.CreatePrometheusAndWaitUntilReady(mainNS, p); err != nil {
+		p, err = framework.CreatePrometheusAndWaitUntilReady(mainNS, p)
+		if err != nil {
 			t.Fatal(err)
 		}
 
@@ -1503,7 +1540,8 @@ func testOperatorNSScope(t *testing.T) {
 			MatchLabels: prometheusNamespaceSelector,
 		}
 		p.Spec.EvaluationInterval = "1s"
-		if err := framework.CreatePrometheusAndWaitUntilReady(prometheusNS, p); err != nil {
+		p, err = framework.CreatePrometheusAndWaitUntilReady(prometheusNS, p)
+		if err != nil {
 			t.Fatal(err)
 		}
 
@@ -1688,4 +1726,13 @@ type alertmanagerDiscovery struct {
 type prometheusAlertmanagerAPIResponse struct {
 	Status string                 `json:"status"`
 	Data   *alertmanagerDiscovery `json:"data"`
+}
+
+func gzipConfig(buf *bytes.Buffer, conf []byte) error {
+	w := gzip.NewWriter(buf)
+	defer w.Close()
+	if _, err := w.Write(conf); err != nil {
+		return err
+	}
+	return nil
 }

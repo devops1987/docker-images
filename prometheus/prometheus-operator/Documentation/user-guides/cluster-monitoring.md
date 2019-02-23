@@ -61,8 +61,8 @@ spec:
         - --kubelet-service=kube-system/kubelet
         - --logtostderr=true
         - --config-reloader-image=quay.io/coreos/configmap-reload:v0.0.1
-        - --prometheus-config-reloader=quay.io/coreos/prometheus-config-reloader:v0.24.0
-        image: quay.io/coreos/prometheus-operator:v0.24.0
+        - --prometheus-config-reloader=quay.io/coreos/prometheus-config-reloader:v0.29.0
+        image: quay.io/coreos/prometheus-operator:v0.29.0
         name: prometheus-operator
         ports:
         - containerPort: 8080
@@ -163,16 +163,17 @@ spec:
     spec:
       containers:
       - args:
-        - --web.listen-address=127.0.0.1:9101
+        - --web.listen-address=127.0.0.1:9100
         - --path.procfs=/host/proc
         - --path.sysfs=/host/sys
+        - --path.rootfs=/host/root
         - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+)($|/)
         - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$
-        image: quay.io/prometheus/node-exporter:v0.16.0
+        image: quay.io/prometheus/node-exporter:v0.17.0
         name: node-exporter
         resources:
           limits:
-            cpu: 102m
+            cpu: 250m
             memory: 180Mi
           requests:
             cpu: 102m
@@ -189,9 +190,16 @@ spec:
           name: root
           readOnly: true
       - args:
-        - --secure-listen-address=:9100
-        - --upstream=http://127.0.0.1:9101/
-        image: quay.io/coreos/kube-rbac-proxy:v0.3.1
+        - --logtostderr
+        - --secure-listen-address=$(IP):9100
+        - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+        - --upstream=http://127.0.0.1:9100/
+        env:
+        - name: IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        image: quay.io/coreos/kube-rbac-proxy:v0.4.1
         name: kube-rbac-proxy
         ports:
         - containerPort: 9100
@@ -283,9 +291,11 @@ spec:
     spec:
       containers:
       - args:
+        - --logtostderr
         - --secure-listen-address=:8443
+        - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
         - --upstream=http://127.0.0.1:8081/
-        image: quay.io/coreos/kube-rbac-proxy:v0.3.1
+        image: quay.io/coreos/kube-rbac-proxy:v0.4.1
         name: kube-rbac-proxy-main
         ports:
         - containerPort: 8443
@@ -298,9 +308,11 @@ spec:
             cpu: 10m
             memory: 20Mi
       - args:
+        - --logtostderr
         - --secure-listen-address=:9443
+        - --tls-cipher-suites=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
         - --upstream=http://127.0.0.1:8082/
-        image: quay.io/coreos/kube-rbac-proxy:v0.3.1
+        image: quay.io/coreos/kube-rbac-proxy:v0.4.1
         name: kube-rbac-proxy-self
         ports:
         - containerPort: 9443
@@ -317,7 +329,7 @@ spec:
         - --port=8081
         - --telemetry-host=127.0.0.1
         - --telemetry-port=8082
-        image: quay.io/coreos/kube-state-metrics:v1.3.1
+        image: quay.io/coreos/kube-state-metrics:v1.5.0
         name: kube-state-metrics
         resources:
           limits:
@@ -333,7 +345,7 @@ spec:
         - --extra-cpu=2m
         - --memory=150Mi
         - --extra-memory=30Mi
-        - --threshold=5
+        - --acceptance-offset=5
         - --deployment=kube-state-metrics
         env:
         - name: MY_POD_NAME
@@ -346,11 +358,11 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
-        image: quay.io/coreos/addon-resizer:1.0
+        image: gcr.io/google-containers/addon-resizer-amd64:2.1
         name: addon-resizer
         resources:
           limits:
-            cpu: 10m
+            cpu: 50m
             memory: 30Mi
           requests:
             cpu: 10m
@@ -419,10 +431,14 @@ spec:
     matchLabels:
       prometheus: k8s
       role: alert-rules
+  securityContext:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
   serviceAccountName: prometheus-k8s
   serviceMonitorNamespaceSelector: {}
   serviceMonitorSelector: {}
-  version: v2.4.3
+  version: v2.5.0
 ```
 
 > Make sure that the `ServiceAccount` called `prometheus-k8s` exists and if using RBAC, is bound to the correct role. Read more on [RBAC when using the Prometheus Operator](../rbac.md).
@@ -445,6 +461,14 @@ spec:
     metricRelabelings:
     - action: drop
       regex: etcd_(debugging|disk|request|server).*
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: apiserver_admission_controller_admission_latencies_seconds_.*
+      sourceLabels:
+      - __name__
+    - action: drop
+      regex: apiserver_admission_step_admission_latencies_seconds_.*
       sourceLabels:
       - __name__
     port: https
@@ -483,6 +507,16 @@ spec:
   - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
     honorLabels: true
     interval: 30s
+    metricRelabelings:
+    - action: drop
+      regex: container_([a-z_]+);
+      sourceLabels:
+      - __name__
+      - image
+    - action: drop
+      regex: container_(network_tcp_usage_total|network_udp_usage_total|tasks_state|cpu_load_average_10s)
+      sourceLabels:
+      - __name__
     path: /metrics/cadvisor
     port: https-metrics
     scheme: https
@@ -616,8 +650,12 @@ spec:
   nodeSelector:
     beta.kubernetes.io/os: linux
   replicas: 3
+  securityContext:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
   serviceAccountName: alertmanager-main
-  version: v0.15.2
+  version: v0.16.0
 ```
 
 Read more in the [alerting guide](alerting.md) on how to configure the Alertmanager as it will not spin up unless it has a valid configuration mounted through a `Secret`. Note that the `Secret` has to be in the same namespace as the `Alertmanager` resource as well as have the name `alertmanager-<name-of-alertmanager-object>` and the key of the configuration is `alertmanager.yaml`.

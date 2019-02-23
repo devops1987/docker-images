@@ -16,15 +16,15 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
     },
 
     versions+:: {
-      kubeStateMetrics: 'v1.3.1',
-      kubeRbacProxy: 'v0.3.1',
-      addonResizer: '1.0',
+      kubeStateMetrics: 'v1.5.0',
+      kubeRbacProxy: 'v0.4.1',
+      addonResizer: '2.1',
     },
 
     imageRepos+:: {
       kubeStateMetrics: 'quay.io/coreos/kube-state-metrics',
       kubeRbacProxy: 'quay.io/coreos/kube-rbac-proxy',
-      addonResizer: 'quay.io/coreos/addon-resizer',
+      addonResizer: 'gcr.io/google-containers/addon-resizer-amd64',
     },
   },
 
@@ -41,11 +41,11 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
 
     clusterRole:
       local clusterRole = k.rbac.v1.clusterRole;
-      local policyRule = clusterRole.rulesType;
+      local rulesType = clusterRole.rulesType;
 
-      local coreRule = policyRule.new() +
-                       policyRule.withApiGroups(['']) +
-                       policyRule.withResources([
+      local coreRule = rulesType.new() +
+                       rulesType.withApiGroups(['']) +
+                       rulesType.withResources([
                          'configmaps',
                          'secrets',
                          'nodes',
@@ -59,57 +59,64 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
                          'namespaces',
                          'endpoints',
                        ]) +
-                       policyRule.withVerbs(['list', 'watch']);
+                       rulesType.withVerbs(['list', 'watch']);
 
-      local extensionsRule = policyRule.new() +
-                             policyRule.withApiGroups(['extensions']) +
-                             policyRule.withResources([
+      local extensionsRule = rulesType.new() +
+                             rulesType.withApiGroups(['extensions']) +
+                             rulesType.withResources([
                                'daemonsets',
                                'deployments',
                                'replicasets',
                              ]) +
-                             policyRule.withVerbs(['list', 'watch']);
+                             rulesType.withVerbs(['list', 'watch']);
 
-      local appsRule = policyRule.new() +
-                       policyRule.withApiGroups(['apps']) +
-                       policyRule.withResources([
+      local appsRule = rulesType.new() +
+                       rulesType.withApiGroups(['apps']) +
+                       rulesType.withResources([
                          'statefulsets',
                          'daemonsets',
                          'deployments',
                          'replicasets',
                        ]) +
-                       policyRule.withVerbs(['list', 'watch']);
+                       rulesType.withVerbs(['list', 'watch']);
 
-      local batchRule = policyRule.new() +
-                        policyRule.withApiGroups(['batch']) +
-                        policyRule.withResources([
+      local batchRule = rulesType.new() +
+                        rulesType.withApiGroups(['batch']) +
+                        rulesType.withResources([
                           'cronjobs',
                           'jobs',
                         ]) +
-                        policyRule.withVerbs(['list', 'watch']);
+                        rulesType.withVerbs(['list', 'watch']);
 
-      local autoscalingRule = policyRule.new() +
-                              policyRule.withApiGroups(['autoscaling']) +
-                              policyRule.withResources([
+      local autoscalingRule = rulesType.new() +
+                              rulesType.withApiGroups(['autoscaling']) +
+                              rulesType.withResources([
                                 'horizontalpodautoscalers',
                               ]) +
-                              policyRule.withVerbs(['list', 'watch']);
+                              rulesType.withVerbs(['list', 'watch']);
 
-      local authenticationRole = policyRule.new() +
-                                 policyRule.withApiGroups(['authentication.k8s.io']) +
-                                 policyRule.withResources([
+      local authenticationRole = rulesType.new() +
+                                 rulesType.withApiGroups(['authentication.k8s.io']) +
+                                 rulesType.withResources([
                                    'tokenreviews',
                                  ]) +
-                                 policyRule.withVerbs(['create']);
+                                 rulesType.withVerbs(['create']);
 
-      local authorizationRole = policyRule.new() +
-                                policyRule.withApiGroups(['authorization.k8s.io']) +
-                                policyRule.withResources([
+      local authorizationRole = rulesType.new() +
+                                rulesType.withApiGroups(['authorization.k8s.io']) +
+                                rulesType.withResources([
                                   'subjectaccessreviews',
                                 ]) +
-                                policyRule.withVerbs(['create']);
+                                rulesType.withVerbs(['create']);
 
-      local rules = [coreRule, extensionsRule, appsRule, batchRule, autoscalingRule, authenticationRole, authorizationRole];
+      local policyRule = rulesType.new() +
+                         rulesType.withApiGroups(['policy']) +
+                         rulesType.withResources([
+                           'poddisruptionbudgets',
+                         ]) +
+                         rulesType.withVerbs(['list', 'watch']);
+
+      local rules = [coreRule, extensionsRule, appsRule, batchRule, autoscalingRule, authenticationRole, authorizationRole, policyRule];
 
       clusterRole.new() +
       clusterRole.mixin.metadata.withName('kube-state-metrics') +
@@ -127,7 +134,9 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       local proxyClusterMetrics =
         container.new('kube-rbac-proxy-main', $._config.imageRepos.kubeRbacProxy + ':' + $._config.versions.kubeRbacProxy) +
         container.withArgs([
+          '--logtostderr',
           '--secure-listen-address=:8443',
+          '--tls-cipher-suites=' + std.join(',', $._config.tlsCipherSuites),
           '--upstream=http://127.0.0.1:8081/',
         ]) +
         container.withPorts(containerPort.newNamed('https-main', 8443)) +
@@ -137,7 +146,9 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       local proxySelfMetrics =
         container.new('kube-rbac-proxy-self', $._config.imageRepos.kubeRbacProxy + ':' + $._config.versions.kubeRbacProxy) +
         container.withArgs([
+          '--logtostderr',
           '--secure-listen-address=:9443',
+          '--tls-cipher-suites=' + std.join(',', $._config.tlsCipherSuites),
           '--upstream=http://127.0.0.1:8082/',
         ]) +
         container.withPorts(containerPort.newNamed('https-self', 9443)) +
@@ -164,7 +175,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           '--extra-cpu=' + $._config.kubeStateMetrics.cpuPerNode,
           '--memory=' + $._config.kubeStateMetrics.baseMemory,
           '--extra-memory=' + $._config.kubeStateMetrics.memoryPerNode,
-          '--threshold=5',
+          '--acceptance-offset=5',
           '--deployment=kube-state-metrics',
         ]) +
         container.withEnv([
@@ -182,7 +193,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           },
         ]) +
         container.mixin.resources.withRequests({ cpu: '10m', memory: '30Mi' }) +
-        container.mixin.resources.withLimits({ cpu: '10m', memory: '30Mi' });
+        container.mixin.resources.withLimits({ cpu: '50m', memory: '30Mi' });
 
       local c = [proxyClusterMetrics, proxySelfMetrics, kubeStateMetrics, addonResizer];
 
@@ -208,30 +219,30 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
 
     role:
       local role = k.rbac.v1.role;
-      local policyRule = role.rulesType;
+      local rulesType = role.rulesType;
 
-      local coreRule = policyRule.new() +
-                       policyRule.withApiGroups(['']) +
-                       policyRule.withResources([
+      local coreRule = rulesType.new() +
+                       rulesType.withApiGroups(['']) +
+                       rulesType.withResources([
                          'pods',
                        ]) +
-                       policyRule.withVerbs(['get']);
+                       rulesType.withVerbs(['get']);
 
-      local extensionsRule = policyRule.new() +
-                             policyRule.withApiGroups(['extensions']) +
-                             policyRule.withResources([
+      local extensionsRule = rulesType.new() +
+                             rulesType.withApiGroups(['extensions']) +
+                             rulesType.withResources([
                                'deployments',
                              ]) +
-                             policyRule.withVerbs(['get', 'update']) +
-                             policyRule.withResourceNames(['kube-state-metrics']);
+                             rulesType.withVerbs(['get', 'update']) +
+                             rulesType.withResourceNames(['kube-state-metrics']);
 
-      local appsRule = policyRule.new() +
-                       policyRule.withApiGroups(['apps']) +
-                       policyRule.withResources([
+      local appsRule = rulesType.new() +
+                       rulesType.withApiGroups(['apps']) +
+                       rulesType.withResources([
                          'deployments',
                        ]) +
-                       policyRule.withVerbs(['get', 'update']) +
-                       policyRule.withResourceNames(['kube-state-metrics']);
+                       rulesType.withVerbs(['get', 'update']) +
+                       rulesType.withResourceNames(['kube-state-metrics']);
 
       local rules = [coreRule, extensionsRule, appsRule];
 

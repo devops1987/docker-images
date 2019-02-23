@@ -5,7 +5,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
     namespace: 'default',
 
     versions+:: {
-      prometheus: 'v2.4.3',
+      prometheus: 'v2.5.0',
     },
 
     imageRepos+:: {
@@ -38,9 +38,10 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       local prometheusPort = servicePort.newNamed('web', 9090, 'web');
 
       service.new('prometheus-' + $._config.prometheus.name, { app: 'prometheus', prometheus: $._config.prometheus.name }, prometheusPort) +
+      service.mixin.spec.withSessionAffinity('ClientIP') +
       service.mixin.metadata.withNamespace($._config.namespace) +
       service.mixin.metadata.withLabels({ prometheus: $._config.prometheus.name }),
-    rules:
+    [if $._config.prometheus.rules != null && $._config.prometheus.rules != {} then 'rules']:
       {
         apiVersion: 'monitoring.coreos.com/v1',
         kind: 'PrometheusRule',
@@ -128,7 +129,6 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
       local coreRule = policyRule.new() +
                        policyRule.withApiGroups(['']) +
                        policyRule.withResources([
-                         'nodes',
                          'services',
                          'endpoints',
                          'pods',
@@ -184,6 +184,11 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
                 port: 'web',
               },
             ],
+          },
+          securityContext: {
+            runAsUser: 1000,
+            runAsNonRoot: true,
+            fsGroup: 2000,
           },
         },
       },
@@ -277,6 +282,22 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
                 insecureSkipVerify: true,
               },
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
+              metricRelabelings: [
+                // Drop container_* metrics with no image.
+                {
+                  sourceLabels: ['__name__', 'image'],
+                  regex: 'container_([a-z_]+);',
+                  action: 'drop',
+                },
+
+                // Drop a bunch of metrics which are disabled but still sent, see
+                // https://github.com/google/cadvisor/issues/1925.
+                {
+                  sourceLabels: ['__name__'],
+                  regex: 'container_(network_tcp_usage_total|network_udp_usage_total|tasks_state|cpu_load_average_10s)',
+                  action: 'drop',
+                },
+              ],
             },
           ],
           selector: {
@@ -369,6 +390,16 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
                   regex: 'etcd_(debugging|disk|request|server).*',
                   action: 'drop',
                 },
+                {
+                  sourceLabels: ['__name__'],
+                  regex: 'apiserver_admission_controller_admission_latencies_seconds_.*',
+                  action: 'drop',
+                },
+                {
+                  sourceLabels: ['__name__'],
+                  regex: 'apiserver_admission_step_admission_latencies_seconds_.*',
+                  action: 'drop',
+                },
               ],
             },
           ],
@@ -389,8 +420,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           jobLabel: 'k8s-app',
           selector: {
             matchLabels: {
-              'k8s-app': 'coredns',
-              component: 'metrics',
+              'k8s-app': 'kube-dns',
             },
           },
           namespaceSelector: {
@@ -400,7 +430,7 @@ local k = import 'ksonnet/ksonnet.beta.3/k.libsonnet';
           },
           endpoints: [
             {
-              port: 'http-metrics',
+              port: 'metrics',
               interval: '15s',
               bearerTokenFile: '/var/run/secrets/kubernetes.io/serviceaccount/token',
             },
