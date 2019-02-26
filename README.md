@@ -21,6 +21,7 @@ NoSQL数据库/缓存/存储: memcache,rethinkdb,redis,ssdb,mongodb,cassandra,Lu
 GPU-Powered Database: Kinetica,MapD,BlazingDB,Brytlyt,PG-Strom,Blazegraph,SQream
 NewSQL数据库: TiDB,cockroachdb,VoltDB,Clustrix, NuoDB,TokuDB, MemSQL,Couchbase,CouchDB,Riak
 API查询语言: GraphQL,prisma.io
+API管理和测试: API Fortress,MockApi,Postman,Tyk,Swagger,RAP2,YApi,Eolinker,DOClever,Apizza,EasyAPI,CrapApi,apidoc
 时间序列数据库: influxdb,opentsdb,m3db
 消息队列/流存储: rabbitmq,rocketmq,rocketmq-console-ng,kafka,kafka-manager
 配置管理: zookeeper,zkui,qconf,etcd,apollo,disconf,spring-cloud-config
@@ -31,7 +32,7 @@ API查询语言: GraphQL,prisma.io
 开发环境SDK: golang,golang-gvm,oracle-jdk,oracle-jdk-maven
 微服务管理与持续发布: fabric8,jenkins-x,draft,knative,service-fabric
 微服务框架/组件: istio,naftis,dubbo,dubbokeeper,kong,kong-dashboard,consul,openlambda,linkerd2/Conduit,registrator
-FAAS: fission,fnproject,funktion,kubeless,nuclio,open-lambda,openfaas,openwhisk,vmware-dispatch
+FAAS: fission,fnproject,funktion,kubeless,nuclio,open-lambda,openfaas,openwhisk,vmware-dispatch,Claudia
 日志集群: elastic-stack(elasticsearch+cerebro+kibana)
 日志采集: logstash,filebeat,logtail,log-pilot,logspout,auditbeat
 监控/APM: appdash,apm-server,bosun,cadvisor,cortex,heapster,kube-state-metrics,metrics-server,searchlight,prometheus,thanos,pinpoint,jaeger,zipkin,skywalking,kubewatch,searchlight,Molten,opencensus
@@ -63,3 +64,9 @@ device plugin framework
 Graphics Processing Unit (GPU) plugin
 Field Programmable Gate Array (FPGA) plugin
 Intel® QuickAssist Technology (QAT) plugin
+
+开发原则和模式
+云原生规范 Cloud Native Definition
+https://github.com/cncf/toc/blob/master/DEFINITION.md
+微服务十二要素 The Twelve Factors
+https://12factor.net/
