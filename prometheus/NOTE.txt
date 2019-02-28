@@ -1,0 +1,65 @@
+exporters
+https://prometheus.io/docs/instrumenting/exporters/
+
+https://github.com/percona/mongodb_exporter
+
+https://github.com/kubernetes-incubator/metrics-server
+https://github.com/kubernetes-incubator/custom-metrics-apiserver
+
+https://github.com/mgxian/k8s-monitor.git
+
+https://github.com/coreos/prometheus-operator
+
+3个组件: prometheus-operator k8s-prometheus-adapter custom-metrics-apiserver
+实践建议: 每个部门1-N个prometheus实例，监控本部门的所有服务/pod
+
+具体exporter见每个程序目录
+blackbox_exporter
+aliyun-exporter
+kafka_exportor
+zk-exporter
+hadoop_exporter
+influxdb_exporter
+php-fpm-exporter
+process-exporter
+kong-plugin-prometheus
+
+无限数据存储的可伸缩Prometheus
+https://github.com/improbable-eng/thanos
+
+weave cortex
+
+Uber开源了他们针对prometheus存储解决方案M3
+
+https://www.kubernetes.org.cn/3418.html
+https://www.kubernetes.org.cn/4438.html
+custom-metrics-apiserver
+需要挂一个secret存储卷，secret名为"cm-adapter-serving-certs"，这个secret是一个证书，因此这里需要创建相应的证书和key，这个证书必须由k8s的kube-apiserver信任的CA签发，因此直接用k8s的CA签发。
+
+生成证书：
+
+私钥
+$  (umask 077;openssl genrsa -out serving.key 2048)
+$  ls
+      serving.key
+证书请求：
+$ openssl req -new -key serving.key -out serving.csr -subj "/CN=serving"
+$  ls
+serving.csr  serving.key
+签署证书：
+$ openssl x509 -req -in serving.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out serving.crt -days 3650
+ Signature ok
+ subject=/CN=serving
+ Getting CA Private Key
+
+$ ls
+serving.crt  serving.csr  serving.key
+创建secret：
+$ kubectl create secret generic cm-adapter-serving-certs --from-file=serving.crt=./serving.crt --from-file=serving.key=./serving.key  -n monitoring 
+secret/cm-adapter-serving-certs created
+
+$ kubectl get secrets -n monitoring 
+kubectl apply -f ./k8s-prometheus-adapter
+
+k8s-prometheus-adapter/deploy
+注意:与metrics-server 冲突
