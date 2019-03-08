@@ -30,6 +30,7 @@ API管理和测试: API Fortress,MockApi,Postman,Tyk,Swagger,RAP2,YApi,Eolinker,
 项目管理: jira,zentao
 企业ERP: odoo
 开发环境SDK: golang,golang-gvm,oracle-jdk,oracle-jdk-maven
+配置管理与服务自动发现: consul,confd,containerpilot,registrator
 微服务管理与持续发布: fabric8,jenkins-x,draft,knative,service-fabric
 微服务框架/组件: istio,naftis,dubbo,dubbokeeper,kong,kong-dashboard,consul,openlambda,linkerd2/Conduit,registrator
 FAAS: fission,fnproject,funktion,kubeless,nuclio,open-lambda,openfaas,openwhisk,vmware-dispatch,Claudia
@@ -40,12 +41,12 @@ FAAS: fission,fnproject,funktion,kubeless,nuclio,open-lambda,openfaas,openwhisk,
 kubernetes集群安装/升级: kubespray
 kubernetes可视化管理工具: kubernetes-dashboard,weavescope,kubebox,kubedash,kube-ops-view,cabin,wayne(360)
 kubernetes灾难恢复: ark
-kubernetes扩容:virtual-kubelet
+kubernetes扩容:virtual-kubelet,cluster-capacity
 开发工具: Telepresence,Keel,Apollo,Deis Workflow,Kel,
 安全工具: anchore,clair,cert-manager,docker-bench-security,magic-namespace,notary,OpenSCAP,trireme,NeuVector,Deepfence,StackRox,Tenable,Cavirin,Kube-Bench,Sysdig Falco,Sysdig Secure,Kubesec.io;付费 Aquasec,flawcheck
 编排转换：kompose
 备份/恢复/迁移: mydumper,zkcopy,mongodb_consistent_backup
-PaaS:flynn,tsuru
+PaaS:flynn,tsuru,service-catalog
 负载均衡: gimbal
 
 云原生（CloudNative）应用
