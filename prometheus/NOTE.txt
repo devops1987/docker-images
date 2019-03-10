@@ -33,30 +33,9 @@ production/example-app
 推荐metrics-server
 4.自定义指标non-core metrics:custom-metrics-apiserver指标对接hpa namespace:monitoring custom.metrics.k8s.io/v1beta1
 custom-metrics-apiserver
-k8s-prometheus-adapter/deploy/manifests
-
-5.钉钉报警
-prometheus-webhook-dingtalk
-http://theo.im/blog/2017/10/16/release-prometheus-alertmanager-webhook-for-dingtalk/
-
-alertmanager通知规则
-production/alertmanager-secret.yaml
-
-
-无限数据存储的可伸缩Prometheus
-https://github.com/improbable-eng/thanos
-
-weave cortex
-
-Uber开源了他们针对prometheus存储解决方案M3
-
-https://www.kubernetes.org.cn/3418.html
-https://www.kubernetes.org.cn/4438.html
-custom-metrics-apiserver
 需要挂一个secret存储卷，secret名为"cm-adapter-serving-certs"，这个secret是一个证书，因此这里需要创建相应的证书和key，这个证书必须由k8s的kube-apiserver信任的CA签发，因此直接用k8s的CA签发。
 
 生成证书：
-
 私钥
 $  (umask 077;openssl genrsa -out serving.key 2048)
 $  ls
@@ -78,7 +57,33 @@ $ kubectl create secret generic cm-adapter-serving-certs --from-file=serving.crt
 secret/cm-adapter-serving-certs created
 
 $ kubectl get secrets -n monitoring 
-kubectl apply -f ./k8s-prometheus-adapter
+kubectl apply -f ./production/custom-metrics-apiserver
 
-k8s-prometheus-adapter/deploy
+5.钉钉报警
+prometheus-webhook-dingtalk
+http://theo.im/blog/2017/10/16/release-prometheus-alertmanager-webhook-for-dingtalk/
+
+
+alertmanager通知规则
+production/alertmanager-secret.yaml
+改动:
+kube-scheduler-metrics-svc.yaml 
+kube-controller-manager-metrics-svc.yml
+kubends->coredns
+去掉prometheus-adapter
+报警规则
+promettheus存储卷
+
+
+无限数据存储的可伸缩Prometheus
+https://github.com/improbable-eng/thanos
+
+weave cortex
+
+Uber开源了他们针对prometheus存储解决方案M3
+
+https://www.kubernetes.org.cn/3418.html
+https://www.kubernetes.org.cn/4438.html
+
+
 注意:与metrics-server 冲突

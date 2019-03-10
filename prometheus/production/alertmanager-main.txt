@@ -24,6 +24,10 @@ route:
     group_wait: 10s
     match:
       team: node
+  - receiver: webhook
+    match:
+      alertname: "Watchdog"
+    group_wait: 10s
   #- match:
   #    severity: critical
   #  receiver: critical_email_alert

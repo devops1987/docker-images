@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   #命名规范:应用名称-版本
-  name: prometheus-webhook-dingtalk-v1
+  name: prometheus-webhook-dingtalk
   namespace: monitoring
   labels:
     app: prometheus-webhook-dingtalk
@@ -22,9 +22,9 @@ spec:
       labels:
         app: prometheus-webhook-dingtalk
         version: v1
-      annotations:
+      #annotations:
         #enable istio sidecar injection
-        sidecar.istio.io/inject: "true"
+        #sidecar.istio.io/inject: "true"
     spec:
       terminationGracePeriodSeconds: 60 ##k8s将会给应用发送SIGTERM信号，可以用来正确、优雅地关闭应用,默认为30秒
       #imagePullSecrets:
@@ -89,10 +89,9 @@ spec:
         #image: registry.cn-beijing.aliyuncs.com/example/example_web:${BUILD_NUMBER}
         image: slpcat/prometheus-webhook-dingtalk
         imagePullPolicy: Always
-        command:
-        - sh
-        - -c
-        - 'exec prometheus-webhook-dingtalk --ding.profile="webhook1=https://oapi.dingtalk.com/robot/send?access_token=xxxxxxxxxxxx" --ding.profile="webhook2=https://oapi.dingtalk.com/robot/send?access_token=yyyyyyyyyyy"'
+        args:
+        - --ding.profile="webhook1=https://oapi.dingtalk.com/robot/send?access_token=xxxxxxxxxxxx"
+        - --ding.profile="webhook2=https://oapi.dingtalk.com/robot/send?access_token=yyyyyyyyyyy"
         #livenessProbe: #kubernetes认为该pod是存活的,不存活则需要重启
         #  httpGet:
         #    path: /
@@ -114,11 +113,11 @@ spec:
         resources:
           # keep request = limit to keep this container in guaranteed class
           requests:
-            cpu: 500m
-            memory: 512Mi
+            cpu: 100m
+            memory: 128Mi
           limits:
-            cpu: 4
-            memory: 8Gi
+            cpu: 1
+            memory: 1Gi
         env:
           - name: aliyun_logs_access
             value: "stdout"
