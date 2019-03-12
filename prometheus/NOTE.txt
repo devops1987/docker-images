@@ -83,6 +83,7 @@ production/alertmanager-secret.yaml
 改动:
 kube-scheduler-metrics-svc.yaml 
 kube-controller-manager-metrics-svc.yml
+prometheus-roleBindingSpecificNamespaces.yaml
 kubends->coredns
 去掉prometheus-adapter
 报警规则
