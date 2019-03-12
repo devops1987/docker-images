@@ -41,7 +41,7 @@ FAAS: fission,fnproject,funktion,kubeless,nuclio,open-lambda,openfaas,openwhisk,
 kubernetes集群安装/升级: kubespray
 kubernetes可视化管理工具: kubernetes-dashboard,weavescope,kubebox,kubedash,kube-ops-view,cabin,wayne(360)
 kubernetes灾难恢复: ark
-kubernetes扩容:virtual-kubelet,cluster-capacity
+kubernetes扩容:virtual-kubelet,cluster-capacity,hpa-operator
 开发工具: Telepresence,Keel,Apollo,Deis Workflow,Kel,
 安全工具: anchore,clair,cert-manager,docker-bench-security,magic-namespace,notary,OpenSCAP,trireme,NeuVector,Deepfence,StackRox,Tenable,Cavirin,Kube-Bench,Sysdig Falco,Sysdig Secure,Kubesec.io;付费 Aquasec,flawcheck
 编排转换：kompose

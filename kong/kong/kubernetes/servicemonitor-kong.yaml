@@ -1,19 +1,19 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: frontend
-  namespace: default
+  name: kong
+  namespace: kong
   labels:
-    tier: frontend
+    k8s-app: kong
 spec:
   selector:
     matchLabels:
-      tier: frontend
-  jobLabel: example-app
+      k8s-app: kong
+  jobLabel: k8s-app
   endpoints:
-  - port: web
+  - port: kong-admin
     interval: 10s
     path: /metrics
   namespaceSelector:
     matchNames:
-      - default
+      - kong
