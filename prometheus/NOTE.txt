@@ -2,6 +2,7 @@ exporters
 具体exporter见每个程序目录
 aliyun-exporter
 blackbox_exporter
+elasticsearch-prometheus-exporter
 hadoop_exporter
 influxdb_exporter
 kafka_exportor
@@ -10,7 +11,10 @@ php-fpm-exporter
 snmp_exporter
 zk-exporter
 
+https://github.com/aylei/aliyun-exporter
+https://github.com/vvanholl/elasticsearch-prometheus-exporter
 https://github.com/danielqsj/kafka_exporter
+https://github.com/ignatev/burrow-kafka-dashboard
 https://github.com/bakins/php-fpm-exporter
 process-exporter
 kong-plugin-prometheus
@@ -84,6 +88,7 @@ production/alertmanager-secret.yaml
 kube-scheduler-metrics-svc.yaml 
 kube-controller-manager-metrics-svc.yml
 prometheus-roleBindingSpecificNamespaces.yaml
+加入kong openebs ceph
 kubends->coredns
 去掉prometheus-adapter
 报警规则

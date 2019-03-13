@@ -89,9 +89,10 @@ spec:
         #image: registry.cn-beijing.aliyuncs.com/example/example_web:${BUILD_NUMBER}
         image: slpcat/prometheus-webhook-dingtalk
         imagePullPolicy: Always
-        args:
-        - --ding.profile="webhook1=https://oapi.dingtalk.com/robot/send?access_token=xxxxxxxxxxxx"
-        - --ding.profile="webhook2=https://oapi.dingtalk.com/robot/send?access_token=yyyyyyyyyyy"
+        command:
+        - sh
+        - -c
+        - 'prometheus-webhook-dingtalk --ding.profile="webhook1=https://oapi.dingtalk.com/robot/send?access_token=xxxxxxxxxxxx" --ding.profile="webhook2=https://oapi.dingtalk.com/robot/send?access_token=yyyyyyyyyyy" --log.level=info'
         #livenessProbe: #kubernetes认为该pod是存活的,不存活则需要重启
         #  httpGet:
         #    path: /

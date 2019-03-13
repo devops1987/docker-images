@@ -6,6 +6,32 @@ ID: 8171
 zabbix
 ID: alexanderzobnin-zabbix-datasource
 
+ID: 1860 Node Exporter Full
+
+ID: 6876 Analysis by Namespace
+
+ID: 6873 Analysis by Cluster
+
+ID: 6879 Analysis by Pod
+
+ID: 5345 Blackbox Exporter Overview
+
+ID: 6658 Cilium Metrics
+
+ID: 2351 Consul
+
+ID: 5926 CoreDNS
+
+ID: 878 Elasticsearch Dashboard
+
+ID: 6693 Envoy Proxy
+ 
+ID: 7958 Kafka Exporter Overview
+
+ID: 6248 Minio
+
+ID: 4475 Traefik
+
 http://docs.grafana.org/alerting/notifications/#dingding-dingtalk
 
 worldping

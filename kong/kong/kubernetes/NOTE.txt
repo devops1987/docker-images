@@ -29,6 +29,7 @@ http-log是我比较推荐的，它的原理是设置一个log-server地址，�
 prometheus可视化
 
 kong自带的prometheus插件,metrics比较少, 可以网上查一下丰富版的prometheus插件.
+https://konghq.com/blog/expose-performance-metrics-in-prometheus/
 
 比如:https://github.com/yciabaud/kong-plugin-prometheus
 
