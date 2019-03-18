@@ -1,4 +1,4 @@
-{{- if .Values.dashboardImport.enabled }}
+{{- if .Values.dashboardImport.dashboards }}
 apiVersion: v1
 kind: ConfigMap
 metadata:

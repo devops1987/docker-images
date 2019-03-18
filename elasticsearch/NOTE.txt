@@ -1,3 +1,7 @@
+版本说明：
+helm-elasticsearch-bitnami 只有es集群
+helm-elasticsearch es集群+kibana
+
 elastalert
 https://github.com/Yelp/elastalert
 Sentinl
