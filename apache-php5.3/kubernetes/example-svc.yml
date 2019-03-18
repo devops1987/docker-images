@@ -6,6 +6,9 @@ metadata:
   #  prometheus.io/path: /metrics
   #  prometheus.io/port: "9180"
   #  prometheus.io/scrape: "true"
+  #  kube-router.io/service.scheduler: sh
+  #服务启用DSR（直接服务器返回）功能
+  #  kube-router.io/service.dsr: tunnel
   labels:
     k8s-app: example-web
     #kubernetes.io/cluster-service: "true"
