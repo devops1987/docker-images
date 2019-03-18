@@ -1,6 +1,7 @@
 image:
-  repository: "docker.elastic.co/kibana/kibana-oss"
-  tag: "6.6.1"
+  #repository: "docker.elastic.co/kibana/kibana-oss"
+  repository: "slpcat/kibana-oss"
+  tag: "6.6.2"
   pullPolicy: "IfNotPresent"
 
 commandline:
