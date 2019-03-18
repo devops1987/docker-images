@@ -89,6 +89,8 @@ spec:
         ports:
         - name: transport
           containerPort: 9300
+        - name: http
+          containerPort: 9200
         {{- if .Values.ingest.livenessProbe.enabled }}
         livenessProbe:
           initialDelaySeconds: {{ .Values.ingest.livenessProbe.initialDelaySeconds }}

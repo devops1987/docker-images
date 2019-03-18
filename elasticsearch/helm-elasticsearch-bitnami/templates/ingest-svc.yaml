@@ -25,6 +25,9 @@ spec:
     {{- if .Values.ingest.service.nodePort }}
     nodePort: {{ .Values.ingest.service.nodePort }}
     {{- end }}
+  - name: http
+    port: 9200
+    targetPort: http
   selector:
     app: {{ template "elasticsearch.name" . }}
     release: {{ .Release.Name | quote }}
