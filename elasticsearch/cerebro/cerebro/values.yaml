@@ -18,7 +18,7 @@ deployment:
   annotations: {}
 
 service:
-  type: ClusterIP
+  type: NodePort
   port: 80
   annotations: {}
   labels: {}

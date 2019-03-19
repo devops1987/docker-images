@@ -2,6 +2,10 @@
 helm-elasticsearch-bitnami 只有es集群
 helm-elasticsearch es集群+kibana
 
+监控
+servicemonitor-elasticsearch-bitnami.yml
+dashboard-elasticsearch-bitnami.json
+
 elastalert
 https://github.com/Yelp/elastalert
 Sentinl
