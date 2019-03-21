@@ -111,5 +111,6 @@ Uber开源了他们针对prometheus存储解决方案M3
 https://www.kubernetes.org.cn/3418.html
 https://www.kubernetes.org.cn/4438.html
 
-
+所有grafana详见
+grafana/
 注意:与metrics-server 冲突
