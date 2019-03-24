@@ -100,7 +100,7 @@ kubends->coredns
 报警规则
 promettheus存储卷
 
-
+https://prometheus.io/docs/operating/integrations/#remote-endpoints-and-storage
 无限数据存储的可伸缩Prometheus
 https://github.com/improbable-eng/thanos
 

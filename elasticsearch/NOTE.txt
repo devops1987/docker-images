@@ -2,17 +2,26 @@
 helm-elasticsearch-bitnami 只有es集群
 helm-elasticsearch es集群+kibana
 
-监控
+prometheus-operator监控
 servicemonitor-elasticsearch-bitnami.yml
 dashboard-elasticsearch-bitnami.json
 
-elastalert
+elastalert报警通知
 https://github.com/Yelp/elastalert
-Sentinl
+
+Sentinl报警通知
 KAAE：Kibi + Kibana Alert & Report App for Elasticsearch
 https://github.com/sirensolutions/sentinl
 https://github.com/elastic/kibana/wiki/Known-Plugins
 https://www.elastic.co/guide/en/kibana/current/known-plugins.html
+es-hadoop
+https://www.elastic.co/products/hadoop
+
+esrally功能：es的性能测试工具
+
+kibana plugin
+
+
 docker image repack
 
 analysis-icu
@@ -27,6 +36,8 @@ ingest-geoip
 ingest-user-agent
 
 es常用插件
+search-guard：https://github.com/floragunncom/search-guard 
+elasticsearch-http-user-auth：https://github.com/elasticfence/elasticsearch-http-user-auth
 分词插件
 
 1.   插件列表
