@@ -1,5 +1,0 @@
-_mock.go
-vendor/
-_tools/
-zz_generated.deepcopy.go
-pkg/client/

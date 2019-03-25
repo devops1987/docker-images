@@ -113,4 +113,8 @@ https://www.kubernetes.org.cn/4438.html
 
 所有grafana详见
 grafana/
+数据存储
+opentsdb
+m3db
+
 注意:与metrics-server 冲突
