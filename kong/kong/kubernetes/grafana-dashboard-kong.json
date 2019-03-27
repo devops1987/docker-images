@@ -1,45 +1,9 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_PROMETHEUS",
-      "label": "Prometheus",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "5.4.2"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph",
-      "version": "5.0.0"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "5.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "singlestat",
-      "name": "Singlestat",
-      "version": "5.0.0"
-    }
-  ],
   "annotations": {
     "list": [
       {
         "builtIn": 1,
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": "prometheus",
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -52,8 +16,8 @@
   "editable": true,
   "gnetId": 7424,
   "graphTooltip": 0,
-  "id": null,
-  "iteration": 1547510665130,
+  "id": 10,
+  "iteration": 1553673790529,
   "links": [],
   "panels": [
     {
@@ -61,7 +25,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -85,6 +49,7 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "paceLength": 10,
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -152,7 +117,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#299c46"
       ],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "format": "percent",
       "gauge": {
         "maxValue": 100,
@@ -228,7 +193,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -250,6 +215,7 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "paceLength": 10,
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -260,7 +226,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(kong_http_status{service=~\"$service\"}[1m])) by (service)",
+          "expr": "sum(rate(kong_http_status{exported_service=~\"$exported_service\"}[1m])) by (exported_service)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{service}}",
@@ -271,7 +237,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "RPS per service ($service)",
+      "title": "RPS per service ($exported_service)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -313,7 +279,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -337,6 +303,7 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "paceLength": 10,
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -400,7 +367,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -422,6 +389,7 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "paceLength": 10,
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -432,10 +400,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(irate(kong_bandwidth{type=\"egress\", service =~\"$service\"}[1m])) by (service)",
+          "expr": "sum(irate(kong_bandwidth{type=\"egress\", exported_service =~\"$exported_service\"}[1m])) by (exported_service)",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "{{service}}",
+          "legendFormat": "{{exported_service}}",
           "refId": "A"
         }
       ],
@@ -443,7 +411,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Egress per service ($service)",
+      "title": "Egress per service ($exported_service)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -485,7 +453,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -507,6 +475,7 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "paceLength": 10,
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -517,10 +486,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(irate(kong_bandwidth{type=\"ingress\", service =~\"$service\"}[1m])) by (service)",
+          "expr": "sum(irate(kong_bandwidth{type=\"ingress\", exported_service =~\"$exported_service\"}[1m])) by (exported_service)",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "{{service}}",
+          "legendFormat": "{{exported_service}}",
           "refId": "A"
         }
       ],
@@ -528,7 +497,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Ingress per service ($service)",
+      "title": "Ingress per service ($exported_service)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -570,7 +539,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -592,6 +561,7 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "paceLength": 10,
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -669,7 +639,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -691,6 +661,7 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "paceLength": 10,
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -701,21 +672,21 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.90, sum(rate(kong_latency_bucket{type=\"kong\", service =~ \"$service\"}[1m])) by (service,le))",
+          "expr": "histogram_quantile(0.90, sum(rate(kong_latency_bucket{type=\"kong\", exported_service =~ \"$exported_service\"}[1m])) by (exported_service,le))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "p90-{{service}}",
           "refId": "A"
         },
         {
-          "expr": "histogram_quantile(0.95, sum(rate(kong_latency_bucket{type=\"kong\", service =~ \"$service\"}[1m])) by (service,le))",
+          "expr": "histogram_quantile(0.95, sum(rate(kong_latency_bucket{type=\"kong\", exported_service =~ \"$exported_service\"}[1m])) by (exported_service,le))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "p95-{{service}}",
           "refId": "B"
         },
         {
-          "expr": "histogram_quantile(0.99, sum(rate(kong_latency_bucket{type=\"kong\", service =~ \"$service\"}[1m])) by (service,le))",
+          "expr": "histogram_quantile(0.99, sum(rate(kong_latency_bucket{type=\"kong\", exported_service =~ \"$exported_service\"}[1m])) by (exported_service,le))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "p99-{{service}}",
@@ -726,7 +697,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Kong Proxy Latency per Service ($service)",
+      "title": "Kong Proxy Latency per Service ($exported_service)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -768,7 +739,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -790,6 +761,7 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "paceLength": 10,
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -867,7 +839,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -889,6 +861,7 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "paceLength": 10,
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -899,21 +872,21 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.90, sum(rate(kong_latency_bucket{type=\"request\", service =~ \"$service\"}[1m])) by (service,le))",
+          "expr": "histogram_quantile(0.90, sum(rate(kong_latency_bucket{type=\"request\", exported_service =~ \"$exported_service\"}[1m])) by (exported_service,le))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "p90-{{service}}",
           "refId": "A"
         },
         {
-          "expr": "histogram_quantile(0.95, sum(rate(kong_latency_bucket{type=\"request\", service =~ \"$service\"}[1m])) by (service,le))",
+          "expr": "histogram_quantile(0.95, sum(rate(kong_latency_bucket{type=\"request\", exported_service =~ \"$exported_service\"}[1m])) by (exported_service,le))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "p95-{{service}}",
           "refId": "B"
         },
         {
-          "expr": "histogram_quantile(0.99, sum(rate(kong_latency_bucket{type=\"request\", service =~ \"$service\"}[1m])) by (service,le))",
+          "expr": "histogram_quantile(0.99, sum(rate(kong_latency_bucket{type=\"request\", exported_service =~ \"$exported_service\"}[1m])) by (exported_service,le))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "p99-{{service}}",
@@ -924,7 +897,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Request Time per service ($service)",
+      "title": "Request Time per service ($exported_service)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -966,7 +939,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -989,6 +962,7 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "paceLength": 10,
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -1067,7 +1041,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -1090,6 +1064,7 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "paceLength": 10,
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -1100,7 +1075,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.90, sum(rate(kong_latency_bucket{type=\"upstream\", service=~\"$service\"}[1m])) by (le,service))",
+          "expr": "histogram_quantile(0.90, sum(rate(kong_latency_bucket{type=\"upstream\", exported_service=~\"$exported_service\"}[1m])) by (le,exported_service))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -1108,14 +1083,14 @@
           "refId": "A"
         },
         {
-          "expr": "histogram_quantile(0.95, sum(rate(kong_latency_bucket{type=\"upstream\", service=~\"$service\"}[1m])) by (le,service))",
+          "expr": "histogram_quantile(0.95, sum(rate(kong_latency_bucket{type=\"upstream\", exported_service=~\"$exported_service\"}[1m])) by (le,exported_service))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "p95-{{service}}",
           "refId": "B"
         },
         {
-          "expr": "histogram_quantile(0.99, sum(rate(kong_latency_bucket{type=\"upstream\", service=~\"$service\"}[1m])) by (le,service))",
+          "expr": "histogram_quantile(0.99, sum(rate(kong_latency_bucket{type=\"upstream\", exported_service=~\"$exported_service\"}[1m])) by (le,exported_service))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "p99-{{service}}",
@@ -1126,7 +1101,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Upstream Time across per service ($service)",
+      "title": "Upstream Time across per service ($exported_service)",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1168,7 +1143,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "fill": 1,
       "gridPos": {
         "h": 7,
@@ -1190,6 +1165,7 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
+      "paceLength": 10,
       "percentage": false,
       "pointradius": 5,
       "points": false,
@@ -1257,7 +1233,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1338,7 +1314,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1419,7 +1395,7 @@
         "rgba(237, 129, 40, 0.89)",
         "#d44a3a"
       ],
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "prometheus",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1493,23 +1469,29 @@
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 16,
+  "schemaVersion": 18,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
         "allValue": ".*",
-        "current": {},
-        "datasource": "${DS_PROMETHEUS}",
-        "definition": "",
+        "current": {
+          "tags": [],
+          "text": "test-bd",
+          "value": [
+            "test-bd"
+          ]
+        },
+        "datasource": "prometheus",
+        "definition": "label_values(kong_http_status,exported_service)",
         "hide": 0,
         "includeAll": true,
         "label": "",
         "multi": true,
-        "name": "service",
+        "name": "exported_service",
         "options": [],
-        "query": "label_values(kong_http_status,service)",
+        "query": "label_values(kong_http_status,exported_service)",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -1554,5 +1536,5 @@
   "timezone": "",
   "title": "Kong (official)",
   "uid": "mY9p7dQmz",
-  "version": 1
+  "version": 4
 }
