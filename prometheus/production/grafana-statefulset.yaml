@@ -20,7 +20,7 @@ spec:
       - command:
         - sh
         - -c
-        - chown -R 65534:65534 /opt/rocketmq/store
+        - chown -R 65534:65534 /var/lib/grafana
         image: busybox
         imagePullPolicy: Always
         name: volume-mount-uid
