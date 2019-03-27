@@ -165,13 +165,13 @@ dashboardImport:
 # NOTE : We notice that lower resource constraints given to the chart + plugins are likely not going to work well.
 plugins:
   # set to true to enable plugins installation
-  enabled: false
+  enabled: true
   # set to true to remove all kibana plugins before installation
   reset: false
   # Use <plugin_name,version,url> to add/upgrade plugin
-  values:
-    - elastalert-kibana-plugin,1.0.2,https://github.com/bitsensor/elastalert-kibana-plugin/releases/download/1.0.2/elastalert-kibana-plugin-1.0.2-6.6.2.zip
-    - logtrail,0.1.31,https://github.com/sivasamyk/logtrail/releases/download/v0.1.31/logtrail-6.6.2-0.1.31.zip
+  values: []
+    #- elastalert-kibana-plugin,1.0.2,https://github.com/bitsensor/elastalert-kibana-plugin/releases/download/1.0.2/elastalert-kibana-plugin-1.0.2-6.6.2.zip
+    #- logtrail,0.1.31,https://github.com/sivasamyk/logtrail/releases/download/v0.1.31/logtrail-6.6.2-0.1.31.zip
     # - other_plugin
 
 persistentVolumeClaim:
