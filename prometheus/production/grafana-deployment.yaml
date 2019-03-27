@@ -15,6 +15,17 @@ spec:
       labels:
         app: grafana
     spec:
+      initContainers:
+      - command:
+        - sh
+        - -c
+        - chown -R 65534:65534 /opt/rocketmq/store
+        image: busybox
+        imagePullPolicy: Always
+        name: volume-mount-uid
+        volumeMounts:
+        - mountPath: /var/lib/grafana
+          name: grafana-storage
       containers:
       - image: grafana/grafana:6.0.2
         name: grafana
@@ -76,8 +87,6 @@ spec:
         runAsUser: 65534
       serviceAccountName: grafana
       volumes:
-      - emptyDir: {}
-        name: grafana-storage
       - name: grafana-datasources
         secret:
           secretName: grafana-datasources
@@ -111,3 +120,12 @@ spec:
       - configMap:
           name: grafana-dashboard-statefulset
         name: grafana-dashboard-statefulset
+  volumeClaimTemplates:
+  - metadata:
+      name: grafana-storage
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 5Gi
