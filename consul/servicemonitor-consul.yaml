@@ -4,14 +4,14 @@ metadata:
   name: consul-server-exporter
   namespace: default
   labels:
-    k8s-app: consul-server-exporter
+    k8s-app: prometheus-consul-exporter
 spec:
   selector:
     matchLabels:
-      k8s-app: consul-server-exporter
+      k8s-app: prometheus-consul-exporter
   jobLabel: k8s-app
   endpoints:
-  - port: 9107
+  - port: http
     interval: 10s
     path: /metrics
   namespaceSelector:
