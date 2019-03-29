@@ -11,13 +11,18 @@ spec:
     - name: alertmanager-main
       namespace: monitoring
       port: web
-  baseImage: quay.io/prometheus/prometheus
+  baseImage: prom/prometheus
   nodeSelector:
     beta.kubernetes.io/os: linux
   replicas: 2
+  retention: 1w
   resources:
     requests:
+      cpu: 100m
       memory: 400Mi
+    limits:
+      cpu: 4
+      memory: 8Gi
   ruleSelector:
     matchLabels:
       prometheus: k8s
