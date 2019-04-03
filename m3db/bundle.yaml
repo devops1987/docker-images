@@ -101,7 +101,7 @@ spec:
       spec:
         accessModes:
           - ReadWriteOnce
-        storageClassName: fast
+        #storageClassName: fast
         resources:
           requests:
             storage: 50Gi
@@ -454,7 +454,7 @@ spec:
       spec:
         accessModes:
           - ReadWriteOnce
-        storageClassName: fast
+        #storageClassName: fast
         resources:
           requests:
             storage: 200Gi

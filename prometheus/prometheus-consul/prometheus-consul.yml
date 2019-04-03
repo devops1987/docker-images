@@ -53,7 +53,7 @@ spec:
       #serviceAccountName: openebs-maya-operator
       containers:
         - name: prometheus
-          image: prom/prometheus:v2.8.0
+          image: prom/prometheus:v2.8.1
           args:
             - "--config.file=/etc/prometheus/conf/prometheus.yml"
             # Metrics are stored in an emptyDir volume which
