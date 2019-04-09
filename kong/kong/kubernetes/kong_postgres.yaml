@@ -183,6 +183,8 @@ spec:
             value: "off"
           - name: KONG_CLIENT_MAX_BODY_SIZE
             value: "0"
+          - name: KONG_UPSTREAM_KEEPALIVE
+            value: "60"
           #- name: KONG_WORKER_CONNECTIONS
           #  value: "20000"
           - name: KONG_CLIENT_BODY_BUFFER_SIZE

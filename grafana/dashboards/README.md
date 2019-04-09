@@ -25,7 +25,13 @@ ID: 5926 CoreDNS
 ID: 878 Elasticsearch Dashboard
 
 ID: 6693 Envoy Proxy
+
+ID: 6239 Mysql - Prometheus
+
+ID: 9342 MySQL Monitor
  
+ID: 7362 MySQL Overview
+
 ID: 7958 Kafka Exporter Overview
 
 ID: 6248 Minio

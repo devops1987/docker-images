@@ -18,7 +18,8 @@ spec:
       terminationGracePeriodSeconds: 1800
       containers:
       - name: cassandra
-        image: gcr.io/google-samples/cassandra:v13
+        #image: gcr.io/google-samples/cassandra:v13
+        image: cassandra:3.11
         imagePullPolicy: Always
         ports:
         - containerPort: 7000
@@ -34,8 +35,8 @@ spec:
             cpu: "500m"
             memory: 1Gi
           requests:
-           cpu: "500m"
-           memory: 1Gi
+            cpu: "500m"
+            memory: 1Gi
         securityContext:
           capabilities:
             add:
@@ -43,10 +44,7 @@ spec:
         lifecycle:
           preStop:
             exec:
-              command: 
-              - /bin/sh
-              - -c
-              - nodetool drain
+              command: ["/bin/sh", "-c", "exec nodetool decommission"]
         env:
           - name: MAX_HEAP_SIZE
             value: 512M

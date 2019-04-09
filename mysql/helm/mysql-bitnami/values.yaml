@@ -179,7 +179,7 @@ master:
     failureThreshold: 3
 
 slave:
-  replicas: 1
+  replicas: 2
   antiAffinity: soft
   ## updateStrategy for MySQL Slave StatefulSet
   ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies

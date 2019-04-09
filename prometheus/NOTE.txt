@@ -44,6 +44,7 @@ production/example-app
 自定义路径 /metrics
 自定义端口 metrics
 2.prometheus-operator收集监控 namespace:monitoring
+后端存储推荐使用m3db
 注意启用存储
 3.核心指标core metrics:prometheus-adapter指标转换 namespace:monitoring metrics.k8s.io/v1beta1
 推荐metrics-server
