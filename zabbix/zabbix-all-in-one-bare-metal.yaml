@@ -65,7 +65,7 @@ spec:
       containers:
         - name: zabbix-web
           #image: monitoringartist/zabbix-xxl:latest
-          image: zabbix/zabbix-web-nginx-mysql:alpine-3.4.10
+          image: zabbix/zabbix-web-nginx-mysql:alpine-4.2.0
           ports:
           - containerPort: 80
           env:
@@ -142,7 +142,7 @@ spec:
       containers:
         - name: zabbix-server
           #image: monitoringartist/zabbix-xxl:latest
-          image: zabbix/zabbix-server-mysql:alpine-3.4.10
+          image: zabbix/zabbix-server-mysql:alpine-4.2.0
           ports:
           - containerPort: 162
             name: snmptrapd

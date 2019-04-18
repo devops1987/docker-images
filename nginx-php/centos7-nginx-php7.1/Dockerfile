@@ -61,5 +61,10 @@ RUN set -x \
     && docker-run-bootstrap \
     && docker-image-cleanup \
     && mkdir -p /var/log/php-fpm && touch /var/log/php-fpm/error.log
+RUN yum install cyrus-sasl-plain cyrus-sasl cyrus-sasl-devel cyrus-sasl-lib
+
+RUN \
+    sed -i '/memcached.use_sasl/a\memcached.use_sasl = 1' /etc/php.d/z-memcached.ini &&\
+    sed -i 's/priority=20/priority=25/' /opt/docker/etc/supervisor.d/nginx.conf
 
 EXPOSE 80 443

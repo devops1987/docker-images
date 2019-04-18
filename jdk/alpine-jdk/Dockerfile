@@ -1,5 +1,5 @@
 #upstream https://github.com/frol/docker-alpine-oraclejdk8
-FROM alpine:3.8
+FROM alpine:3.9
 MAINTAINER 若虚 <slpcat@qq.com>
 
 # Container variables
@@ -65,9 +65,9 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
         "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME"
 
 ENV JAVA_VERSION=8 \
-    JAVA_UPDATE=191 \
-    JAVA_BUILD=12 \
-    JAVA_PATH=2787e4a523244c269598db4e85c51e0c \
+    JAVA_UPDATE=201 \
+    JAVA_BUILD=09 \
+    JAVA_PATH=42970487e3af4f5aa5bca3f542482c60 \
     JAVA_HOME="/usr/lib/jvm/default-jvm"
 
 RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip && \

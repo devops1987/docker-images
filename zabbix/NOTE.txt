@@ -20,3 +20,7 @@ Overview of Monitoring Artist (dockerized) monitoring ecosystem:
 8.Monitoring Analytics - graphic analytic tool for Zabbix data from data scientists
 9.Docker killer - Docker image for Docker stress and Docker orchestration testing
 
+定制镜像
+Dockbix agent XXL
+
+目录kubernetes

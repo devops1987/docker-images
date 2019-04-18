@@ -1,0 +1,2 @@
+Packet len9896612 is out of range!
+加jvm启动参数  -Djute.maxbuffer=41943040
