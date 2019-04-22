@@ -118,4 +118,7 @@ grafana/
 opentsdb
 m3db
 
+prometheus-timescaledb
+
+
 注意:与metrics-server 冲突

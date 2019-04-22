@@ -17,7 +17,7 @@ spec:
       containers:
         - name: zabbix-web
           #image: monitoringartist/zabbix-xxl:latest
-          image: zabbix/zabbix-web-apache-pgsql:alpine-4.2.0
+          image: zabbix/zabbix-web-nginx-pgsql:alpine-4.2.0
           ports:
           - containerPort: 80
           env:
