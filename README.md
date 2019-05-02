@@ -55,11 +55,15 @@ PaaS:flynn,tsuru,service-catalog
 监控: prometheus-operator,jaeger-operator
 配置管理: etcd-operator
 
-桌面环境
+桌面服务(DaaS)
 ubuntu-xfce-vnc
 ubuntu-icewm-vnc
 centos-xfce-vnc
 centos-icewm-vnc
+
+数据库服务(DBaaS)
+mysql
+redis
 
 device plugin framework
 Graphics Processing Unit (GPU) plugin
