@@ -1,3 +1,0 @@
-graft aliyun_exporter/static
-graft aliyun_exporter/templates
-global-exclude *.pyc

@@ -1,3 +1,0 @@
-kukielka/nginx-rtmp-ffmpeg
-
-https://github.com/Swagielka/Docker-nginx-rtmp
