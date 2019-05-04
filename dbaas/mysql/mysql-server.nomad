@@ -54,7 +54,7 @@ job "mysql-server" {
       service {
         name = "mysql-server"
         port = "db"
-
+        tags = ["mysql", "master"]
         check {
           type     = "tcp"
           interval = "10s"

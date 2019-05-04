@@ -1,0 +1,71 @@
+https://www.zabbix.com/cn/integrations/prometheus
+https://www.zabbix.com/cn/integrations/kubernetes
+
+Docker/Kubernetes/Mesos/Marathon/Chronos/LXC/LXD/Swarm container monitoring - Docker image, Zabbix template and C module
+https://github.com/monitoringartist/zabbix-docker-monitoring
+Kubernetes Zabbix/Grafana cluster (bare metal, Google Computer Engine - GCE, Google Container Engine - GKE) 
+https://github.com/monitoringartist/kubernetes-zabbix
+This is a standalone agent which subscribe to Kubernetes REST API event watch and send them to Zabbix 
+https://github.com/cloudawan/zabbix_agent
+
+Overview of Monitoring Artist (dockerized) monitoring ecosystem:
+
+1.Dockbix XXL - Zabbix server/proxy/UI/snmpd/java gateway with additional extensions
+2.Dockbix agent XXL - Zabbix agent with Docker (Kubernetes/Mesos/Chronos/Marathon) monitoring module
+3.Zabbix templates - tiny Docker image for simple template deployment of selected Zabbix monitoring templates
+4.Zabbix extension - all templates - storage image for Dockbix XXL with 200+ community templates
+5.Kubernetized Zabbix - containerized Zabbix cluster based on Kubernetes
+6.Grafana XXL - dockerized Grafana with all community plugins
+7.Grafana dashboards - Grafana dashboard collection for AWS and Zabbix
+8.Monitoring Analytics - graphic analytic tool for Zabbix data from data scientists
+9.Docker killer - Docker image for Docker stress and Docker orchestration testing
+
+定制镜像
+Dockbix agent XXL
+
+目录kubernetes
+
+当zabbix_server端当主机数量过多的时候，虽然可以通过增加代理的方式来进行收集数据，但是需要增加proxy机，所以还可以通过zabbix_agent主动往由Server端去发生数据来解决，否则，Zabbix会出现严重的性能问题，主要表现如下： 
+1、当被监控端主机过多时，web操作很卡，容易出现502，已经数据库等方面的问题。
+2、容易造成图层断裂。
+3、开启的进程（Pollar）太多，即使减少item数量，以后加入一定量的机器也会有问题
+
+所以下面主要往两个优化方向考虑： 
+1、添加Proxy节点做分布式监控 
+2、调整Agentd为主动模式
+
+
+zabbix模版
+https://github.com/monitoringartist/zabbix-community-repos
+
+grafana dashboard
+https://github.com/alexanderzobnin/grafana-zabbix
+
+
+
+第三方函数库及工具
+Zabbix 第三方工具列表。
+Zabbix monitor Apache - 用 Zabbix 监视 Apache 的方法。
+Zabbix JMX - 利用 Zabbix，透过 JMX 对 Java 服务做监视的 Item 设定方法 (2.0以上,非第三方,需安装 zabbix_java)。
+MySQLBix 用 Zabbix 监视 MySQL 的方法。
+MySQL-Performance-Monitor - 用 Zabbix 监视 MySQL 效能的方法。
+API与工具
+
+Ruby library - for Zabbix API.
+PHP library - for Zabbix API.
+Python library - for Zabbix API.
+Perl library - for Zabbix API.
+Zabcon - 使用 zbxapi 的函式库做出来的 CLI 工具 (面向Ruby)。
+Android
+
+Mobbix - Android 专用的 Zabbix Client 端。
+Zabbix Triggers Widget - Android 专用的Zabbix Client 端。
+Zabbkit - Android 专用的 Zabbix Client 端。
+iPhone
+
+Mozaby - iPhone 专用 Zabbix Client 端。
+Zabbkit - iPhone 专用 Zabbix Client 端。
+MobileOp - iPhone 专用 Zabbix Client 端。
+Windows Phone
+
+Zabbkit - Windows Phone 专用 Zabbix Client 端。

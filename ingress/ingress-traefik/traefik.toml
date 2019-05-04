@@ -1,0 +1,304 @@
+# DEPRECATED - for general usage instruction see [lifeCycle.graceTimeOut].
+#
+# If both the deprecated option and the new one are given, the deprecated one
+# takes precedence.
+# A value of zero is equivalent to omitting the parameter, causing
+# [lifeCycle.graceTimeOut] to be effective. Pass zero to the new option in
+# order to disable the grace period.
+#
+# Optional
+# Default: "0s"
+#
+# graceTimeOut = "10s"
+
+# Enable debug mode.
+# This will install HTTP handlers to expose Go expvars under /debug/vars and
+# pprof profiling data under /debug/pprof.
+# The log level will be set to DEBUG unless `logLevel` is specified.
+#
+# Optional
+# Default: false
+#
+# debug = true
+
+# Periodically check if a new version has been released.
+#
+# Optional
+# Default: true
+#
+checkNewVersion = false
+
+# Backends throttle duration.
+#
+# Optional
+# Default: "2s"
+#
+# providersThrottleDuration = "2s"
+
+# Controls the maximum idle (keep-alive) connections to keep per-host.
+#
+# Optional
+# Default: 200
+#
+# maxIdleConnsPerHost = 200
+
+# If set to true invalid SSL certificates are accepted for backends.
+# This disables detection of man-in-the-middle attacks so should only be used on secure backend networks.
+#
+# Optional
+# Default: false
+#
+# insecureSkipVerify = true
+
+# Register Certificates in the rootCA.
+#
+# Optional
+# Default: []
+#
+# rootCAs = [ "/mycert.cert" ]
+
+# Entrypoints to be used by frontends that do not specify any entrypoint.
+# Each frontend can specify its own entrypoints.
+#
+# Optional
+# Default: ["http"]
+#
+# defaultEntryPoints = ["http", "https"]
+
+# Allow the use of 0 as server weight.
+# - false: a weight 0 means internally a weight of 1.
+# - true: a weight 0 means internally a weight of 0 (a server with a weight of 0 is removed from the available servers).
+#
+# Optional
+# Default: false
+#
+# AllowMinWeightZero = true
+
+logLevel = "INFO"
+
+[traefikLog]
+  filePath = "/var/log/traefik/traefik.log"
+  format   = "json"
+
+[accessLog]
+  filePath = "/var/log/traefik/access.log"
+  format = "json"
+
+  [accessLog.filters]
+    statusCodes = ["200-511"]
+    retryAttempts = true
+
+#  [accessLog.fields]
+#    defaultMode = "keep"
+#    [accessLog.fields.names]
+#      "ClientUsername" = "drop"
+#      # ...
+#
+#    [accessLog.fields.headers]
+#      defaultMode = "keep"
+#      [accessLog.fields.headers.names]
+#        "User-Agent" = "redact"
+#        "Authorization" = "drop"
+#        "Content-Type" = "keep"
+#        # ...
+
+
+[entryPoints]
+  [entryPoints.http]
+    address = ":2080"
+    compress = true
+  [entryPoints.traefik]
+    address = ":2180"
+    compress = true
+
+#    [entryPoints.http.whitelist]
+#      sourceRange = ["192.168.1.0/24"]
+#      useXForwardedFor = true
+
+#    [entryPoints.http.tls]
+#      minVersion = "VersionTLS12"
+#      cipherSuites = [
+#        "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+#        "TLS_RSA_WITH_AES_256_GCM_SHA384"
+#       ]
+#      [[entryPoints.http.tls.certificates]]
+#        certFile = "path/to/my.cert"
+#        keyFile = "path/to/my.key"
+#      [[entryPoints.http.tls.certificates]]
+#        certFile = "path/to/other.cert"
+#        keyFile = "path/to/other.key"
+#      # ...
+#      [entryPoints.http.tls.clientCA]
+#        files = ["path/to/ca1.crt", "path/to/ca2.crt"]
+#        optional = false
+#
+#    [entryPoints.http.redirect]
+#      entryPoint = "https"
+#      regex = "^http://localhost/(.*)"
+#      replacement = "http://mydomain/$1"
+#      permanent = true
+#
+#    [entryPoints.http.auth]
+#      headerField = "X-WebAuth-User"
+#      [entryPoints.http.auth.basic]
+#        users = [
+#          "test:$apr1$H6uskkkW$IgXLP6ewTrSuBkTrqE8wj/",
+#          "test2:$apr1$d9hr9HBB$4HxwgUir3HP4EsggP/QNo0",
+#        ]
+#        usersFile = "/path/to/.htpasswd"
+#      [entryPoints.http.auth.digest]
+#        users = [
+#          "test:traefik:a2688e031edb4be6a3797f3882655c05",
+#          "test2:traefik:518845800f9e2bfb1f1f740ec24f074e",
+#        ]
+#        usersFile = "/path/to/.htdigest"
+#      [entryPoints.http.auth.forward]
+#        address = "https://authserver.com/auth"
+#        trustForwardHeader = true
+#        [entryPoints.http.auth.forward.tls]
+#          ca =  [ "path/to/local.crt"]
+#          caOptional = true
+#          cert = "path/to/foo.cert"
+#          key = "path/to/foo.key"
+#          insecureSkipVerify = true
+#
+#    [entryPoints.http.proxyProtocol]
+#      insecure = true
+#      trustedIPs = ["10.10.10.1", "10.10.10.2"]
+#
+#    [entryPoints.http.forwardedHeaders]
+#      trustedIPs = ["10.10.10.1", "10.10.10.2"]
+#
+#  [entryPoints.https]
+#    # ...
+
+################################################################
+# Kubernetes Ingress configuration backend
+################################################################
+
+# Enable Kubernetes Ingress configuration backend.
+[kubernetes]
+
+# Kubernetes server endpoint.
+#
+# Optional for in-cluster configuration, required otherwise.
+# Default: empty
+#
+endpoint = "https://172.16.0.36:6443"
+
+# Bearer token used for the Kubernetes client configuration.
+#
+# Optional
+# Default: empty
+#
+token = "eyJhbGciOiJSUzI1NiIsImtpZCI6IiJ9.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJ0cmFlZmlrLWluZ3Jlc3MtY29udHJvbGxlci10b2tlbi1zbm5iNSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50Lm5hbWUiOiJ0cmFlZmlrLWlyZ3Jlc3MtY29udHJvbGxlciIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6ImE4NmI3YWEzLTVmNjQtMTFlOC1hZjYxLWM4MWY2NmUwMzRhNyIsInN1YiI6InN5c3RlbTpxZXJ2aWNlYWNjb3VudDPrdWJlLXN5c3RlbTp0cmFlZmlrLWluZ3Jlc3MtY29udHJvbGxlciJ9.vOFEITuANWGnkER8gukWkTs54BmHXqNpzM55bOb5qXPmI3pZsbei3gtE6tZoqME9P5Lb85cav-8mGZJcoQqqxNBkZJ1YRqy_1O9Apkxa4jA68ipe_NB3L5-exH5cEIrU8iql_r7ycDaKwzsMnAWGPolp1dRkF31u5u8g68oLwF3GR8Z5g4_tLJlTvA53doX7k6Wd6vUygTS3EaQ_qvfXwbcIeaSdWWo2Mym6O0CvIap4jH2w21MbredGURqkRlXEPezKAgRVkr75CdvuvwORnT8YxFLVwuAJs70V-13Ib9v6HAK64GmzcqkAuJtZT8NZKl8Y4TfRGl2_RMq2tk86gD4ShDMedcrto44ZUYHQccsSlpaW5PsN2KBBNPN0-6ca3jIpOmnJojAFUYGM42Wymnx9_4XwHUeeA18-RrercmOaRMdlNq8BzBomAxQB99TqUzRIqpe6m5OotXvouCUnE7qjMwRWmQ5LHjqUGEw_A1pHcalFXQZK0sOCaJOJZIJbc_8rVX-4uxkCBxoIXmzjq8x5a_xPsN4L0aWifkP6co--agw3kOT0O6my8T_CbcZGO9e3OqYPdT4FSl92XlXW8EXHdDpCUJ10aoqJGG2vZSud7IoDxkcScpkj3n6TvyvSRVtk3CtYiIYBpgi7-X2JKkun1a7yFpLogyazz9VlUE4"
+
+# Path to the certificate authority file.
+# Used for the Kubernetes client configuration.
+#
+# Optional
+# Default: empty
+#
+certAuthFilePath = "/etc/kubernetes/ssl/k8s-root-ca.pem"
+
+# Array of namespaces to watch.
+#
+# Optional
+# Default: all namespaces (empty array).
+#
+namespaces = ["default"]
+
+# Ingress label selector to filter Ingress objects that should be processed.
+#
+# Optional
+# Default: empty (process all Ingresses)
+#
+# labelselector = "A and not B"
+
+# Value of `kubernetes.io/ingress.class` annotation that identifies Ingress objects to be processed.
+# If the parameter is non-empty, only Ingresses containing an annotation with the same value are processed.
+# Otherwise, Ingresses missing the annotation, having an empty value, or the value `traefik` are processed.
+#
+# Note : `ingressClass` option must begin with the "traefik" prefix.
+#
+# Optional
+# Default: empty
+#
+# ingressClass = "traefik-internal"
+
+# Disable PassHost Headers.
+#
+# Optional
+# Default: false
+#
+# disablePassHostHeaders = true
+
+# Enable PassTLSCert Headers.
+#
+# Optional
+# Default: false
+#
+# enablePassTLSCert = true
+
+# Override default configuration template.
+#
+# Optional
+# Default: <built-in template>
+#
+# filename = "kubernetes.tmpl"
+
+
+# API definition
+[api]
+  # Name of the related entry point
+  #
+  # Optional
+  # Default: "traefik"
+  #
+  entryPoint = "traefik"
+
+  # Enabled Dashboard
+  #
+  # Optional
+  # Default: true
+  #
+  dashboard = true
+
+  # Enable debug mode.
+  # This will install HTTP handlers to expose Go expvars under /debug/vars and
+  # pprof profiling data under /debug/pprof.
+  # Additionally, the log level will be set to DEBUG.
+  #
+  # Optional
+  # Default: false
+  #
+  debug = false
+
+# Ping definition
+#[ping]
+#  # Name of the related entry point
+#  #
+#  # Optional
+#  # Default: "traefik"
+#  #
+#  entryPoint = "traefik"
+# Metrics definition
+[metrics]
+  #...
+
+  # To enable Traefik to export internal metrics to Prometheus
+  [metrics.prometheus]
+
+    # Name of the related entry point
+    #
+    # Optional
+    # Default: "traefik"
+    #
+    entryPoint = "traefik"
+
+    # Buckets for latency metrics
+    #
+    # Optional
+    # Default: [0.1, 0.3, 1.2, 5.0]
+    #
+    buckets = [0.1,0.3,1.2,5.0]

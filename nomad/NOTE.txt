@@ -1,0 +1,9 @@
+推荐方案
+适用场景:容器化应用，旧的非容器应用，kubernetes应用等多种运行环境混合部署
+
+1.服务发现 consul 统一的服务发现与注册中心
+2.集群编排 nomad 
+3.反向代理/ingress traefik 统一的外部流量入口,转发至相应的后端（raw，docker，k8s）
+
+https://tech.trivago.com/2019/01/25/nomad-our-experiences-and-best-practices/
+https://www.jianshu.com/p/600e9ec16251

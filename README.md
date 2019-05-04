@@ -31,6 +31,7 @@ API管理和测试: API Fortress,MockApi,Postman,Tyk,Swagger,RAP2,YApi,Eolinker,
 企业ERP: odoo
 开发环境SDK: golang,golang-gvm,oracle-jdk,oracle-jdk-maven
 配置管理与服务自动发现: consul,confd,containerpilot,registrator
+反向代理/ingress: fabio,traefik,envoy
 微服务管理与持续发布: fabric8,jenkins-x,draft,knative,service-fabric
 微服务框架/组件: istio,naftis,dubbo,dubbokeeper,kong,kong-dashboard,consul,openlambda,linkerd2/Conduit,registrator
 FAAS: fission,fnproject,funktion,kubeless,nuclio,open-lambda,openfaas,openwhisk,vmware-dispatch,Claudia
