@@ -2,6 +2,13 @@
 
 IMPROVEMENTS:
 
+  * Support adding a prefix to Kubernetes services registered in Consul [[GH 140](https://github.com/hashicorp/consul-helm/issues/140)]
+  * Support an option for automatically bootstrapping ACLs in a Consul cluster that is run fully in Kubernetes.
+
+## 0.7.0 (March 21, 2019)
+
+IMPROVEMENTS:
+
   * Support pod PriorityClasses for Consul servers and clients
   * Add annotation and additional spec values for the UI service
   * Add liveness and readiness checks to the catalog sync pod [[consul-k8s GH 57](https://github.com/hashicorp/consul-k8s/issues/57)]

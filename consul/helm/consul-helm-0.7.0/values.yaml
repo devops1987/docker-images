@@ -15,7 +15,7 @@ global:
   #
   # Examples:
   #   image: "consul:1.4.2"
-  #   image: "consul:1.4.2-ent"   # Enterprise Consul image
+  #   image: "hashicorp/consul-enterprise:1.4.2-ent"   # Enterprise Consul image
   image: "consul:1.4.4"
 
   # imageK8S is the name (and tag) of the consul-k8s Docker image that
@@ -45,6 +45,12 @@ global:
     enabled: false
     secretName: null
     secretKey: null
+
+  # bootstrapACLs will automatically create and assign ACL tokens within 
+  # the Consul cluster. This currently requires enabling both servers and
+  # clients within Kubernetes. Additionally requires Consul v1.4+ and
+  # consul-k8s v0.8.0+.
+  bootstrapACLs: false
 
 # Server, when enabled, configures a server cluster to run. This should
 # be disabled if you plan on connecting to a Consul cluster external to
@@ -157,7 +163,7 @@ server:
 # within the Kube cluster. The current deployment model follows a traditional
 # DC where a single agent is deployed per node.
 client:
-  enabled: "false"
+  enabled: "-"
   image: null
   join: null
 
@@ -274,6 +280,12 @@ syncCatalog:
   # prepended with "consul-". (Consul -> Kubernetes sync)
   k8sPrefix: null
 
+  # consulPrefix is the service prefix which preprends itself
+  # to Kubernetes services registered within Consul
+  # For example, "k8s-" will register all services peprended with "k8s-".
+  # (Kubernetes -> Consul sync)
+  consulPrefix: null
+
   # k8sTag is an optional tag that is applied to all of the Kubernetes services
   # that are synced into Consul. If nothing is set, defaults to "k8s".
   # (Kubernetes -> Consul sync)
@@ -353,3 +365,9 @@ connectInject:
   # nodeSelector: |
   #   beta.kubernetes.io/arch: amd64
   nodeSelector: null
+
+  # aclBindingRuleSelector is a string that defines the automatic binding
+  # rule to control the allowed authentication for Connect injection. The
+  # default disallows using the default service account for ACl generation.
+  # Requires Consul v1.5+ and consul-k8s v0.8.0+.
+  aclBindingRuleSelector: "serviceaccount.name!=default"

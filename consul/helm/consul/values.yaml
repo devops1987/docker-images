@@ -20,7 +20,7 @@ Domain: consul
 ## Used as selector
 Component: "consul"
 Replicas: 3
-Image: "slpcat/consul"
+Image: "consul"
 ImageTag: "1.0.0"
 ImagePullPolicy: "Always"
 Resources: {}
@@ -31,6 +31,9 @@ Resources: {}
  #   cpu: "500m"
  #   memory: "512Mi"
 ## Persistent volume size
+
+priorityClassName: ""
+
 Storage: "1Gi"
 
 ## Needed for 0.8.0 and later IF all consul containers are spun up
@@ -101,6 +104,7 @@ ui:
 uiService:
   enabled: true
   type: "NodePort"
+  annotations: {}
 
 ConsulConfig: []
 #  - type: secret
@@ -112,10 +116,23 @@ ConsulConfig: []
 uiIngress:
   enabled: false
   annotations: {}
+  labels: {}
   hosts: []
   tls: {}
+
+## Useful when ACLs are enabled
+acl:
+  enabled: false
+  masterToken: ""
+  agentToken: ""
 
 ## test container details
 test:
   image: lachlanevenson/k8s-kubectl
   imageTag: v1.4.8-bash
+  rbac:
+    create: false
+    serviceAccountName: ""
+
+nodeSelector: {}
+tolerations: []
