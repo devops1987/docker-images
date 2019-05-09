@@ -1,6 +1,6 @@
 job "mysql-server" {
-  #region = "us-east1"
-  datacenters = ["dc1", "lon1"]
+  #region = "alicloud-beijing"
+  datacenters = ["zone-e", "zone-f"]
 
   constraint {
     attribute = "${attr.kernel.name}"
@@ -8,8 +8,18 @@ job "mysql-server" {
   }
 
   #constraint {
+  #  attribute = "${meta.department}"
+  #  value     = "research-center"
+  #}
+
+  #constraint {
   #  attribute = "${meta.storage}"
-  #  value     = "local"
+  #  value     = "ssd"
+  #}
+
+  #constraint {
+  #  attribute = "${meta.rack}"
+  #  value     = "B001"
   #}
 
   #constraint {
