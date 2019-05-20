@@ -158,10 +158,12 @@ spec:
           requests:
             cpu: 50m
             memory: 64Mi
+            ephemeral-storage: 100Mi
           limits:
             cpu: 500m
             #nvidia.com/gpu: 1
             memory: 512Mi
+            ephemeral-storage: 100Mi #定义存储的限制为100M
         securityContext:
           #allowPrivilegeEscalation: false
           capabilities: {}

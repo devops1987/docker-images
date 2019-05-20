@@ -1,6 +1,6 @@
-job "mysql-server" {
+job "log-pilot" {
   #region = "alicloud-beijing"
-  datacenters = ["zone-e", "zone-f"]
+  datacenters = ["dc1", "zone-f"]
 
   constraint {
     attribute = "${attr.kernel.name}"
@@ -28,7 +28,7 @@ job "mysql-server" {
   #}
 
   #Nomad provides the service, system and batch schedulers.
-  type = "service"
+  type = "system"
 
   update {
     max_parallel      = 1
@@ -41,8 +41,7 @@ job "mysql-server" {
     stagger           = "30s"
   }
 
-  group "mysql" {
-    count = 1
+  group "log-pilot" {
 
     restart {
       attempts = 10
@@ -59,22 +58,19 @@ job "mysql-server" {
     #  }
     #}
 
-    task "mysql-master" {
-      #artifact {
-      #  source      = "https://example.com/file.tar.gz"
-      #  destination = "local/some-directory"
-      #  options {
-      #    checksum = "md5:df6a4178aec9fbdc1d6d7e3634d1bc33"
-      #  }
-      #}
+    task "log-pilot" {
 
       driver = "docker"
 
       env {
-        "MYSQL_ROOT_PASSWORD" = "my_rootpassword"
-        "MYSQL_DATABASE" = "mydb"
-        "MYSQL_USER" = "myuser"
-        "MYSQL_PASSWORD" = "mydb_password"
+        "LOGGING_OUTPUT" = "kafka"
+        "KAFKA_BROKERS" = "kafka1:9092,kafka2:9092"
+        "KAFKA_VERSION" = "0.10.0"
+        "KAFKA_CLIENT_ID" = "beats"
+        "KAFKA_BROKER_TIMEOUT" = "60"
+        #"KAFKA_KEEP_ALIVE" = "10m"
+        "KAFKA_REQUIRE_ACKS" = "0"
+        "NODE_NAME" = "${attr.unique.network.ip-address}"
       }
 
       logs{
@@ -83,7 +79,7 @@ job "mysql-server" {
       }
 
       config {
-        image = "percona:5.6"
+        image = "registry.cn-hangzhou.aliyuncs.com/acs/log-pilot:0.9.5-filebeat"
         force_pull = false
         #network_mode = "host"
         #command = "my-command"
@@ -95,13 +91,20 @@ job "mysql-server" {
         #]
         #shm_size = 134217728
 
+        cap_add = [
+          "SYS_ADMIN",
+        ]
+
         volumes = [
           # Use absolute paths to mount arbitrary paths on the host
-          "/data/mysql:/var/lib/mysql"
+          "/var/run/docker.sock:/var/run/docker.sock",
+          "/var/log/filebeat:/var/log/filebeat",
+          "/var/lib/filebeat:/var/lib/filebeat",
+          "/:/host:ro",
+          "/etc/localtime:/etc/localtime"
         ]
 
         sysctl {
-          net.core.somaxconn = "16384"
           net.ipv4.tcp_syncookies = "0"
           net.ipv4.ip_local_port_range = "1024 65535"
           net.core.somaxconn = "65535"
@@ -135,24 +138,20 @@ job "mysql-server" {
           #aliyun.logs.access = "/usr/local/tomcat/logs/localhost_access_log*.txt"
         #}
 
-        port_map {
-          db = 3306
-        }
       }
 
       service {
-        name = "mysql-server"
-        port = "db"
+        name = "log-pilot"
         tags = [
           "online"
           ]
 
-        check {
-          name = "alive"
-          type = "tcp"
-          interval = "10s"
-          timeout = "5s"
-        }
+        #check {
+        #  name = "alive"
+        #  type = "tcp"
+        #  interval = "10s"
+        #  timeout = "5s"
+        #}
       }
 
       kill_timeout = "20s"
@@ -161,9 +160,6 @@ job "mysql-server" {
         memory = 1024
         network {
           mbits = 100
-          port "db" {
-            #static = 13306
-          }
         }
       }
     }

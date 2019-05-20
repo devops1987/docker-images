@@ -1,16 +1,16 @@
-job "mysql-server" {
+job "web" {
   #region = "alicloud-beijing"
-  datacenters = ["zone-e", "zone-f"]
+  datacenters = ["dc1", "zone-f"]
 
   constraint {
     attribute = "${attr.kernel.name}"
     value     = "linux"
   }
 
-  #constraint {
-  #  attribute = "${meta.department}"
-  #  value     = "research-center"
-  #}
+  constraint {
+    attribute = "${meta.department}"
+    value     = "im-group"
+  }
 
   #constraint {
   #  attribute = "${meta.storage}"
@@ -22,28 +22,27 @@ job "mysql-server" {
   #  value     = "B001"
   #}
 
-  #constraint {
-  #  attribute = "${attr.unique.network.ip-address}"
-  #  value     = "1.2.3.4"
-  #}
+  constraint {
+    attribute = "${attr.unique.network.ip-address}"
+    value     = "172.16.1.1"
+  }
 
   #Nomad provides the service, system and batch schedulers.
   type = "service"
 
   update {
-    max_parallel      = 1
+    max_parallel      = 3
     health_check      = "checks"
     min_healthy_time  = "10s"
     healthy_deadline  = "5m"
     progress_deadline = "10m"
     auto_revert       = true
-    canary            = 0
+    canary            = 1
     stagger           = "30s"
   }
 
-  group "mysql" {
-    count = 1
-
+  group "webserber" {
+    count = 3
     restart {
       attempts = 10
       interval = "5m"
@@ -51,30 +50,19 @@ job "mysql-server" {
       mode = "delay"
     }
 
-    #ephemeral_disk {
-    #  driver = "zfs"
-    #  attributes {
-    #  record_size = 16
-    #  #more file system attributes
-    #  }
-    #}
-
-    task "mysql-master" {
-      #artifact {
-      #  source      = "https://example.com/file.tar.gz"
-      #  destination = "local/some-directory"
-      #  options {
-      #    checksum = "md5:df6a4178aec9fbdc1d6d7e3634d1bc33"
-      #  }
-      #}
+    task "web" {
+      artifact {
+        source      = "https://example.com/file.tar.gz"
+        destination = "local/app"
+        options {
+          checksum = "md5:df6a4178aec9fbdc1d6d7e3634d1bc33"
+        }
+      }
 
       driver = "docker"
 
       env {
-        "MYSQL_ROOT_PASSWORD" = "my_rootpassword"
-        "MYSQL_DATABASE" = "mydb"
-        "MYSQL_USER" = "myuser"
-        "MYSQL_PASSWORD" = "mydb_password"
+        "APP" = "nginx"
       }
 
       logs{
@@ -83,9 +71,9 @@ job "mysql-server" {
       }
 
       config {
-        image = "percona:5.6"
+        image = "registry.cn-beijing.aliyuncs.com/webserver"
         force_pull = false
-        #network_mode = "host"
+        network_mode = "host"
         #command = "my-command"
         #args = [
         #  "-bind", "${NOMAD_PORT_http}",
@@ -97,11 +85,11 @@ job "mysql-server" {
 
         volumes = [
           # Use absolute paths to mount arbitrary paths on the host
-          "/data/mysql:/var/lib/mysql"
+          "/data/dockerSrc/$servName:/workspace/webapps/$servName",
+          "/data/logs/${servName}${i}:/workspace/logs"
         ]
 
         sysctl {
-          net.core.somaxconn = "16384"
           net.ipv4.tcp_syncookies = "0"
           net.ipv4.ip_local_port_range = "1024 65535"
           net.core.somaxconn = "65535"
@@ -135,16 +123,29 @@ job "mysql-server" {
           #aliyun.logs.access = "/usr/local/tomcat/logs/localhost_access_log*.txt"
         #}
 
-        port_map {
-          db = 3306
-        }
+        #port_map {
+        #  http = 80
+        #}
       }
 
       service {
-        name = "mysql-server"
-        port = "db"
+        name = "web"
+        port = "http"
+        port = "metrics"
         tags = [
-          "online"
+          "online",
+          "prometheus-target",
+          "traefik.enable=true",
+          "traefik.frontend.entryPoints=http",
+          "traefik.protocol=http",
+          "traefik.weight=10",
+          "traefik.backend.circuitbreaker.expression=NetworkErrorRatio() > 0.5",
+          "traefik.backend.loadbalancer.method=drr",
+          "traefik.backend.maxconn.amount=100",
+          "traefik.backend.maxconn.extractorfunc=client.ip",
+          "traefik.frontend.passHostHeader=true",
+          "traefik.frontend.priority=10",
+          "traefik.frontend.rule=Host:example.com"
           ]
 
         check {
@@ -157,12 +158,15 @@ job "mysql-server" {
 
       kill_timeout = "20s"
       resources {
-        cpu = 500
-        memory = 1024
+        cpu = 2000
+        memory = 4096
         network {
           mbits = 100
-          port "db" {
-            #static = 13306
+          port "http" {
+            #static = 9088
+          }
+          port "sentry" {
+            #static = 20010
           }
         }
       }

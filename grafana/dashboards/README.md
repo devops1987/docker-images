@@ -22,6 +22,8 @@ ID: 2351 Consul
 
 ID: 5926 CoreDNS
 
+ID: 2240 Traefik
+
 ID: 878 Elasticsearch Dashboard
 
 ID: 6693 Envoy Proxy

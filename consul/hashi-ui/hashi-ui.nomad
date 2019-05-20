@@ -1,6 +1,6 @@
-job "mysql-server" {
+job "hashi-ui" {
   #region = "alicloud-beijing"
-  datacenters = ["zone-e", "zone-f"]
+  datacenters = ["dc1", "zone-f"]
 
   constraint {
     attribute = "${attr.kernel.name}"
@@ -9,7 +9,7 @@ job "mysql-server" {
 
   #constraint {
   #  attribute = "${meta.department}"
-  #  value     = "research-center"
+  #  value     = "im-group"
   #}
 
   #constraint {
@@ -24,7 +24,7 @@ job "mysql-server" {
 
   #constraint {
   #  attribute = "${attr.unique.network.ip-address}"
-  #  value     = "1.2.3.4"
+  #  value     = "172.16.1.1"
   #}
 
   #Nomad provides the service, system and batch schedulers.
@@ -41,9 +41,8 @@ job "mysql-server" {
     stagger           = "30s"
   }
 
-  group "mysql" {
+  group "hashi-ui" {
     count = 1
-
     restart {
       attempts = 10
       interval = "5m"
@@ -51,30 +50,18 @@ job "mysql-server" {
       mode = "delay"
     }
 
-    #ephemeral_disk {
-    #  driver = "zfs"
-    #  attributes {
-    #  record_size = 16
-    #  #more file system attributes
-    #  }
-    #}
-
-    task "mysql-master" {
-      #artifact {
-      #  source      = "https://example.com/file.tar.gz"
-      #  destination = "local/some-directory"
-      #  options {
-      #    checksum = "md5:df6a4178aec9fbdc1d6d7e3634d1bc33"
-      #  }
-      #}
+    task "hash-ui" {
 
       driver = "docker"
 
       env {
-        "MYSQL_ROOT_PASSWORD" = "my_rootpassword"
-        "MYSQL_DATABASE" = "mydb"
-        "MYSQL_USER" = "myuser"
-        "MYSQL_PASSWORD" = "mydb_password"
+        CONSUL_ENABLE = 1
+        CONSUL_ADDR = "consul.service.consul:8500"
+        #CONSUL_ACL_TOKEN = "112233"
+
+        NOMAD_ENABLE = 1
+        NOMAD_ADDR = "http://nomad.service.consul:4646"
+        #NOMAD_ACL_TOKEN = "223344"
       }
 
       logs{
@@ -83,7 +70,7 @@ job "mysql-server" {
       }
 
       config {
-        image = "percona:5.6"
+        image = "jippi/hashi-ui"
         force_pull = false
         #network_mode = "host"
         #command = "my-command"
@@ -95,13 +82,7 @@ job "mysql-server" {
         #]
         #shm_size = 134217728
 
-        volumes = [
-          # Use absolute paths to mount arbitrary paths on the host
-          "/data/mysql:/var/lib/mysql"
-        ]
-
         sysctl {
-          net.core.somaxconn = "16384"
           net.ipv4.tcp_syncookies = "0"
           net.ipv4.ip_local_port_range = "1024 65535"
           net.core.somaxconn = "65535"
@@ -136,15 +117,27 @@ job "mysql-server" {
         #}
 
         port_map {
-          db = 3306
+          ui = 3000
         }
       }
 
       service {
-        name = "mysql-server"
-        port = "db"
+        name = "hash-ui"
+        port = "ui"
         tags = [
-          "online"
+          "online",
+          "prometheus-target",
+          "traefik.enable=true",
+          "traefik.frontend.entryPoints=http",
+          "traefik.protocol=http",
+          "traefik.weight=10",
+          "traefik.backend.circuitbreaker.expression=NetworkErrorRatio() > 0.5",
+          "traefik.backend.loadbalancer.method=drr",
+          "traefik.backend.maxconn.amount=100",
+          "traefik.backend.maxconn.extractorfunc=client.ip",
+          "traefik.frontend.passHostHeader=true",
+          "traefik.frontend.priority=10",
+          "traefik.frontend.rule=Host:example.com"
           ]
 
         check {
@@ -157,12 +150,12 @@ job "mysql-server" {
 
       kill_timeout = "20s"
       resources {
-        cpu = 500
-        memory = 1024
+        cpu = 200
+        memory = 512
         network {
           mbits = 100
-          port "db" {
-            #static = 13306
+          port "ui" {
+            #static = 9088
           }
         }
       }
