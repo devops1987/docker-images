@@ -49,6 +49,7 @@ kubernetes扩容:virtual-kubelet,cluster-capacity,hpa-operator
 备份/恢复/迁移: mydumper,zkcopy,mongodb_consistent_backup
 PaaS:flynn,tsuru,service-catalog
 负载均衡: gimbal
+商业智能: MS Power BI,Superset,Metabase,CBoard
 
 云原生（CloudNative）应用
 分布式存储: rook-ceph,rook-minio,openebs
