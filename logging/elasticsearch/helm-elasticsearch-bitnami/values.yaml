@@ -13,7 +13,7 @@
 image:
   registry: docker.io
   repository: bitnami/elasticsearch
-  tag: 6.6.2
+  tag: 7.0.1
   ## Specify a imagePullPolicy
   ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
   ## ref: http://kubernetes.io/docs/user-guide/images/#pre-pulling-images
@@ -180,6 +180,11 @@ coordinating:
 data:
   name: data
   replicas: 2
+  ## updateStrategy for ElasticSearch Data statefulset
+  ## ref: https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#update-strategies
+  updateStrategy:
+    type: RollingUpdate
+    # rollingUpdatePartition
   heapSize: 1024m
   antiAffinity: "soft"
   ## node affinity
@@ -213,7 +218,7 @@ data:
   persistence:
     ## If true, use a Persistent Volume Claim, If false, use emptyDir
     ##
-    enabled: true
+    enabled: false
 
     ## Persistent Volume Claim annotations
     ##
@@ -239,7 +244,7 @@ data:
 ## Elasticsearch ingest node parameters
 ##
 ingest:
-  enabled: false
+  enabled: true
   name: ingest
   replicas: 2
   heapSize: 128m
