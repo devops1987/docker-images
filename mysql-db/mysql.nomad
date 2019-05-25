@@ -101,7 +101,6 @@ job "mysql-server" {
         ]
 
         sysctl {
-          net.core.somaxconn = "16384"
           net.ipv4.tcp_syncookies = "0"
           net.ipv4.ip_local_port_range = "1024 65535"
           net.core.somaxconn = "65535"

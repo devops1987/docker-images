@@ -1,4 +1,4 @@
-job "nginx" {
+job "vnc-desktop" {
   #region = "us-east1"
   datacenters = ["dc1", "lon1"]
 
@@ -10,32 +10,8 @@ job "nginx" {
   #Nomad provides the service, system and batch schedulers.
   type = "service"
 
-  #periodic {
-  #  cron             = "*/15 * * * * *"
-  #  prohibit_overlap = true
-  #  time_zone = "Asia/Shanghai"
-  #}
-
-  update {
-    max_parallel      = 3
-    health_check      = "checks"
-    min_healthy_time  = "10s"
-    healthy_deadline  = "5m"
-    progress_deadline = "10m"
-    auto_revert       = true
-    canary            = 1
-    stagger           = "30s"
-  }
-
-  migrate {
-    max_parallel = 1
-    health_check = "checks"
-    min_healthy_time = "10s"
-    healthy_deadline = "5m"
-  }
-
-  group "webserver" {
-    count = 3
+  group "vnc-desktop" {
+    count = 1
 
     restart {
       attempts = 10
@@ -44,31 +20,14 @@ job "nginx" {
       mode = "delay"
     }
 
-    task "nginx" {
-      #artifact {
-      #  source      = "https://example.com/file.tar.gz"
-      #  destination = "local/some-directory"
-      #  options {
-      #    checksum = "md5:df6a4178aec9fbdc1d6d7e3634d1bc33"
-      #  }
-      #}
-
-      template {
-        data = <<EOH
-        ---
-         node_dc:    {{ env "node.datacenter" }}
-         node_cores: {{ env "attr.cpu.numcores" }}
-        EOH
-        destination = "local/file.yml"
-        change_mode   = "signal"
-        change_signal = "SIGINT"
-      }
+    task "vnc-desktop" {
 
       driver = "docker"
 
       env {
-        "DC"      = "Running on datacenter ${node.datacenter}"
-        "VERSION" = "Version ${NOMAD_META_VERSION}"
+        "RESOLUTION" = "1280x1024"
+        "HTTP_PASSWORD" = "mypassword"
+        #"PASSWORD" = "password"
       }
 
       logs{
@@ -77,7 +36,7 @@ job "nginx" {
       }
 
       config {
-        image = "nginx:latest"
+        image = "dorowu/ubuntu-desktop-lxde-vnc"
         force_pull = false
         #command = "my-command"
         #args = [
@@ -92,10 +51,10 @@ job "nginx" {
         #  size = "10G"
         #}
 
-        #volumes = [
+        volumes = [
           # Use absolute paths to mount arbitrary paths on the host
-          #"/path/on/host:/path/in/container"
-        #]
+          "/dev/shm:/dev/shm"
+        ]
         #volume_driver = "pxd"
 
         #extra_hosts = ["host1.com:1.2.3.4"]
@@ -128,19 +87,13 @@ job "nginx" {
           net.ipv4.fwmark_reflect = "1"
         }
 
-        labels {
-          #log-pilot log collector
-          aliyun.logs.catalina = "stdout"
-          aliyun.logs.access = "/usr/local/tomcat/logs/localhost_access_log*.txt"
-        }
-
         port_map {
           web = 80
         }
       }
 
       service {
-        name = "nginx"
+        name = "vnc"
         port = "web"
         tags = [
           "online",
@@ -167,10 +120,10 @@ job "nginx" {
 
       kill_timeout = "20s"
       resources {
-        cpu = 500 # 500 Mhz
+        cpu = 100 # 500 Mhz
         memory = 256 # 256MB
         network {
-          mbits = 50
+          mbits = 10
           port "web" {
             #static = 10050
           }
