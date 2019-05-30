@@ -15,7 +15,7 @@ helm应用商店: chartmuseum,kubeapps
 大数据集群: hadoop(hdfs+yarn),hbase,spark,flink
 web服务器/容器: nginx-php,apache-php,tomcat,resin
 SQL数据库: mysql,percona,mariadb,postgresql,greenplum
-NoSQL数据库/缓存/存储: memcache,rethinkdb,redis,ssdb,mongodb,cassandra,LucidDB
+NoSQL数据库/缓存/存储: memcache,rethinkdb,redis,ssdb,mongodb,cassandra,LucidDB,boltdb
 列式数据库: clickhouse,Vertica,MonetDB,InfiniDB
 数据仓库: Infobright
 GPU-Powered Database: Kinetica,MapD,BlazingDB,Brytlyt,PG-Strom,Blazegraph,SQream
