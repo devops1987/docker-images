@@ -56,6 +56,7 @@ PaaS:flynn,tsuru,service-catalog
 虚拟化: kubevirt
 监控: prometheus-operator,jaeger-operator
 配置管理: etcd-operator
+operator-sdk
 
 桌面服务(DaaS)
 ubuntu-xfce-vnc
