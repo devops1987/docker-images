@@ -1,3 +1,3 @@
 x11docker --desktop --init=systemd --gpu slpcat/x11docker-deepin
 # alternativly:
-x11docker --desktop --dbus-system --pulseaudio --gpu slpcat/x11docker-deepin
+x11docker --desktop --dbus-system --pulseaudio --gpu --clipboard slpcat/x11docker-deepin

@@ -36,7 +36,8 @@ ENV \
     TIMEZONE="Asia/Shanghai" \
     DEBIAN_FRONTEND="noninteractive"
 
-RUN echo "deb http://packages.deepin.com/deepin/ panda main non-free contrib" > /etc/apt/sources.list
+#RUN echo "deb http://packages.deepin.com/deepin/ panda main non-free contrib" > /etc/apt/sources.list
+RUN echo "deb [by-hash=force] https://mirrors.aliyun.com/deepin panda main contrib non-free" > /etc/apt/sources.list
 #RUN echo "deb http://mirrors.kernel.org/deepin/  panda main non-free contrib" > /etc/apt/sources.list
 #RUN echo "deb http://ftp.fau.de/deepin/          panda main non-free contrib" > /etc/apt/sources.list
 
@@ -52,16 +53,20 @@ RUN apt-get install -y mesa-utils mesa-utils-extra libxv1 kmod xz-utils
 RUN apt-get install -y locales-all 
 
 # deepin desktop
-RUN apt-get install -y dde
+RUN apt-get install -y --no-install-recommends dde
 
 # missing dependencies, dconf
-RUN apt-get install -y at-spi2-core dconf-cli dconf-editor \
+RUN apt-get install -y --no-install-recommends at-spi2-core dconf-cli dconf-editor \
     gnome-themes-standard gtk2-engines-murrine gtk2-engines-pixbuf
 
 # additional applications
 RUN apt-get install -y deepin-calculator deepin-image-viewer deepin-screenshot \
     deepin-system-monitor deepin-terminal deepin-movie deepin-music \
-    gedit sudo synaptic oneko
+    gedit sudo synaptic oneko google-chrome-stable firefox-zh \
+    murrine-themes deepin-fpapp-com.deepin.imageviewer deepin-fpapp-com.deepin.music \
+    deepin-fpapp-com.deepin.screenshot deepin-movie wps-office \
+    foxitreader netease-cloud-music sogoupinyin fonts-adobe-source-han-serif-cn \
+    fonts-droid fonts-hanazono fonts-lohit-deva fonts-nanum
 
 # chinese fonts
 RUN apt-get install -y fonts-arphic-uming
@@ -89,7 +94,6 @@ RUN cd /usr/share/dbus-1/services && rm \
     com.deepin.daemon.Power.service \
     com.deepin.dde.welcome.service
 RUN cd /usr/share/dbus-1/system-services && rm \
-    org.bluez.service \
     com.deepin.lastore.service
 RUN ln -s /etc/sv/gdm /var/service
 # config file to use deepin-wm with 3d effects
