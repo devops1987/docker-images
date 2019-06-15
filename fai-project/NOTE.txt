@@ -1,0 +1,2 @@
+整体打包
+内置服务 dhcp ntp tftp nfs-ganesha http apt-cacher-ng

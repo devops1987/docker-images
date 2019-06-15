@@ -63,6 +63,7 @@ ubuntu-xfce-vnc
 ubuntu-icewm-vnc
 centos-xfce-vnc
 centos-icewm-vnc
+x11docker
 
 数据库服务(DBaaS)
 mysql

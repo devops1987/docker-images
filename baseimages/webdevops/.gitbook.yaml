@@ -1,0 +1,4 @@
+root: ./documentation/gitbook/
+
+structure:
+  readme: ../../README.md
