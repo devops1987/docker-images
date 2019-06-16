@@ -28,4 +28,9 @@ bestwu/thunderspeed
 bestwu/qq:im
 bestwu/wechat
 bestwu/netease-cloud-music
-
+jarfil/gimp-git
+chrisdaish/libreoffice
+jess/spotify
+leesah/eclipse
+chrisdaish/vlc
+rasch/inkscape
