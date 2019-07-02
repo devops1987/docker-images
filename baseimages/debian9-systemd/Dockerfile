@@ -1,10 +1,26 @@
-
 FROM debian:stretch
+MAINTAINER 若虚 <slpcat@qq.com>
 
-ENV DEBIAN_FRONTEND noninteractive
-ENV container docker
+# Container variables
+ENV \
+    TERM="xterm" \
+    LANG="en_US.UTF-8" \
+    LANGUAGE="en_US.UTF-8" \
+    LC_ALL="en_US.UTF-8" \
+    TIMEZONE="Asia/Shanghai" \
+    DEBIAN_FRONTEND="noninteractive" \ 
+    container="docker"
 
-MAINTAINER Sebastian Krohn <seb@gaia.sunn.de>
+# Set timezone and locales
+RUN \
+    echo "${TIMEZONE}" > /etc/timezone \
+    && echo "$LANG UTF-8" > /etc/locale.gen \
+    && apt-get update -q \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -yq apt-utils dialog vim-tiny curl locales \
+    && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+    && update-locale LANG=$LANG \
+    && locale-gen $LANG \
+    && DEBIAN_FRONTEND=noninteractive dpkg-reconfigure locales
 
 # add contrib, non-free and backports repositories
 ADD sources.list /etc/apt/sources.list
@@ -37,7 +53,6 @@ RUN cd /lib/systemd/system/sysinit.target.wants/ && \
 			etc-hostname.mount \
 			etc-hosts.mount \
 			etc-resolv.conf.mount \
-			-.mount \
 			swap.target \
 			getty.target \
 			getty-static.service \
@@ -45,6 +60,7 @@ RUN cd /lib/systemd/system/sysinit.target.wants/ && \
 			cgproxy.service \
 			systemd-tmpfiles-setup-dev.service \
 			systemd-remount-fs.service \
+                        systemd-timedated \
 			systemd-ask-password-wall.path \
 			systemd-logind.service && \
 		systemctl set-default multi-user.target || true
@@ -55,8 +71,6 @@ ADD container-boot.service /etc/systemd/system/container-boot.service
 RUN mkdir -p /etc/container-boot.d && \
 		systemctl enable container-boot.service
 
-
-
 # run stuff
 ADD configurator.sh configurator_dumpenv.sh /root/
 ADD configurator.service configurator_dumpenv.service /etc/systemd/system/
@@ -65,4 +79,3 @@ RUN chmod 700 /root/configurator.sh /root/configurator_dumpenv.sh && \
 
 VOLUME [ "/sys/fs/cgroup", "/run", "/run/lock", "/tmp" ]
 CMD ["/lib/systemd/systemd"]
-

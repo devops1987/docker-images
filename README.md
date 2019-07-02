@@ -50,6 +50,7 @@ kubernetes扩容:virtual-kubelet,cluster-capacity,hpa-operator
 PaaS:flynn,tsuru,service-catalog
 负载均衡: gimbal
 商业智能: MS Power BI,Superset,Metabase,CBoard
+PXE装机: fai-project
 
 云原生（CloudNative）应用
 分布式存储: rook-ceph,rook-minio,openebs
