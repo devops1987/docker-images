@@ -66,9 +66,14 @@ job "nginx" {
 
       driver = "docker"
 
+      #https://dockerfile.readthedocs.io/en/latest/content/DockerImages/dockerfiles/php-nginx.html
       env {
         "DC"      = "Running on datacenter ${node.datacenter}"
         "VERSION" = "Version ${NOMAD_META_VERSION}"
+        "WEB_DOCUMENT_ROOT" = "/app"
+        "PHP_MEMORY_LIMIT" = "512M"
+        "PHP_POST_MAX_SIZE" = "20M"
+        "PHP_UPLOAD_MAX_FILESIZE" = "20M"
       }
 
       logs{
@@ -77,7 +82,7 @@ job "nginx" {
       }
 
       config {
-        image = "nginx:latest"
+        image = "webdevops/php-nginx:5.6"
         force_pull = false
         #command = "my-command"
         #args = [
