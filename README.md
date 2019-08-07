@@ -41,7 +41,7 @@ FAAS: fission,fnproject,funktion,kubeless,nuclio,open-lambda,openfaas,openwhisk,
 监控/APM: appdash,apm-server,Argus,bosun,cadvisor,cortex,heapster,kube-state-metrics,metrics-server,searchlight,prometheus,thanos,pinpoint,jaeger,zipkin,skywalking,kubewatch,searchlight,Molten,sensu,opencensus
 动态性能追踪: bcc-tools,systemtap,sysdig
 kubernetes集群安装/升级: kubespray
-kubernetes可视化管理工具: kubernetes-dashboard,weavescope,kubebox,kubedash,kube-ops-view,cabin,wayne(360)
+kubernetes可视化管理工具: kubernetes-dashboard,weavescope,kubebox,kubedash,kube-ops-view,cabin,wayne(360),KubeSphere
 kubernetes灾难恢复: ark
 kubernetes扩容:virtual-kubelet,cluster-capacity,hpa-operator
 开发工具: Telepresence,Keel,Apollo,Deis Workflow,Kel,
@@ -52,6 +52,8 @@ PaaS:flynn,tsuru,service-catalog
 负载均衡: gimbal
 商业智能: MS Power BI,Superset,Metabase,CBoard
 PXE装机: fai-project
+集群pod调试: kubectl-debug
+
 
 云原生（CloudNative）应用
 分布式存储: rook-ceph,rook-minio,openebs
