@@ -10,7 +10,7 @@ ARG BASE_IMAGE=ekidd/rust-musl-builder:latest
 # Our first FROM statement declares the build environment.
 FROM ${BASE_IMAGE} AS builder
 
-COPY config /home/rust/.cargo
+#COPY config /home/rust/.cargo
 # Add our source code.
 ADD . ./
 
