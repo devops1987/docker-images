@@ -39,9 +39,9 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     stable" \
     && apt update -y && apt-get install docker-ce -y
 
-COPY kubespray_patch-v1.14.3.sh /kubespray_patch-v1.14.3.sh
+COPY kubespray_patch-v1.15.3.sh /kubespray_patch-v1.15.3.sh
 COPY releases /root/releases
-RUN bash /kubespray_patch-v1.14.3.sh && rm -f /kubespray_patch-v1.14.3.sh
+RUN bash /kubespray_patch-v1.15.3.sh && rm -f /kubespray_patch-v1.15.3.sh
 
 WORKDIR /kubespray
 RUN /usr/bin/python3 -m pip install pip -U && /usr/bin/python3 -m pip install -r tests/requirements.txt && python3 -m pip install -r requirements.txt

@@ -6,7 +6,7 @@ git clone https://github.com/kubernetes-sigs/kubespray.git
 
 #change to the tested version
 cd kubespray
-git checkout 7d8da8348e095a5f0b160c1e05c4c399d201d1f0
+git checkout 86cc703c75768207e1943ddf8f6a8082d756cb83
 cd ..
 
 #change to private registry
@@ -39,9 +39,8 @@ for file in ${quay_image_files[@]} ; do
 done
 
 sed -i 's/gcr.io\/kubernetes-helm/slpcat/' ./kubespray/roles/download/defaults/main.yml
-sed -i 's/docker.io\/cilium/slpcat/' ./kubespray/roles/download/defaults/main.yml
+#sed -i 's/docker.io\/cilium/slpcat/' ./kubespray/roles/download/defaults/main.yml
 sed -i 's/k8s.gcr.io/slpcat/' ./kubespray/roles/download/defaults/main.yml
-#sed -i 's/^cilium_version.*$/cilium_version:\ \"v1.2\"/' ./kubespray/roles/download/defaults/main.yml
 
 #download setting
 sed -i 's/^download_localhost.*$/download_localhost:\ True/' ./kubespray/roles/download/defaults/main.yml
@@ -63,7 +62,7 @@ sed -i 's/^docker_debian_repo_gpgkey.*$/docker_debian_repo_gpgkey:\ \"http:\/\/m
 sed -i 's/^ndots.*$/ndots:\ 5/' ./kubespray/inventory/sample/group_vars/k8s-cluster/k8s-cluster.yml
 sed -i 's/^kube_proxy_mode.*$/kube_proxy_mode:\ ipvs/' ./kubespray/inventory/sample/group_vars/k8s-cluster/k8s-cluster.yml
 sed -i 's/^dns_mode.*$/dns_mode:\ coredns_dual/' ./kubespray/inventory/sample/group_vars/k8s-cluster/k8s-cluster.yml
-sed -i 's/^kube_version.*$/kube_version:\ v1.14.3/' ./kubespray/inventory/sample/group_vars/k8s-cluster/k8s-cluster.yml
+sed -i 's/^kube_version.*$/kube_version:\ v1.15.3/' ./kubespray/inventory/sample/group_vars/k8s-cluster/k8s-cluster.yml
 sed -i 's/^kube_network_plugin.*$/kube_network_plugin:\ cilium/' ./kubespray/inventory/sample/group_vars/k8s-cluster/k8s-cluster.yml
 #sed -i 's/^#kube_token_auth.*$/kube_token_auth:\ true/' ./kubespray/inventory/sample/group_vars/k8s-cluster/k8s-cluster.yml
 sed -i 's/^#\ kubeconfig_localhost.*$/kubeconfig_localhost:\ true/' ./kubespray/inventory/sample/group_vars/k8s-cluster/k8s-cluster.yml
@@ -103,7 +102,7 @@ sed -i 's/^kube_proxy_metrics_bind_address.*$/kube_proxy_metrics_bind_address:\ 
 sed -i 's/^cilium_memory_limit.*$/cilium_memory_limit:\ 2Gi/' ./kubespray/roles/network_plugin/cilium/defaults/main.yml
 sed -i 's/^cilium_cpu_limit.*$/cilium_cpu_limit:\ 2/' ./kubespray/roles/network_plugin/cilium/defaults/main.yml
 
-sed -i 's/^#\ kube_router_enable_dsr.*$/kube_router_enable_dsr:\ true/' ./kubespray/inventory/sample/group_vars/k8s-cluster/k8s-net-kube-router.yml
+#sed -i 's/^#\ kube_router_enable_dsr.*$/kube_router_enable_dsr:\ true/' ./kubespray/inventory/sample/group_vars/k8s-cluster/k8s-net-kube-router.yml
 
 sed -i 's/^kube_controller_pod_eviction_timeout.*$/kube_controller_pod_eviction_timeout:\ 1m0s/' ./kubespray/roles/kubernetes/master/defaults/main/main.yml
 #kubernetes dashboard
@@ -112,10 +111,6 @@ sed -i 's/^dashboard_token_ttl.*$/dashboard_token_ttl:\ 86400/' ./kubespray/role
 
 #change local-volume-provisioner
 #echo 'reclaimPolicy: Retain' >> ./kubespray/roles/kubernetes-apps/external_provisioner/local_volume_provisioner/templates/local-volume-provisioner-sc.yml.j2
-
-#change download url
-#sed -i 's/^hyperkube_download_url.*$/hyperkube_download_url:\ \"https:\/\/github.com\/slpcat\/fai_config\/raw\/master\/extra\/kubernetes\/k8s-release\/v1.14.3\/hyperkube\"/' ./kubespray/roles/download/defaults/main.yml
-#sed -i 's/^kubeadm_download_url.*$/kubeadm_download_url:\ \"https:\/\/github.com\/slpcat\/fai_config\/raw\/master\/extra\/kubernetes\/k8s-release\/v1.14.3\/kubeadm\"/' ./kubespray/roles/download/defaults/main.yml
 
 #kernel 4.19 delete nf_conntrack_ipv4
 #roles/kubernetes/node/tasks/main.yml:    - nf_conntrack_ipv4
@@ -129,10 +124,5 @@ sed -i 's/^dashboard_token_ttl.*$/dashboard_token_ttl:\ 86400/' ./kubespray/role
 #
 #roles/kubernetes/node/templates/kubelet.standard.env.j2
 #roles/kubernetes/node/defaults/main.yml
-sed -i 's/^kubelet_max_pods.*$/kubelet_max_pods:\ 210/' ./kubespray/roles/kubernetes/node/defaults/main.yml
 sed -i 's/^kubelet_status_update_frequency.*$/kubelet_status_update_frequency:\ 20s/' ./kubespray/roles/kubernetes/node/defaults/main.yml
 sed -i "s/kubelet_custom_flags.*$/kubelet_custom_flags\:\ \[--event-burst=50\ --event-qps=30\ --image-gc-high-threshold=90\ --image-gc-low-threshold=75\ --image-pull-progress-deadline=2h\ --kube-api-burst=2000\ --kube-api-qps=1000\ --minimum-image-ttl-duration=72h\ --allowed-unsafe-sysctls=net.*\ --protect-kernel-defaults=false\ --registry-burst=200\ --registry-qps=100\ --serialize-image-pulls=false\ ]/" ./kubespray/roles/kubernetes/node/defaults/main.yml
-
-#feature_gates tuning
-#GPU support --feature-gates=DevicePlugins=true
-#sed -i '/^kube_feature_gates/a\  - "ReadOnlyAPIDataVolumes=false"\n  - "ExpandPersistentVolumes=true"\n  - "DevicePlugins=true"' ./kubespray/roles/kubespray-defaults/defaults/main.yaml
