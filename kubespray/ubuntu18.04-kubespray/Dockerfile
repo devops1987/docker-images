@@ -9,6 +9,10 @@ ENV \
     LC_ALL="en_US.UTF-8" \
     TIMEZONE="Asia/Shanghai"
 
+RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list && \
+    sed -i 's/security.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list
+
+
 RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
     && localedef -i en_US -c -f UTF-8 -A /usr/share/locale/locale.alias en_US.UTF-8
 
@@ -40,7 +44,7 @@ RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
     && apt update -y && apt-get install docker-ce -y
 
 COPY kubespray_patch-v1.15.3.sh /kubespray_patch-v1.15.3.sh
-COPY releases /root/releases
+COPY kubespray_cache /root/kubespray_cache
 RUN bash /kubespray_patch-v1.15.3.sh && rm -f /kubespray_patch-v1.15.3.sh
 
 WORKDIR /kubespray
