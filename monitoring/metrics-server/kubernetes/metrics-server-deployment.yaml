@@ -29,12 +29,8 @@ spec:
         emptyDir: {}
       containers:
       - name: metrics-server
-        image: slpcat/metrics-server-amd64:v0.3.1
+        image: k8s.gcr.io/metrics-server-amd64:v0.3.3
         imagePullPolicy: Always
-        command:
-        - /metrics-server
-        - --kubelet-insecure-tls
-        - --kubelet-preferred-address-types=InternalIP
         volumeMounts:
         - name: tmp-dir
           mountPath: /tmp
