@@ -19,3 +19,5 @@ Prometheus AlertManager
 https://grafana.com/plugins/camptocamp-prometheus-alertmanager-datasource
 独立版
 推荐使用prometheus-operator
+
+docker run -d --name=grafana -p 3000:3000 -v /data/grafana-data:/var/lib/grafana -v /data/grafana-config:/etc/grafana grafana/grafana:6.3.5
