@@ -49,6 +49,7 @@ Zabbix monitor Apache - 用 Zabbix 监视 Apache 的方法。
 Zabbix JMX - 利用 Zabbix，透过 JMX 对 Java 服务做监视的 Item 设定方法 (2.0以上,非第三方,需安装 zabbix_java)。
 MySQLBix 用 Zabbix 监视 MySQL 的方法。
 MySQL-Performance-Monitor - 用 Zabbix 监视 MySQL 效能的方法。
+
 API与工具
 
 Ruby library - for Zabbix API.
@@ -56,6 +57,8 @@ PHP library - for Zabbix API.
 Python library - for Zabbix API.
 Perl library - for Zabbix API.
 Zabcon - 使用 zbxapi 的函式库做出来的 CLI 工具 (面向Ruby)。
+手机客户端 zCate
+
 Android
 
 Mobbix - Android 专用的 Zabbix Client 端。
@@ -69,3 +72,42 @@ MobileOp - iPhone 专用 Zabbix Client 端。
 Windows Phone
 
 Zabbkit - Windows Phone 专用 Zabbix Client 端。
+
+报警脚本
+
+
+docker 命令
+
+docker run -d --restart=always --net=host -v /data/zabbix-db:/var/lib/postgresql -e POSTGRES_USER=zabbix -e POSTGRES_DB=zabbix -e POSTGRES_PASSWORD=pg_password  timescale/timescaledb:latest-pg11
+
+docker run -d --restart=always --net=host -e DB_SERVER_HOST=127.0.0.1 -e POSTGRES_DB=zabbix -e POSTGRES_USER=zabbix -e POSTGRES_PASSWORD=pg_password -e ZBX_CACHESIZE=128M -e ZBX_HISTORYCACHESIZE=256M -e ZBX_VALUECACHESIZE=32M -v /data/zabbix-script:/usr/lib/zabbix slpcat/zabbix-server-pgsql:alpine-4.2.6
+
+docker run -d --restart=always -p 10080:80 -e ZBX_SERVER_HOST=127.0.0.1 -e DB_SERVER_HOST=127.0.0.1 -e POSTGRES_DB=zabbix -e POSTGRES_USER=zabbix -e POSTGRES_PASSWORD=pg_password -e PHP_TZ=Asia/Shanghai -e ZBX_MAXEXECUTIONTIME=600 -e ZBX_MEMORYLIMIT=256M slpcat/zabbix-web-nginx-pgsql:alpine-4.2.6
+
+
+美化相关：
+
+发送报警信息
+
+操作
+
+标题 {TRIGGER.NSEVERITY} 级故障 故障描述：{TRIGGER.NAME} 产生时间：{EVENT.DATE} {EVENT.TIME}
+内容 <font color=#FF0000 size=6 face="黑体">【故障级别】『{TRIGGER.NSEVERITY} 级』</font>  
+<b>【故障时间】</b>{EVENT.DATE} 在 {EVENT.TIME}  
+<b>【故障名称】</b>{TRIGGER.NAME}  
+<b>【故障主机】</b>{HOST.NAME}  
+<b>【监控值】</b>{ITEM.VALUE1}  
+<b>【事件ID】</b>{EVENT.ID}
+
+恢复操作
+
+标题 故障级别:{{TRIGGER.NSEVERITY} 级故障 故障描述：{TRIGGER.NAME} 恢复时间：{EVENT.RECOVERY.DATE} {EVENT.RECOVERY.TIME}.SEVERITY} 恢复时间：{EVENT.RECOVERY.DATE} {EVENT.RECOVERY.TIME}<br>问题描述：{TRIGGER.NAME}
+
+内容 <font color=#00CC00 size=6 face="黑体">〖故障级别〗『{TRIGGER.NSEVERITY} 级』  </font>  
+<b>〖恢复时间〗</b>{EVENT.RECOVERY.DATE} 在 {EVENT.RECOVERY.TIME}  
+<b>〖故障名称〗</b>{TRIGGER.NAME}  
+<b>〖故障主机〗</b>{HOST.NAME}  
+<b>〖监控值〗</b>{ITEM.VALUE1}  
+<b>〖事件ID〗</b>{EVENT.ID}
+
+

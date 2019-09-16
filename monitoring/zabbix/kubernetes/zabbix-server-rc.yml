@@ -22,7 +22,7 @@ spec:
       containers:
         - name: zabbix-server
           #image: monitoringartist/zabbix-xxl:latest
-          image: zabbix/zabbix-server-pgsql:alpine-4.2.0
+          image: slpcat/zabbix-server-pgsql:alpine-4.2.0
           ports:
           - containerPort: 162
             name: snmptrapd

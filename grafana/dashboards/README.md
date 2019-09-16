@@ -40,6 +40,8 @@ ID: 6248 Minio
 
 ID: 4475 Traefik
 
+ID: 1443 telegraf
+
 http://docs.grafana.org/alerting/notifications/#dingding-dingtalk
 
 worldping
