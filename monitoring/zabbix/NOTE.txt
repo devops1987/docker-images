@@ -50,6 +50,15 @@ Zabbix JMX - 利用 Zabbix，透过 JMX 对 Java 服务做监视的 Item 设定
 MySQLBix 用 Zabbix 监视 MySQL 的方法。
 MySQL-Performance-Monitor - 用 Zabbix 监视 MySQL 效能的方法。
 
+zabbix-cli
+https://github.com/usit-gd/zabbix-cli
+
+zc(1). Zabbix command line tools
+https://share.zabbix.com/zabbix-tools-and-utilities/tools-and-utilities/zc-1-zabbix-command-line-tools
+
+zabbix-dump
+https://github.com/maxhq/zabbix-backup/blob/master/README.md
+
 API与工具
 
 Ruby library - for Zabbix API.
@@ -78,11 +87,11 @@ Zabbkit - Windows Phone 专用 Zabbix Client 端。
 
 docker 命令
 
-docker run -d --restart=always --net=host -v /data/zabbix-db:/var/lib/postgresql -e POSTGRES_USER=zabbix -e POSTGRES_DB=zabbix -e POSTGRES_PASSWORD=pg_password  timescale/timescaledb:latest-pg11
+docker run -d --restart=always --net=host --name timescaledb -v /data/zabbix-db:/var/lib/postgresql/data -e POSTGRES_USER=zabbix -e POSTGRES_DB=zabbix -e POSTGRES_PASSWORD=pg_password  timescale/timescaledb:latest-pg11
 
-docker run -d --restart=always --net=host -e DB_SERVER_HOST=127.0.0.1 -e POSTGRES_DB=zabbix -e POSTGRES_USER=zabbix -e POSTGRES_PASSWORD=pg_password -e ZBX_CACHESIZE=128M -e ZBX_HISTORYCACHESIZE=256M -e ZBX_VALUECACHESIZE=32M -v /data/zabbix-script:/usr/lib/zabbix slpcat/zabbix-server-pgsql:alpine-4.2.6
+docker run -d --restart=always --net=host --name zabbix-server -e DB_SERVER_HOST=127.0.0.1 -e POSTGRES_DB=zabbix -e POSTGRES_USER=zabbix -e POSTGRES_PASSWORD=pg_password -e ZBX_CACHESIZE=128M -e ZBX_HISTORYCACHESIZE=256M -e ZBX_VALUECACHESIZE=32M -v /data/zabbix-externalscripts:/usr/lib/zabbix/externalscripts -v /data/zabbix-alertscripts:/usr/lib/zabbix/alertscripts slpcat/zabbix-server-pgsql:alpine-4.4.0
 
-docker run -d --restart=always -p 10080:80 -e ZBX_SERVER_HOST=127.0.0.1 -e DB_SERVER_HOST=127.0.0.1 -e POSTGRES_DB=zabbix -e POSTGRES_USER=zabbix -e POSTGRES_PASSWORD=pg_password -e PHP_TZ=Asia/Shanghai -e ZBX_MAXEXECUTIONTIME=600 -e ZBX_MEMORYLIMIT=256M slpcat/zabbix-web-nginx-pgsql:alpine-4.2.6
+docker run -d --restart=always --name zabbix-web -p 10080:80 -e ZBX_SERVER_HOST=127.0.0.1 -e DB_SERVER_HOST=127.0.0.1 -e POSTGRES_DB=zabbix -e POSTGRES_USER=zabbix -e POSTGRES_PASSWORD=pg_password -e PHP_TZ=Asia/Shanghai -e ZBX_MAXEXECUTIONTIME=600 -e ZBX_MEMORYLIMIT=256M slpcat/zabbix-web-nginx-pgsql:alpine-4.4.0
 
 
 美化相关：

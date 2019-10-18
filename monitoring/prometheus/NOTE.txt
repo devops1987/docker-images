@@ -114,9 +114,12 @@ https://www.kubernetes.org.cn/4438.html
 
 所有grafana详见
 grafana/
+
 数据存储
 opentsdb
 m3db
+prometheus-kafka-adapter
+https://github.com/Telefonica/prometheus-kafka-adapter
 
 prometheus-timescaledb
 

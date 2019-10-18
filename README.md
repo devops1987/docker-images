@@ -23,7 +23,7 @@ GPU-Powered Database: Kinetica,MapD,BlazingDB,Brytlyt,PG-Strom,Blazegraph,SQream
 NewSQL数据库: TiDB,cockroachdb,VoltDB,Clustrix, NuoDB,TokuDB, MemSQL,Couchbase,CouchDB,Riak
 API查询语言: GraphQL,prisma.io
 API管理和测试: API Fortress,MockApi,Postman,Tyk,Swagger,RAP2,YApi,Eolinker,DOClever,Apizza,EasyAPI,CrapApi,apidoc
-时间序列数据库: influxdb,opentsdb,m3db,Heroic,TimeScaleDB,KairosDB,DolphinDB,Druid,graphlite
+时间序列数据库: influxdb,opentsdb,m3db,Heroic,TimeScaleDB,KairosDB,DolphinDB,Druid,Graphite
 消息队列/流存储: rabbitmq,memcacheq,rocketmq,rocketmq-console-ng,kafka,kafka-manager
 配置管理: zookeeper,zkui,qconf,etcd,apollo,disconf,spring-cloud-config
 定时/任务管理: xxl-job,elasticjob,escalator
