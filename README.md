@@ -68,6 +68,8 @@ ubuntu-icewm-vnc
 centos-xfce-vnc
 centos-icewm-vnc
 x11docker
+teamviewer
+anydesk
 
 数据库服务(DBaaS)
 mysql
