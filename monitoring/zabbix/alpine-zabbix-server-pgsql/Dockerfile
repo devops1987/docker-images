@@ -28,6 +28,7 @@ RUN set -ex \
            python \
            py-pip \
            wget \
+           openssh \
            curl \
     && pip install requests \
     && echo "${TIMEZONE}" > /etc/TZ \
