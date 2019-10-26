@@ -1,6 +1,6 @@
 # Build a minimal distribution container
-# upstream https://github.com/gliderlabs/docker-alpine
-FROM zabbix/zabbix-web-nginx-pgsql:alpine-4.4.0
+# upstream https://github.com/zabbix/zabbix-docker
+FROM zabbix/zabbix-proxy-mysql:alpine-4.4.0
 MAINTAINER 若虚 <slpcat@qq.com>
 
 # Container variables
@@ -25,16 +25,15 @@ RUN set -ex \
            su-exec \
            gzip \
            tar \
+           python \
+           py-pip \
            wget \
+           openssh \
            curl \
+    && pip install requests \
     && echo "${TIMEZONE}" > /etc/TZ \
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     # Network fix
     && echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
 
-#COPY wqy-microhei.ttf /usr/share/zabbix/fonts/
-COPY wqy-microhei.ttf /usr/share/zabbix/assets/fonts/
-COPY php-fpm.conf /etc/php7/
-COPY 99-zabbix.ini /etc/php7/conf.d/
-
-RUN sed -i s/DejaVuSans/wqy-microhei/g  /usr/share/zabbix/include/defines.inc.php
+COPY ssh_config /etc/ssh/ssh_config

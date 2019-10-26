@@ -35,3 +35,5 @@ RUN set -ex \
     && ln -sf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
     # Network fix
     && echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
+
+COPY ssh_config /etc/ssh/ssh_config
