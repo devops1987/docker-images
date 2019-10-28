@@ -66,18 +66,23 @@ PHP library - for Zabbix API.
 Python library - for Zabbix API.
 Perl library - for Zabbix API.
 Zabcon - 使用 zbxapi 的函式库做出来的 CLI 工具 (面向Ruby)。
-手机客户端 zCate
 
 Android
 
 Mobbix - Android 专用的 Zabbix Client 端。
+Moobix for Zabbix
 Zabbix Triggers Widget - Android 专用的Zabbix Client 端。
 Zabbkit - Android 专用的 Zabbix Client 端。
-iPhone
+zCate
+https://www.qiansw.com/how-to-use-zcate-to-receive-zabbix-alarm-messages.html
+
+iOS
 
 Mozaby - iPhone 专用 Zabbix Client 端。
 Zabbkit - iPhone 专用 Zabbix Client 端。
 MobileOp - iPhone 专用 Zabbix Client 端。
+zCate
+
 Windows Phone
 
 Zabbkit - Windows Phone 专用 Zabbix Client 端。
