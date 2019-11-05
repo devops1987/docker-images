@@ -32,7 +32,15 @@ ID: 6239 Mysql - Prometheus
 
 ID: 9342 MySQL Monitor
  
-ID: 7362 MySQL Overview
+ID: 7362 MySQL Overview 推荐
+
+ID: 455 Postgres Overview
+
+ID: 3742 AAA Postgres_exporter
+
+ID: 9628 PostgreSQL Database 推荐
+
+ID: 763 Redis Dashboard for Prometheus Redis Exporter
 
 ID: 7958 Kafka Exporter Overview
 

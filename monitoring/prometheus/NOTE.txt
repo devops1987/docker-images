@@ -16,7 +16,6 @@ nginx-module-vts：Nginx virtual host traffic status module，Nginx的监控模�
 nginx-vts-exporter：Simple server that scrapes Nginx vts stats and exports them via HTTP for Prometheus consumption。主要用于收集Nginx的监控数据，并给Prometheus提供监控接口，默认端口号9913。
 nginx-lua-prometheus 
 
-
 https://github.com/aylei/aliyun-exporter
 https://github.com/vvanholl/elasticsearch-prometheus-exporter
 https://github.com/danielqsj/kafka_exporter
@@ -27,6 +26,22 @@ kong-plugin-prometheus
 https://prometheus.io/docs/instrumenting/exporters/
 
 https://github.com/percona/mongodb_exporter
+
+https://github.com/prometheus/memcached_exporter
+
+
+https://github.com/prometheus/mysqld_exporter
+docker run -d \
+  -p 9104:9104 \
+  --network my-mysql-network  \
+  -e DATA_SOURCE_NAME="user:password@(my-mysql-network:3306)/" \
+  prom/mysqld-exporter
+
+https://github.com/oliver006/redis_exporter
+
+https://github.com/wrouesnel/postgres_exporter
+
+docker run -d --restart=always -p 9187:9187 -e DATA_SOURCE_NAME="postgresql://postgres:password@localhost:5432/postgres?sslmode=disable" wrouesnel/postgres_exporter
 
 https://github.com/kubernetes-incubator/metrics-server
 https://github.com/kubernetes-incubator/custom-metrics-apiserver
@@ -122,6 +137,5 @@ prometheus-kafka-adapter
 https://github.com/Telefonica/prometheus-kafka-adapter
 
 prometheus-timescaledb
-
 
 注意:与metrics-server 冲突
