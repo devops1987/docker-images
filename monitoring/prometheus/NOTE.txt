@@ -4,6 +4,7 @@ aliyun-exporter
 blackbox_exporter
 elasticsearch-prometheus-exporter
 hadoop_exporter
+https://github.com/prometheus/influxdb_exporter
 influxdb_exporter
 kafka_exportor
 目录 kafka/kafka_exporter
@@ -27,8 +28,10 @@ https://prometheus.io/docs/instrumenting/exporters/
 
 https://github.com/percona/mongodb_exporter
 
-https://github.com/prometheus/memcached_exporter
+https://github.com/prometheus/jmx_exporter
 
+https://github.com/prometheus/memcached_exporter
+docker run -p 9150:9150 quay.io/prometheus/memcached-exporter:v0.5.0
 
 https://github.com/prometheus/mysqld_exporter
 docker run -d \
