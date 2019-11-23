@@ -32,7 +32,7 @@ ENV \
     KM_VERSION=2.0.0.2 \
     KM_REVISION=9f82c0fe5a9c74278bd4fce7feecfca538002028 \
     KM_CONFIGFILE="conf/application.conf"
-ARG SBT_OPTS="-Xms256M -Xmx1024M -Xss1M -XX:+CMSClassUnloadingEnabled
+ARG SBT_OPTS="-Xms256M -Xmx1024M -Xss1M -XX:+CMSClassUnloadingEnabled"
 
 RUN \
     apk add git && \
