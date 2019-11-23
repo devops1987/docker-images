@@ -32,7 +32,8 @@ ENV \
     KM_VERSION=2.0.0.2 \
     KM_REVISION=9f82c0fe5a9c74278bd4fce7feecfca538002028 \
     KM_CONFIGFILE="conf/application.conf"
-ARG SBT_OPTS="-Xms256M -Xmx1024M -Xss1M -XX:+CMSClassUnloadingEnabled"
+
+ADD start-kafka-manager.sh /kafka-manager-${KM_VERSION}/start-kafka-manager.sh
 
 RUN \
     apk add git && \
@@ -42,26 +43,9 @@ RUN \
     cd /tmp/kafka-manager && \
     git checkout ${KM_REVISION} && \
     #echo 'scalacOptions ++= Seq("-Xmax-classfile-name", "200")' >> build.sbt && \
-    #./sbt -v && \
     sbt clean dist
-    #unzip  -d / ./target/universal/kafka-manager-${KM_VERSION}.zip && \
-    #rm -fr /tmp/* /root/.sbt /root/.ivy2 && \
-    #chmod +x /kafka-manager-${KM_VERSION}/start-kafka-manager.sh
-
-FROM slpcat/jdk:v1.8-alpine as builder
-MAINTAINER 若虚 <slpcat@qq.com>
-
-ENV \
-    ZK_HOSTS=localhost:2181 \
-    KM_VERSION=2.0.0.2 \
-    KM_CONFIGFILE="conf/application.conf"
-
-ADD start-kafka-manager.sh /kafka-manager-${KM_VERSION}/start-kafka-manager.sh
-
-COPY --from=builder /tmp/kafka-manager/target/universal/kafka-manager-${KM_VERSION}.zip /
-
-RUN \
-    unzip  -d / /tmp/kafka-manager/target/universal/kafka-manager-${KM_VERSION}.zip && \
+    unzip  -d / ./target/universal/kafka-manager-${KM_VERSION}.zip && \
+    rm -fr /tmp/* /root/.sbt /root/.ivy2 && \
     chmod +x /kafka-manager-${KM_VERSION}/start-kafka-manager.sh
 
 WORKDIR /kafka-manager-${KM_VERSION}
