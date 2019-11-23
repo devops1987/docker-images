@@ -43,11 +43,10 @@ RUN \
     git checkout ${KM_REVISION} && \
     #echo 'scalacOptions ++= Seq("-Xmax-classfile-name", "200")' >> build.sbt && \
     ./sbt -v && \
-    ./sbt clean dist && \
-    unzip  -d / ./target/universal/kafka-manager-${KM_VERSION}.zip && \
-    rm -fr /tmp/* /root/.sbt /root/.ivy2 && \
-    apk del git && \
-    chmod +x /kafka-manager-${KM_VERSION}/start-kafka-manager.sh
+    ./sbt clean dist
+    #unzip  -d / ./target/universal/kafka-manager-${KM_VERSION}.zip && \
+    #rm -fr /tmp/* /root/.sbt /root/.ivy2 && \
+    #chmod +x /kafka-manager-${KM_VERSION}/start-kafka-manager.sh
 
 FROM slpcat/jdk:v1.8-alpine as builder
 MAINTAINER 若虚 <slpcat@qq.com>
