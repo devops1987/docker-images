@@ -19,6 +19,7 @@ etcd监控
 https://github.com/shamil/zabbix-etcd
 
 consul监控
+https://github.com/akomic/zabbix-utils/tree/master/consul
 
 zookeeper监控
 
@@ -42,3 +43,9 @@ https://github.com/objectiveit/zabbix-kubernetes
 
 Zabbix-CLI
 https://github.com/usit-gd/zabbix-cli
+
+node_exporter
+https://www.zabbix.com/integrations/prometheus
+https://git.zabbix.com/projects/ZBX/repos/zabbix/browse/templates/os/linux_prom
+
+

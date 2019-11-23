@@ -1,5 +1,5 @@
 #upstream https://github.com/frol/docker-alpine-oraclejdk8
-FROM alpine:3.9
+FROM alpine:3.10
 MAINTAINER 若虚 <slpcat@qq.com>
 
 # Container variables
@@ -34,7 +34,7 @@ RUN set -ex \
 # Here we install GNU libc (aka glibc) and set en_US.UTF-8 locale as default.
 
 RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases/download" && \
-    ALPINE_GLIBC_PACKAGE_VERSION="2.28-r0" && \
+    ALPINE_GLIBC_PACKAGE_VERSION="2.30-r0" && \
     ALPINE_GLIBC_BASE_PACKAGE_FILENAME="glibc-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
     ALPINE_GLIBC_BIN_PACKAGE_FILENAME="glibc-bin-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
     ALPINE_GLIBC_I18N_PACKAGE_FILENAME="glibc-i18n-$ALPINE_GLIBC_PACKAGE_VERSION.apk" && \
@@ -65,15 +65,16 @@ RUN ALPINE_GLIBC_BASE_URL="https://github.com/sgerrand/alpine-pkg-glibc/releases
         "$ALPINE_GLIBC_I18N_PACKAGE_FILENAME"
 
 ENV JAVA_VERSION=8 \
-    JAVA_UPDATE=211 \
-    JAVA_BUILD=12 \
-    JAVA_PATH=478a62b7d4e34b78b671c754eaaf38ab \
+    JAVA_UPDATE=231 \
+    JAVA_BUILD=11 \
+    JAVA_PATH=5b13a193868b4bf28bcb45c792fce896 \
     JAVA_HOME="/usr/lib/jvm/default-jvm"
 
+COPY jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz /tmp/
 RUN apk add --no-cache --virtual=build-dependencies wget ca-certificates unzip && \
     cd "/tmp" && \
-    wget --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
-        "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}u${JAVA_UPDATE}-b${JAVA_BUILD}/${JAVA_PATH}/jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz" && \
+    #wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" \
+    #     "http://download.oracle.com/otn-pub/java/jdk/${JAVA_VERSION}u${JAVA_UPDATE}-b${JAVA_BUILD}/${JAVA_PATH}/jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz" && \
     tar -xzf "jdk-${JAVA_VERSION}u${JAVA_UPDATE}-linux-x64.tar.gz" && \
     mkdir -p "/usr/lib/jvm" && \
     mv "/tmp/jdk1.${JAVA_VERSION}.0_${JAVA_UPDATE}" "/usr/lib/jvm/java-${JAVA_VERSION}-oracle" && \

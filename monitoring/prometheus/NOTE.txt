@@ -11,6 +11,9 @@ kafka_exportor
 php-fpm-exporter
 snmp_exporter
 zk-exporter
+rocketmq-exporter
+https://github.com/apache/rocketmq-exporter
+github.com/MyBook/zabbix-exporter
 
 监控Nginx主要用到以下三个模块：
 nginx-module-vts：Nginx virtual host traffic status module，Nginx的监控模块，能够提供JSON格式的数据产出。

@@ -126,7 +126,7 @@ spec:
       containers:
       - name: k8szk
         imagePullPolicy: Always
-        image: slpcat/zookeeper:alpine
+        image: slpcat/zookeeper:v3.4.14-alpine
         resources:
           requests:
             memory: "1Gi"

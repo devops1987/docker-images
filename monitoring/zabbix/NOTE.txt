@@ -1,6 +1,8 @@
 https://www.zabbix.com/cn/integrations/prometheus
 https://www.zabbix.com/cn/integrations/kubernetes
 
+https://github.com/czhujer/prom2zabbix
+
 Docker/Kubernetes/Mesos/Marathon/Chronos/LXC/LXD/Swarm container monitoring - Docker image, Zabbix template and C module
 https://github.com/monitoringartist/zabbix-docker-monitoring
 Kubernetes Zabbix/Grafana cluster (bare metal, Google Computer Engine - GCE, Google Container Engine - GKE) 
@@ -26,9 +28,9 @@ Dockbix agent XXL
 目录kubernetes
 
 当zabbix_server端当主机数量过多的时候，虽然可以通过增加代理的方式来进行收集数据，但是需要增加proxy机，所以还可以通过zabbix_agent主动往由Server端去发生数据来解决，否则，Zabbix会出现严重的性能问题，主要表现如下： 
-1、当被监控端主机过多时，web操作很卡，容易出现502，已经数据库等方面的问题。
+1、当被监控端主机过多时，web操作很卡，容易出现502，以及数据库等方面的问题。
 2、容易造成图层断裂。
-3、开启的进程（Pollar）太多，即使减少item数量，以后加入一定量的机器也会有问题
+3、开启的进程（poller）太多，即使减少item数量，以后加入一定量的机器也会有问题
 
 所以下面主要往两个优化方向考虑： 
 1、添加Proxy节点做分布式监控 
