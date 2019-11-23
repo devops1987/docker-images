@@ -1,5 +1,5 @@
 #upstream https://github.com/sheepkiller/kafka-manager-docker
-FROM slpcat/jdk:v1.8-alpine
+FROM slpcat/jdk:v1.8-alpine as builder
 MAINTAINER 若虚 <slpcat@qq.com>
 
 #ENV SBT_VERSION 1.2.8
@@ -7,6 +7,7 @@ MAINTAINER 若虚 <slpcat@qq.com>
 #ENV SCALA_HOME /usr/local/share/scala
 #RUN export PATH=$PATH:${SCALA_HOME}/bin
 
+#install scala and sbt
 #RUN wget http://downloads.typesafe.com/scala/${SCALA_VERSION}/scala-${SCALA_VERSION}.tgz && \
     #wget http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/${SBT_VERSION}/sbt-launch.jar && \
 #    wget https://dl.bintray.com/sbt/maven-releases/org/scala-sbt/sbt-launch/${SBT_VERSION}/sbt-launch.jar && \
@@ -23,19 +24,6 @@ MAINTAINER 若虚 <slpcat@qq.com>
 #change sbt repo
 COPY repositories /root/.sbt/repositories
 
-#COPY sbt.boot.properties /tmp/
-#RUN \
-#    mkdir /sbtlaunch && \
-#    mv /sbt-launch.jar /sbtlaunch/sbt-launch.jar && \
-#    cd /sbtlaunch && \
-#    unzip -q ./sbt-launch.jar && \
-#    mv /tmp/sbt.boot.properties ./sbt/sbt.boot.properties && \
-#    rm ./sbt-launch.jar && \
-#    jar -cfM ./sbt-launch.jar . && \
-#    mv ./sbt-launch.jar .. && \
-#    cd / && \
-#    rm -rf /sbtlaunch
-
 # compile a non-existent project to pre-download sbt dependencies
 #RUN sbt compile
 
@@ -44,8 +32,7 @@ ENV \
     KM_VERSION=2.0.0.2 \
     KM_REVISION=9f82c0fe5a9c74278bd4fce7feecfca538002028 \
     KM_CONFIGFILE="conf/application.conf"
-
-ADD start-kafka-manager.sh /kafka-manager-${KM_VERSION}/start-kafka-manager.sh
+ARG SBT_OPTS="-Xms256M -Xmx1024M -Xss1M -XX:+CMSClassUnloadingEnabled
 
 RUN \
     apk add git && \
@@ -60,6 +47,22 @@ RUN \
     unzip  -d / ./target/universal/kafka-manager-${KM_VERSION}.zip && \
     rm -fr /tmp/* /root/.sbt /root/.ivy2 && \
     apk del git && \
+    chmod +x /kafka-manager-${KM_VERSION}/start-kafka-manager.sh
+
+FROM slpcat/jdk:v1.8-alpine as builder
+MAINTAINER 若虚 <slpcat@qq.com>
+
+ENV \
+    ZK_HOSTS=localhost:2181 \
+    KM_VERSION=2.0.0.2 \
+    KM_CONFIGFILE="conf/application.conf"
+
+ADD start-kafka-manager.sh /kafka-manager-${KM_VERSION}/start-kafka-manager.sh
+
+COPY --from=builder /tmp/kafka-manager/target/universal/kafka-manager-${KM_VERSION}.zip /
+
+RUN \
+    unzip  -d / /tmp/kafka-manager/target/universal/kafka-manager-${KM_VERSION}.zip && \
     chmod +x /kafka-manager-${KM_VERSION}/start-kafka-manager.sh
 
 WORKDIR /kafka-manager-${KM_VERSION}
