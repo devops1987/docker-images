@@ -27,7 +27,7 @@ spec:
       #- name: registrykey-ali-ext
       containers:
       - name: kafka-manager
-        image: slpcat/kafka-manager
+        image: slpcat/kafka-manager:v2.0.0.2-alpine
         imagePullPolicy: Always
         livenessProbe: #kubernetes认为该pod是存活的,不存活则需要重启
           tcpSocket:

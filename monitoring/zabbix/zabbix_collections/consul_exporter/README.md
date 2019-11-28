@@ -84,8 +84,15 @@ There are no template links in this template.
 
 ## Discovery rules
 
+consul_discovery["-u", "{$CONSUL_URI}", "-a", "nodeDiscovery"]
+
 CONSUL: Service discovery
+
+Service {#SERVICENAME} status
+
 CONSUL: Node discovery
+Node {#NODENAME} status
+
 CONSUL: KV discovery
 
  
@@ -98,8 +105,10 @@ CONSUL: KV discovery
 
 ## Items collected
 
-consul_up
-consul_raft_peers
+consul_up  consul.up[consul_exporter]
+
+
+consul_raft_peers consul.raft.peers[consul_exporter]
 consul_serf_lan_members
 consul_serf_lan_member_status
 consul_catalog_services

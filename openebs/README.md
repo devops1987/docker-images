@@ -14,6 +14,11 @@ systemctl start iscsid
 # kubectl label node <node-name> "openebs.io/nodegroup"="storage-node"
 #nodeSelector:
 #  "openebs.io/nodegroup": "storage-node"
+
+kubectl label nodes <node-name> node=openebs
+nodeSelector:
+  node: openebs
+
 kubectl apply -f openebs-operator.yaml
 #或者使用helm安装OpenEBS
 #kubectl create namespace openebs
@@ -22,9 +27,15 @@ kubectl apply -f openebs-operator.yaml
 3.使用默认或自定义的storageclass
 kubectl apply -f openebs-storageclasses.yaml
 
+mountOptions:
+  - vers=4.0
+  - noresvport
+
 4. 创建快照(试验)
 kubectl create -f snapshot.yml
 使用快照创建卷
+
+
 
 生产环境推荐直接使用裸盘,使用cstor管理
 openebs运行不依赖宿主机zfs，但是依旧建议宿主机安装zfs，便于维护和故障排除

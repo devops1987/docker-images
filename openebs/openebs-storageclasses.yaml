@@ -91,4 +91,9 @@ metadata:
 provisioner: openebs.io/provisioner-iscsi
 #reclaimPolicy: Retain
 allowVolumeExpansion: true
-mountOptions: ["rw", "nobarrier", "inode_readahead_blks=4096", "delalloc", "commit=600"]
+mountOptions:
+  - rw
+  - nobarrier
+  - inode_readahead_blks=4096
+  - delalloc
+  - commit=600

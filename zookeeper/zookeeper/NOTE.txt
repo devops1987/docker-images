@@ -1,5 +1,6 @@
 Packet len9896612 is out of range!
 加jvm启动参数  -Djute.maxbuffer=41943040
+
 docker run -d --restart=always --hostname=zookeeper-1 \
         -e ZK_REPLICAS=1        -e ZK_MAX_CLIENT_CNXNS=4000 \
         -e ZK_SNAP_RETAIN_COUNT        -e ZK_PURGE_INTERVAL=8h \

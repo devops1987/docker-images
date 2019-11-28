@@ -6,6 +6,9 @@ prometheus-operator监控
 servicemonitor-elasticsearch-bitnami.yml
 dashboard-elasticsearch-bitnami.json
 
+Tools for moving and saving indices
+https://github.com/taskrabbit/elasticsearch-dump
+
 elastalert报警通知
 https://github.com/Yelp/elastalert
 
