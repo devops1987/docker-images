@@ -1,3 +1,6 @@
+https://docs.openebs.io/docs/next/installation.html
+
+https://docs.openebs.io/docs/next/prerequisites.html
 1.宿主机安装open-iscsi
 Debian/Ubuntu
 apt-get install open-iscsi
