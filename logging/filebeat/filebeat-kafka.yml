@@ -27,14 +27,15 @@ filebeat.inputs:
   #tail_files: true
   harvester_buffer_size: 10485760
   scan_frequency: 1s
-  backoff: 1s
-  max_backoff: 10s
+  backoff: 2s
+  max_backoff: 20s
   max_bytes: 4194304
 
   close_inactive: 6h
   clean_inactive: 72h
   ignore_older: 70h
   close_timeout: 6h
+  harvester_limit: 1024
 
   #multiline.pattern: '(WARN|DEBUG|ERROR|INFO) \d{4}/\d{2}/\d{2}'
   #multiline.negate: true
@@ -115,9 +116,12 @@ filebeat.config.modules:
 # output.
 #fields:
 #  env: staging
-queue.mem.events: 40960
-queue.mem.flush.min_events: 1024
-queue.mem.flush.timeout: 10s
+
+#cautioh: max_message_bytes * queue.mem.events`
+queue.mem:
+  events: 4096
+  flush.min_events: 512
+  flush.timeout: 5s
 #queue:  spool:    file:      path: "${path.data}/spool.dat"
 #      size: 512MiB      page_size: 16KiB    write:      buffer_size: 10MiB
 #      flush.timeout: 5s
@@ -177,12 +181,15 @@ output.elasticsearch:
   enabled: false
   # Array of hosts to connect to.
   #hosts: ["localhost:9200"]
+  #worker: 8
 
   # Enabled ilm (beta) to use index lifecycle management instead daily indices.
   #ilm.enabled: false
 
   # Optional protocol and basic auth credentials.
   #protocol: "https"
+  #bulk_max_size: 15000
+  #flush_interval: 1s
   #username: "elastic"
   #password: "changeme"
 
@@ -197,16 +204,19 @@ output.kafka:
     reachable_only: false
   version: 0.10.0
   worker: 4
+  
   bulk_max_size: 16384
-  bulk_flush_frequency: 10s
+  #bulk_flush_frequency: 5s
   timeout: 30s
   broker_timeout: 20s
   
   channel_buffer_size: 4096
   keep_alive: 60s
   required_acks: 0
-  compression: none
-  max_message_bytes: 10485760
+  #client_id: beats
+  #output compression codec. Must be one of none, snappy, lz4 and gzip
+  compression: snappy
+  max_message_bytes: 10000000
 
 #----------------------------- Logstash output --------------------------------
 #output.logstash:

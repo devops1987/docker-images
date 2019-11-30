@@ -1,4 +1,5 @@
 https://cwiki.apache.org/confluence/display/KAFKA/Ecosystem
+https://docs.cloudera.com/documentation/kafka/latest/topics/kafka_performance.html
 docker run -d --restart=always --net=host slpcat/kafka:v2.1.0-alpine 
 
 docker run -d --restart=always -p 9308:9308 danielqsj/kafka-exporter --kafka.server=kafka:9092 [--kafka.server=another-server ...]
