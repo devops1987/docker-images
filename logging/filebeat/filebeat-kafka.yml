@@ -119,8 +119,8 @@ filebeat.config.modules:
 
 #cautioh: max_message_bytes * queue.mem.events`
 queue.mem:
-  events: 4096
-  flush.min_events: 512
+  events: 40960
+  flush.min_events: 1024
   flush.timeout: 5s
 #queue:  spool:    file:      path: "${path.data}/spool.dat"
 #      size: 512MiB      page_size: 16KiB    write:      buffer_size: 10MiB
@@ -222,6 +222,10 @@ output.kafka:
 #output.logstash:
   # The Logstash hosts
   #hosts: ["localhost:5044"]
+  #loadbalance: true
+  #worker: 2
+  #bulk_max_size: 5000
+  #compression_level: 0
 
   # Optional SSL. By default is off.
   # List of root certificates for HTTPS server verifications

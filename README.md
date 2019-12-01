@@ -10,7 +10,7 @@ kubernetes网络方案推荐使用cilium,支持vxlan,bgp以及eBPF引擎
 编译器: numba
 持续集成/发布: jenkins,spinnaker,gitlab-ci,drone,makisu
 测试: chaos-monkey,chaoskube,k8s-testsuite,test-infra,sonobuoy,PowerfulSeal,twemperf(memcached)
-artifactory仓库: nexus2,nexus3,harbor,registry
+artifactory仓库: nexus2,nexus3,harbor,registry,quay
 helm应用商店: chartmuseum,kubeapps
 分布式存储: ceph,minio,openebs,glusterfs,EdgeFS
 大数据集群: hadoop(hdfs+yarn),hbase,spark,flink
