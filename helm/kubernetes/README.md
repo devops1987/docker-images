@@ -13,6 +13,8 @@ helm init --upgrade -i slpcat/tiller:v2.9.1 --stable-repo-url https://kubernetes
 https://storage.googleapis.com/kubernetes-helm/helm-v2.11.0-linux-amd64.tar.gz
 helm init --upgrade -i slpcat/tiller:v2.11.0 --stable-repo-url https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
 #helm init --canary-image --tiller-image 
+
+helm3 只需一个客户端文件，不需要tiller
 helm search
 若要更新charts列表以获取最新版本
 helm repo update 
@@ -21,8 +23,11 @@ helm list
 helm ls
 
 示例
-helm repo add stable https://kubernetes-charts.storage.googleapis.com
-helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
+
+#helm repo add stable https://kubernetes-charts.storage.googleapis.com
+#helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
+helm repo add stable http://mirror.azure.cn/kubernetes/charts
+helm repo add incubator http://mirror.azure.cn/kubernetes/charts-incubator
 helm repo add kubeless-functions-charts https://kubeless-functions-charts.storage.googleapis.com
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo add openebs-charts https://openebs.github.io/charts/
