@@ -9,3 +9,8 @@ logstash配置
 1.logstatsh-configmap
 2.logstatsh-deploy
 3.logstatsh-svc
+
+docker run --rm -it -v ~/settings/logstash.yml:/usr/share/logstash/config/logstash.yml docker.elastic.co/logstash/logstash:6.6.0
+docker run --rm -it    -v /tmp/pipeline/messages:/usr/share/logstash/config/messages -v /tmp/pipeline/test.conf:
+/usr/share/logstash/pipeline/test.conf -v /tmp/pipeline/logstash.yml:/usr/share/logstash/config/logstash.yml docker.elastic.co/logstash/logstash
+:6.4.2
