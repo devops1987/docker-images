@@ -25,16 +25,15 @@ filebeat.inputs:
     log_topic: 'log'
   #fields_under_root: true
   #tail_files: true
-  harvester_buffer_size: 10485760
-  scan_frequency: 1s
+  harvester_buffer_size: 32768
+  scan_frequency: 5s
   backoff: 2s
   max_backoff: 20s
   max_bytes: 4194304
-
-  close_inactive: 6h
-  clean_inactive: 72h
-  ignore_older: 70h
-  close_timeout: 6h
+  close_inactive: 3m
+  clean_inactive: 73h
+  ignore_older: 72h
+  close_older: 10m
   harvester_limit: 1024
 
   #multiline.pattern: '(WARN|DEBUG|ERROR|INFO) \d{4}/\d{2}/\d{2}'
@@ -119,8 +118,8 @@ filebeat.config.modules:
 
 #cautioh: max_message_bytes * queue.mem.events`
 queue.mem:
-  events: 40960
-  flush.min_events: 1024
+  events: 512
+  flush.min_events: 128
   flush.timeout: 5s
 #queue:  spool:    file:      path: "${path.data}/spool.dat"
 #      size: 512MiB      page_size: 16KiB    write:      buffer_size: 10MiB
