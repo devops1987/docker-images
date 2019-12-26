@@ -11,8 +11,8 @@ KAFKA_DATA_DIR=/var/lib/kafka/data \
 KAFKA_HOME=/opt/kafka \
 PATH=$PATH:/opt/kafka/bin
 
-ARG KAFKA_VERSION=2.1.0
-ARG KAFKA_DIST=kafka_2.12-2.1.0
+ARG KAFKA_VERSION=2.2.2
+ARG KAFKA_DIST=kafka_2.12-2.2.2
 RUN set -x \
 #	&& wget -q "http://www.apache.org/dist/kafka/$KAFKA_VERSION/$KAFKA_DIST.tgz" \
     && wget "http://archive.apache.org/dist/kafka/$KAFKA_VERSION/$KAFKA_DIST.tgz" \

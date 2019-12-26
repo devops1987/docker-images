@@ -62,6 +62,10 @@ PXE装机: fai-project
 配置管理: etcd-operator
 operator-sdk
 
+kubedb(elasticsearch,memcached,mongodb,mysql,postgres,redis)
+
+kafka-operator: Banzai Cloud(荐),Krallistic,Strimzi,Confluent
+
 桌面服务(DaaS)
 ubuntu-xfce-vnc
 ubuntu-icewm-vnc

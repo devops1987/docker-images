@@ -28,7 +28,7 @@ data:
   sync: "5"
   client.cnxns: "2048"
   snap.retain: "10"
-  purge.interval: "24"
+  purge.interval: "8"
 ---
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
@@ -190,6 +190,12 @@ spec:
           value: "2888"
         - name: ZK_ELECTION_PORT
           value: "3888"
+        - name: ZK_PREALLOC_SIZE
+          value: "64M"
+        - name: ZK_SKIP_ACL
+          value: "yes"
+        - name: ZK_FORCE_SYNC
+          value: "yes"
         command:
         - sh
         - -c

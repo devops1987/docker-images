@@ -2,6 +2,12 @@
 helm-elasticsearch-bitnami 只有es集群
 helm-elasticsearch es集群+kibana
 
+Elastic Cloud on Kubernetes
+Elasticsearch Operator
+https://www.elastic.co/cn/products/elastic-cloud-kubernetes
+kubectl apply -f https://download.elastic.co/downloads/eck/1.0.0-beta1/all-in-one.yaml
+
+
 prometheus-operator监控
 servicemonitor-elasticsearch-bitnami.yml
 dashboard-elasticsearch-bitnami.json
