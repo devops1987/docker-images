@@ -61,10 +61,42 @@ PXE装机: fai-project
 监控: prometheus-operator,jaeger-operator
 配置管理: etcd-operator
 operator-sdk
+https://github.com/operator-framework
+
+https://operatorhub.io/
+
+clickhouse-operator
+
+rook-operator
+influxdb-operator
+grafana-operator
+jaeger-operator
+jenkins-operator
+kong-operator
+m3db-operator
+minio-operator
+nexus-operator
+openebs-operator
+redis-operator
+percona-xtradb-cluster-operator
+percona-server-mongodb-operator
+mongodb-enterprise-kubernetes
+storageos-cluster-operator
+spinnaker-operator
+
+tensorflow-operator
+tidb-operator
+zookeeper-operator
+
+cassandra-operator
 
 kubedb(elasticsearch,memcached,mongodb,mysql,postgres,redis)
 
+Kubestack(elasticsearch,etcd,memcached,postgresql,prometheus)
+
 kafka-operator: Banzai Cloud(荐),Krallistic,Strimzi,Confluent
+
+https://commons.openshift.org/sig/operators.html
 
 桌面服务(DaaS)
 ubuntu-xfce-vnc

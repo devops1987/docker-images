@@ -29,6 +29,12 @@ data:
   client.cnxns: "2048"
   snap.retain: "10"
   purge.interval: "8"
+  preAllocSize: "64M"
+  snapCount: "100000"
+  skipACL: "yes"
+  forceSync: "no"
+  fsync.warningthresholdms: "50"
+  globalOutstandingLimit: "10000"
 ---
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
@@ -191,11 +197,20 @@ spec:
         - name: ZK_ELECTION_PORT
           value: "3888"
         - name: ZK_PREALLOC_SIZE
-          value: "64M"
+          valueFrom:
+            configMapKeyRef:
+                name: zk-cm
+                key: preAllocSize
         - name: ZK_SKIP_ACL
-          value: "yes"
+          valueFrom:
+            configMapKeyRef:
+                name: zk-cm
+                key: skipACL
         - name: ZK_FORCE_SYNC
-          value: "yes"
+          valueFrom:
+            configMapKeyRef:
+                name: zk-cm
+                key: forceSync
         command:
         - sh
         - -c
