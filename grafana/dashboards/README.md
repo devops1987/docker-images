@@ -1,8 +1,9 @@
 https://grafana.com/dashboards
+
 zookeeper dashboard
 https://github.com/jiankunking/grafana-dashboards/raw/master/Prometheus_Zookeeper_Overview.json
-Kubernetes Nodes
-ID: 8171
+
+ID: 8171 Kubernetes Nodes
 zabbix
 ID: alexanderzobnin-zabbix-datasource
 
@@ -18,7 +19,11 @@ ID: 5345 Blackbox Exporter Overview
 
 ID: 6658 Cilium Metrics
 
+ID: 7589  Kafka Exporter Overview.
+
 ID: 2351 Consul
+
+ID: 3070 Etcd by Prometheus
 
 ID: 5926 CoreDNS
 

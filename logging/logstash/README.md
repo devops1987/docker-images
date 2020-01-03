@@ -23,8 +23,8 @@ XPACK_MONITORING_ENABLED
 /usr/share/logstash/files
 /usr/share/logstash/pipeline
 /usr/share/logstash/config/messages
+logstash:7.4.2
 
-docker.elastic.co/logstash/logstash:7.4.2
 docker run --rm -it    -v /tmp/pipeline/messages:/usr/share/logstash/config/messages -v /tmp/pipeline/test.conf:
-/usr/share/logstash/pipeline/test.conf -v /tmp/pipeline/logstash.yml:/usr/share/logstash/config/logstash.yml docker.elastic.co/logstash/logstash
-:6.4.2
+/usr/share/logstash/pipeline/test.conf -v /tmp/pipeline/logstash.yml:/usr/share/logstash/config/logstash.yml
+logstash:7.4.2

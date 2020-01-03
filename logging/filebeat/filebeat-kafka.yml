@@ -23,7 +23,7 @@ filebeat.inputs:
     #- c:\programdata\elasticsearch\logs\*
   fields:
     log_topic: 'log'
-  #fields_under_root: true
+  fields_under_root: true
   #tail_files: true
   harvester_buffer_size: 32768
   scan_frequency: 5s
@@ -198,7 +198,8 @@ output.kafka:
   hosts: ["172.16.0.9:9092", "172.16.0.10:9092"]
   #username: "user"
   #password: "password"
-  topic: '%{[fields][log_topic]}'
+  #topic: '%{[fields][log_topic]}'
+  topic: '%{[log_topic]}'
   partition.random:
     reachable_only: false
   version: 0.10.0

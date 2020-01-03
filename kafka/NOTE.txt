@@ -104,5 +104,6 @@ docker run -d --restart=always --net=host --hostname=kafka-0 \
           --override zookeeper.session.timeout.ms=6000 \
           --override zookeeper.set.acl=false "
 
+kafka-exporter 整个集群的一个broker安装即可
 docker run -d --restart=always -p 9308:9308 danielqsj/kafka-exporter --kafka.server=kafka:9092 [--kafka.server=another-server ...]
 
