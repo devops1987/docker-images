@@ -100,7 +100,10 @@ docker run -d --restart=always --net=host --name timescaledb \
 -e POSTGRES_USER=zabbix -e POSTGRES_DB=zabbix \
 -e POSTGRES_PASSWORD=pg_password  timescale/timescaledb:latest-pg11
 
+数据库配置参数调优(略)
+
 docker run -d --restart=always --net=host --name zabbix-server \
+-e ENABLE_TIMESCALEDB=true \
 -e DB_SERVER_HOST=127.0.0.1 -e POSTGRES_DB=zabbix -e POSTGRES_USER=zabbix \
 -e POSTGRES_PASSWORD=pg_password \
 -e ZBX_DEBUGLEVEL=3 -e ZBX_TIMEOUT=10 \

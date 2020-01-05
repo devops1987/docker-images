@@ -1,0 +1,1 @@
+redash和superset等大数据可视化平台对Clickhouse 有很好的支持
