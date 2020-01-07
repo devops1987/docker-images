@@ -6,3 +6,12 @@
 pinpoint/pinpoint-agent-attach-example/tomcat
 
 4.consul配置中心
+
+
+开启Tomcat JMX功能
+CATALINA_OPTS="$CATALINA_OPTS
+-Dcom.sun.management.jmxremote
+-Djava.rmi.server.hostname=10.124.129.241
+-Dcom.sun.management.jmxremote.port=8889
+-Dcom.sun.management.jmxremote.ssl=false
+-Dcom.sun.management.jmxremote.authenticate=false"

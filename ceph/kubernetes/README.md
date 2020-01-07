@@ -276,6 +276,9 @@ kubectl create -f ceph-osd-prepare-v1-ds.yaml --namespace=ceph
 Durable Storage
 By default emptyDir is used for everything. If you have durable storage on your nodes, replace the emptyDirs with a hostPath to that storage.
 
+
+警告: rook-ceph足够稳定后，可以考虑使用rook https://rook.io/docs/rook/v1.2/ceph-storage.html
+
 参考：
 1.https://github.com/ceph/ceph-container/tree/master/examples/kubernetes
 2.http://docs.ceph.com/docs/master/start/kube-helm/

@@ -43,6 +43,8 @@ helm repo add appscode https://charts.appscode.com/stable/
 helm repo add m3db https://s3.amazonaws.com/m3-helm-charts-repository/stable
 helm repo add banzaicloud-stable http://kubernetes-charts.banzaicloud.com/branch/master
 helm repo add presslabs https://presslabs.github.io/charts
+#Elasticsearch operator
+helm repo add akomljen-charts https://raw.githubusercontent.com/komljen/helm-charts/master/charts/
 #helm install presslabs/mysql-operator --name mysql-operator
 #helm repo add aliyun https://kubernetes.oss-cn-hangzhou.aliyuncs.com/charts
 helm install --name wordpress-test --set "persistence.enabled=false,mariadb.persistence.enabled=false" stable/wordpress

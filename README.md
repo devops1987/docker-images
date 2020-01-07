@@ -14,16 +14,22 @@ artifactory仓库: nexus2,nexus3,harbor,registry,quay
 helm应用商店: chartmuseum,kubeapps
 分布式存储: ceph,minio,openebs,glusterfs,EdgeFS
 大数据集群: hadoop(hdfs+yarn),hbase,spark,flink
+实时流计算: Spark （micro batch），Storm， Flink，Samza,Kafka Stream
+ETL工具: DataX,Kettle,Sqoop,streamSets,Apache NiFi,Kafka Connect,Debezium
 web服务器/容器: nginx-php,apache-php,tomcat,resin
-SQL数据库: mysql,percona,mariadb,postgresql,greenplum
+SQL数据库: mysql,percona,mariadb,postgresql,greenplum,MyRocks
+MPP DataBase: Teradata、Greenplum、Vertica和Impala
+数据库中间件: proxySQL
+数据可视化: Superset,SQLPad,MetaBase,Franchise,Redash,ECharts
 NoSQL数据库/缓存/存储: memcache,rethinkdb,redis,ssdb,mongodb,cassandra,ScyllaDB,LucidDB,boltdb
 列式数据库: clickhouse,Vertica,MonetDB,InfiniDB
-数据仓库: Infobright
+图数据库: AgensGraph,
+数据仓库: Infobright,Palo,Druid,Kylin
 GPU-Powered Database: Kinetica,MapD,BlazingDB,Brytlyt,PG-Strom,Blazegraph,SQream
-NewSQL数据库: TiDB,cockroachdb,VoltDB,Clustrix, NuoDB,TokuDB, MemSQL,Couchbase,CouchDB,Riak
+NewSQL数据库: TiDB,cockroachdb,VoltDB,Clustrix, NuoDB,TokuDB, MemSQL,Couchbase,CouchDB,Riak,postgres-xl, antdb, citusDB, Greenplum
 API查询语言: GraphQL,prisma.io
-API管理和测试: API Fortress,MockApi,Postman,Tyk,Swagger,RAP2,YApi,Eolinker,DOClever,Apizza,EasyAPI,CrapApi,apidoc
-时间序列数据库: influxdb,opentsdb,m3db,Heroic,TimeScaleDB,KairosDB,DolphinDB,Druid,Graphite
+API管理和测试: API Fortress,MockApi,APIJSON,Postman,Tyk,Swagger,RAP2,YApi,Eolinker,DOClever,Apizza,EasyAPI,CrapApi,apidoc
+时间序列数据库: influxdb,opentsdb,m3db,Heroic,TimeScaleDB,KairosDB,DolphinDB,Druid,Graphite,pipelinedb
 消息队列/流存储: rabbitmq,memcacheq,rocketmq,rocketmq-console-ng,kafka,kafka-manager
 配置管理: zookeeper,zkui,qconf,etcd,apollo,disconf,spring-cloud-config
 定时/任务管理: xxl-job,elasticjob,escalator
@@ -38,7 +44,7 @@ API管理和测试: API Fortress,MockApi,Postman,Tyk,Swagger,RAP2,YApi,Eolinker,
 FAAS: fission,fnproject,funktion,kubeless,nuclio,open-lambda,openfaas,openwhisk,vmware-dispatch,Claudia
 日志集群: elastic-stack(elasticsearch+cerebro+kibana)
 日志采集: logstash,filebeat,logtail,log-pilot,logspout,auditbeat
-监控/APM: appdash,apm-server,Argus,bosun,cadvisor,cortex,heapster,kube-state-metrics,metrics-server,searchlight,prometheus,thanos,pinpoint,jaeger,zipkin,skywalking,kubewatch,searchlight,Molten,sensu,opencensus,opentelemetry,telegraf,zabbix
+监控/APM: appdash,apm-server,Argus,bosun,cadvisor,cortex,heapster,kube-state-metrics,metrics-server,searchlight,prometheus,thanos,pinpoint,jaeger,zipkin,skywalking,kubewatch,searchlight,Molten,sensu,opencensus,opentelemetry,telegraf,zabbix,Honeycomb,Graphite,open-falcon,Elastic APM(原Opbeat),Xhprof/Xhgui
 动态性能追踪: bcc-tools,systemtap,sysdig
 kubernetes集群安装/升级: kubespray
 kubernetes可视化管理工具: kubernetes-dashboard,weavescope,kubebox,kubedash,kube-ops-view,cabin,wayne(360),KubeSphere
@@ -51,6 +57,7 @@ kubernetes扩容:virtual-kubelet,cluster-capacity,hpa-operator
 PaaS:flynn,tsuru,service-catalog
 负载均衡: gimbal
 商业智能: MS Power BI,Superset,Metabase,CBoard
+https://github.com/thenaturalist/awesome-business-intelligence
 PXE装机: fai-project
 集群pod调试: kubectl-debug
 
@@ -61,6 +68,50 @@ PXE装机: fai-project
 监控: prometheus-operator,jaeger-operator
 配置管理: etcd-operator
 operator-sdk
+https://github.com/operator-framework
+https://github.com/operator-framework/awesome-operators
+https://operatorhub.io/
+
+clickhouse-operator
+
+rook-operator
+influxdb-operator
+grafana-operator
+gitlab-operator
+jaeger-operator
+jenkins-operator
+kong-operator
+m3db-operator
+minio-operator
+https://github.com/banzaicloud/logging-operator
+nexus-operator
+openebs-operator
+redis-operator
+huanwei/rocketmq-operator
+apache/rocketmq-operator
+percona-xtradb-cluster-operator PXC 集群进行部署、管理、扩容及缩容
+banzaicloud-mysql-operator
+oracle-mysql-operator
+presslabs-mysql-operator
+percona-server-mongodb-operator
+mongodb-enterprise-kubernetes
+storageos-cluster-operator
+spinnaker-operator
+pulsar-operator
+
+tensorflow-operator
+tidb-operator
+zookeeper-operator
+
+cassandra-operator
+
+kubedb(elasticsearch,memcached,mongodb,mysql,postgres,redis)
+
+Kubestack(elasticsearch,etcd,memcached,postgresql,prometheus)
+
+kafka-operator: Banzai Cloud(荐),Krallistic,Strimzi,Confluent
+
+https://commons.openshift.org/sig/operators.html
 
 桌面服务(DaaS)
 ubuntu-xfce-vnc

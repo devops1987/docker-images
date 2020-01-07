@@ -1,6 +1,20 @@
 版本说明：
 helm-elasticsearch-bitnami 只有es集群
 helm-elasticsearch es集群+kibana
+https://github.com/pires/kubernetes-elasticsearch-cluster
+
+Elastic Cloud on Kubernetes
+Elasticsearch Operator
+
+1.official 
+https://www.elastic.co/cn/products/elastic-cloud-kubernetes
+kubectl apply -f https://download.elastic.co/downloads/eck/1.0.0/all-in-one.yaml
+https://github.com/elastic/cloud-on-k8s
+
+2.kubedb
+
+3.kubestack umpc elasticsearch operator
+https://akomljen.com/kubernetes-elasticsearch-operator/
 
 prometheus-operator监控
 servicemonitor-elasticsearch-bitnami.yml
@@ -9,7 +23,7 @@ dashboard-elasticsearch-bitnami.json
 Tools for moving and saving indices
 https://github.com/taskrabbit/elasticsearch-dump
 
-elastalert报警通知
+elastalert报警通知(荐)
 https://github.com/Yelp/elastalert
 
 Sentinl报警通知
@@ -19,6 +33,9 @@ https://github.com/elastic/kibana/wiki/Known-Plugins
 https://www.elastic.co/guide/en/kibana/current/known-plugins.html
 es-hadoop
 https://www.elastic.co/products/hadoop
+
+Elasticsearch Curator 索引管理工具
+https://github.com/elastic/curator
 
 esrally功能：es的性能测试工具
 

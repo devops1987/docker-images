@@ -1,0 +1,3 @@
+https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/configuration.md
+
+etcd 内置metrics，prometheus直接获取

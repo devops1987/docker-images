@@ -1,0 +1,2 @@
+https://github.com/iyacontrol/prom2click
+grafana-cli plugins install vertamedia-clickhouse-datasource
