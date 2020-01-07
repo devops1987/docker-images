@@ -18,12 +18,13 @@ helm应用商店: chartmuseum,kubeapps
 ETL工具: DataX,Kettle,Sqoop,streamSets,Apache NiFi,Kafka Connect,Debezium
 web服务器/容器: nginx-php,apache-php,tomcat,resin
 SQL数据库: mysql,percona,mariadb,postgresql,greenplum,MyRocks
+MPP DataBase: Teradata、Greenplum、Vertica和Impala
 数据库中间件: proxySQL
 数据可视化: Superset,SQLPad,MetaBase,Franchise,Redash,ECharts
 NoSQL数据库/缓存/存储: memcache,rethinkdb,redis,ssdb,mongodb,cassandra,ScyllaDB,LucidDB,boltdb
 列式数据库: clickhouse,Vertica,MonetDB,InfiniDB
 图数据库: AgensGraph,
-数据仓库: Infobright,Palo,Druid
+数据仓库: Infobright,Palo,Druid,Kylin
 GPU-Powered Database: Kinetica,MapD,BlazingDB,Brytlyt,PG-Strom,Blazegraph,SQream
 NewSQL数据库: TiDB,cockroachdb,VoltDB,Clustrix, NuoDB,TokuDB, MemSQL,Couchbase,CouchDB,Riak,postgres-xl, antdb, citusDB, Greenplum
 API查询语言: GraphQL,prisma.io
@@ -56,6 +57,7 @@ kubernetes扩容:virtual-kubelet,cluster-capacity,hpa-operator
 PaaS:flynn,tsuru,service-catalog
 负载均衡: gimbal
 商业智能: MS Power BI,Superset,Metabase,CBoard
+https://github.com/thenaturalist/awesome-business-intelligence
 PXE装机: fai-project
 集群pod调试: kubectl-debug
 
@@ -67,7 +69,7 @@ PXE装机: fai-project
 配置管理: etcd-operator
 operator-sdk
 https://github.com/operator-framework
-
+https://github.com/operator-framework/awesome-operators
 https://operatorhub.io/
 
 clickhouse-operator
@@ -75,19 +77,27 @@ clickhouse-operator
 rook-operator
 influxdb-operator
 grafana-operator
+gitlab-operator
 jaeger-operator
 jenkins-operator
 kong-operator
 m3db-operator
 minio-operator
+https://github.com/banzaicloud/logging-operator
 nexus-operator
 openebs-operator
 redis-operator
-percona-xtradb-cluster-operator
+huanwei/rocketmq-operator
+apache/rocketmq-operator
+percona-xtradb-cluster-operator PXC 集群进行部署、管理、扩容及缩容
+banzaicloud-mysql-operator
+oracle-mysql-operator
+presslabs-mysql-operator
 percona-server-mongodb-operator
 mongodb-enterprise-kubernetes
 storageos-cluster-operator
 spinnaker-operator
+pulsar-operator
 
 tensorflow-operator
 tidb-operator

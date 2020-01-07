@@ -95,13 +95,17 @@ Zabbkit - Windows Phone 专用 Zabbix Client 端。
 
 docker 命令
 
+数据库
 docker run -d --restart=always --net=host --name timescaledb \
 -v /data/zabbix-db:/var/lib/postgresql/data \
+-e TIMESCALEDB_TELEMETRY=off \
+-e TS_TUNE_MEMORY=4GB -e TS_TUNE_NUM_CPUS=4 \
 -e POSTGRES_USER=zabbix -e POSTGRES_DB=zabbix \
 -e POSTGRES_PASSWORD=pg_password  timescale/timescaledb:latest-pg11
 
 数据库配置参数调优(略)
 
+服务端
 docker run -d --restart=always --net=host --name zabbix-server \
 -e ENABLE_TIMESCALEDB=true \
 -e DB_SERVER_HOST=127.0.0.1 -e POSTGRES_DB=zabbix -e POSTGRES_USER=zabbix \
@@ -125,6 +129,7 @@ docker run -d --restart=always --net=host --name zabbix-server \
 -v /data/zabbix-home:/var/lib/zabbix \
 slpcat/zabbix-server-pgsql:alpine-4.4.0
 
+web-ui
 docker run -d --restart=always --name zabbix-web \
 -p 10080:80 -e ZBX_SERVER_HOST=127.0.0.1 -e DB_SERVER_HOST=127.0.0.1 \
 -e POSTGRES_DB=zabbix -e POSTGRES_USER=zabbix \
@@ -132,6 +137,7 @@ docker run -d --restart=always --name zabbix-web \
 -e ZBX_MAXEXECUTIONTIME=600 -e ZBX_MEMORYLIMIT=256M \
 slpcat/zabbix-web-nginx-pgsql:alpine-4.4.0
 
+proxy-mysql
 docker run -d --restart=always --net=host --name=zabbix-proxy \
 -e DB_SERVER_HOST=zabbix-proxy-db -e DB_SERVER_PORT=3306 \
 -e MYSQL_DATABASE=zabbix_proxy \
@@ -153,6 +159,30 @@ docker run -d --restart=always --net=host --name=zabbix-proxy \
 -e ZBX_UNAVAILABLEDELAY=60 -e ZBX_UNREACHABLEDELAY=15 \
 -e ZBX_LOGSLOWQUERIES=3000 \
 slpcat/zabbix-proxy-mysql:alpine-4.4.0
+
+proxy-pgsql (未实现)
+
+docker run -d --restart=always --net=host --name=zabbix-proxy \
+-e DB_SERVER_HOST=zabbix-proxy-db -e DB_SERVER_PORT=5432 \
+-e POSTGRES_DB=zabbix_proxy \
+-e POSTGRES_USER=zabbix -e POSTGRES_PASSWORD=pg_password \
+-e ZBX_SERVER_HOST=zabbix-server -e ZBX_HOSTNAME=zabbix-proxy \
+-e ZBX_PROXYMODE=0 -e ZBX_DEBUGLEVEL=3 \
+-e ZBX_TIMEOUT=10 -e ZBX_ENABLEREMOTECOMMANDS=0 \
+-e ZBX_LOGREMOTECOMMANDS=0 -e ZBX_HOSTNAMEITEM=system.hostname \
+-e ZBX_PROXYLOCALBUFFER=1 -e ZBX_PROXYOFFLINEBUFFER=24 \
+-e ZBX_PROXYHEARTBEATFREQUENCY=60 -e ZBX_CONFIGFREQUENCY=600 \
+-e ZBX_DATASENDERFREQUENCY=10 -e ZBX_STARTPOLLERS=100 \
+-e ZBX_IPMIPOLLERS=10 -e ZBX_STARTPREPROCESSORS=8 \
+-e ZBX_STARTPOLLERSUNREACHABLE=50 -e ZBX_STARTTRAPPERS=50 \
+-e ZBX_STARTPINGERS=10 -e ZBX_STARTDISCOVERERS=50 \
+-e ZBX_STARTHTTPPOLLERS=10 -e ZBX_HOUSEKEEPINGFREQUENCY=1 \
+-e ZBX_CACHESIZE=64M -e ZBX_STARTDBSYNCERS=2 \
+-e ZBX_HISTORYCACHESIZE=128M -e ZBX_HISTORYINDEXCACHESIZE=32M \
+-e ZBX_TRAPPERIMEOUT=300 -e ZBX_UNREACHABLEPERIOD=45 \
+-e ZBX_UNAVAILABLEDELAY=60 -e ZBX_UNREACHABLEDELAY=15 \
+-e ZBX_LOGSLOWQUERIES=3000 \
+zabbix/zabbix-proxy-pgsql:alpine-4.4.0
 
 美化相关：
 

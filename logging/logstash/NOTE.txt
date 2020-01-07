@@ -28,3 +28,7 @@ logstash:7.4.2
 docker run --rm -it    -v /tmp/pipeline/messages:/usr/share/logstash/config/messages -v /tmp/pipeline/test.conf:
 /usr/share/logstash/pipeline/test.conf -v /tmp/pipeline/logstash.yml:/usr/share/logstash/config/logstash.yml
 logstash:7.4.2
+
+
+https://github.com/aliyun/logstash-output-oss
+

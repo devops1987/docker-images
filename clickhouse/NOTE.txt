@@ -1,1 +1,14 @@
-redash和superset等大数据可视化平台对Clickhouse 有很好的支持
+redash和superset(荐)等大数据可视化平台对Clickhouse 有很好的支持
+可视化的连接工具DBeaver https://dbeaver.jkiss.org/download/
+
+docker run -d  -p 9000:9000 -p 8123:8123 --ulimit nofile=262144:262144 --volume=$HOME/some_clickhouse_database:/var/lib/clickhouse yandex/clickhouse-server
+--user default --password pwd
+
+docker run -it --rm --link some-clickhouse-server:clickhouse-server yandex/clickhouse-client --host clickhouse-server
+
+https://clickhouse.yandex/docs/en/operations/tips/#zookeeper
+
+
+为了更好地优化clickhouse的性能，需要对clickhouse集群进行监控。网上很多监控方案都是clickhouse + grafana + prometheus，因此打算使用此方案。
+
+要想使用prometheus就得先安装exporter，clickhouse有第三方提供的clickhouse_exporter，也有容器版本，并且提供了grafana的dashboard版本： https://grafana.net/dashboards/882。由于我们在集群中使用了代理CHproxy，但CHproxy也同时实现了exporter的功能，并且提供了更多的特性以及grafana dashboard模板https://github.com/Vertamedia/chproxy/blob/master/chproxy_overview.json，所以我们也就直接使用。
