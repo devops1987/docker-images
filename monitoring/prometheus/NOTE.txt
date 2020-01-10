@@ -136,9 +136,11 @@ https://www.kubernetes.org.cn/4438.html
 所有grafana详见
 grafana/
 
-数据存储
+数据存储与各种adapter
+
 opentsdb
 m3db
+prome2click
 prometheus-kafka-adapter
 https://github.com/Telefonica/prometheus-kafka-adapter
 

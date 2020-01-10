@@ -15,7 +15,7 @@ helm应用商店: chartmuseum,kubeapps
 分布式存储: ceph,minio,openebs,glusterfs,EdgeFS
 大数据集群: hadoop(hdfs+yarn),hbase,spark,flink
 实时流计算: Spark （micro batch），Storm， Flink，Samza,Kafka Stream
-ETL工具: DataX,Kettle,Sqoop,streamSets,Apache NiFi,Kafka Connect,Debezium
+ETL工具: DataX,Kettle,Sqoop,streamSets,Apache NiFi,Kafka Connect,Debezium,Waterdrop
 web服务器/容器: nginx-php,apache-php,tomcat,resin
 SQL数据库: mysql,percona,mariadb,postgresql,greenplum,MyRocks
 MPP DataBase: Teradata、Greenplum、Vertica和Impala
@@ -43,7 +43,7 @@ API管理和测试: API Fortress,MockApi,APIJSON,Postman,Tyk,Swagger,RAP2,YApi,E
 微服务框架/组件: istio,naftis,dubbo,dubbokeeper,kong,kong-dashboard,consul,openlambda,linkerd2/Conduit,registrator
 FAAS: fission,fnproject,funktion,kubeless,nuclio,open-lambda,openfaas,openwhisk,vmware-dispatch,Claudia
 日志集群: elastic-stack(elasticsearch+cerebro+kibana)
-日志采集: logstash,filebeat,logtail,log-pilot,logspout,auditbeat
+日志采集: logstash,filebeat,logtail,log-pilot,logspout,auditbeat,hangout
 监控/APM: appdash,apm-server,Argus,bosun,cadvisor,cortex,heapster,kube-state-metrics,metrics-server,searchlight,prometheus,thanos,pinpoint,jaeger,zipkin,skywalking,kubewatch,searchlight,Molten,sensu,opencensus,opentelemetry,telegraf,zabbix,Honeycomb,Graphite,open-falcon,Elastic APM(原Opbeat),Xhprof/Xhgui
 动态性能追踪: bcc-tools,systemtap,sysdig
 kubernetes集群安装/升级: kubespray
@@ -126,6 +126,7 @@ anydesk
 mysql
 redis
 
+可视应用平台DVAAS（Data Visualization as a Service）
 device plugin framework
 Graphics Processing Unit (GPU) plugin
 Field Programmable Gate Array (FPGA) plugin
