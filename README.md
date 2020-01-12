@@ -56,8 +56,14 @@ kubernetes扩容:virtual-kubelet,cluster-capacity,hpa-operator
 备份/恢复/迁移: mydumper,zkcopy,mongodb_consistent_backup
 PaaS:flynn,tsuru,service-catalog
 负载均衡: gimbal
-商业智能: MS Power BI,Superset,Metabase,CBoard
+商业智能: MS Power BI,Superset,Metabase,CBoard,JasperSoft, OpenReports,SpagoBI,Pentaho,knowage-suite,Helical Insight,Knime,Rapidminer,Reportserver,Seal Report,Spagobi,SQL Power Wabit,Tableau Public,Zoho Reports,QlikView,SAP Business Objects,IBM Cognos Analytics, Oracle Business Intelligence,Yellowfin,WebFOCUS,TIBCO Spotfire,SAS BI,Targit,Izenda Embedded BI & Analytics,MicroStrategy,Board,Sisense, Statsbot,Panorama-Necto,InetSoft,FineBI,BIRT
+数据报表
+数据分析
+数据挖掘
 https://github.com/thenaturalist/awesome-business-intelligence
+
+物联网开源平台: FIWARE
+
 PXE装机: fai-project
 集群pod调试: kubectl-debug
 

@@ -120,6 +120,12 @@ prometheus-roleBindingSpecificNamespaces.yaml
 kubends->coredns
 去掉prometheus-adapter
 报警规则
+
+Promgen: Web UI and configuration generator for Prometheus and Alertmanager
+karma: alert dashboard
+
+https://github.com/prymitive/karma
+
 promettheus存储卷
 
 https://prometheus.io/docs/operating/integrations/#remote-endpoints-and-storage
