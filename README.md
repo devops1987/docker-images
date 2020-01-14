@@ -14,7 +14,7 @@ artifactory仓库: nexus2,nexus3,harbor,registry,quay
 helm应用商店: chartmuseum,kubeapps
 分布式存储: ceph,minio,openebs,glusterfs,EdgeFS
 大数据集群: hadoop(hdfs+yarn),hbase,spark,flink
-实时流计算: Spark （micro batch），Storm， Flink，Samza,Kafka Stream
+实时流计算: Spark （micro batch），Storm， Flink，Samza,Kafka Stream,StreamBase
 ETL工具: DataX,Kettle,Sqoop,streamSets,Apache NiFi,Kafka Connect,Debezium,Waterdrop,databus,canal
 web服务器/容器: nginx-php,apache-php,tomcat,resin
 SQL数据库: mysql,percona,mariadb,postgresql,greenplum,MyRocks
@@ -22,7 +22,7 @@ MPP DataBase: Teradata、Greenplum、Vertica和Impala
 数据库中间件: proxySQL
 数据可视化: Superset,SQLPad,MetaBase,Franchise,Redash,ECharts,mapd-charting,highchart,d3.js,google chart,gephi,Sigma.js,Keylines,VivaGraph,ngraph,Linkurious,immerse,Mapv,deck.gl,DbVisualizer
 NoSQL数据库/缓存/存储: memcache,rethinkdb,redis,ssdb,leveldb,mongodb,cassandra,ScyllaDB,LucidDB,boltdb
-列式数据库: clickhouse,Vertica,MonetDB,InfiniDB
+列式数据库: clickhouse,Vertica,MonetDB,InfiniDB,ParAccel
 图数据库: AgensGraph,Titan/JanusGraph,neo4j,OrientDB,Arangodb,GunDB,TigerGraph,LightGraphs,PandaGraph,Cayley,Orly,DGraph,SparkGraphX,InfiniteGraph,
 数据仓库: Infobright,Palo,Druid,pinot,Kylin,Hyper
 GPU-Powered Database: Kinetica,OmniSciDB (formerly MapD Core),BlazingDB,Brytlyt,PG-Strom,Blazegraph,SQream
