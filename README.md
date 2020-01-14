@@ -15,18 +15,18 @@ helm应用商店: chartmuseum,kubeapps
 分布式存储: ceph,minio,openebs,glusterfs,EdgeFS
 大数据集群: hadoop(hdfs+yarn),hbase,spark,flink
 实时流计算: Spark （micro batch），Storm， Flink，Samza,Kafka Stream
-ETL工具: DataX,Kettle,Sqoop,streamSets,Apache NiFi,Kafka Connect,Debezium,Waterdrop
+ETL工具: DataX,Kettle,Sqoop,streamSets,Apache NiFi,Kafka Connect,Debezium,Waterdrop,databus,canal
 web服务器/容器: nginx-php,apache-php,tomcat,resin
 SQL数据库: mysql,percona,mariadb,postgresql,greenplum,MyRocks
 MPP DataBase: Teradata、Greenplum、Vertica和Impala
 数据库中间件: proxySQL
-数据可视化: Superset,SQLPad,MetaBase,Franchise,Redash,ECharts
-NoSQL数据库/缓存/存储: memcache,rethinkdb,redis,ssdb,mongodb,cassandra,ScyllaDB,LucidDB,boltdb
+数据可视化: Superset,SQLPad,MetaBase,Franchise,Redash,ECharts,mapd-charting,highchart,d3.js,google chart,gephi,Sigma.js,Keylines,VivaGraph,ngraph,Linkurious,immerse,Mapv,deck.gl,DbVisualizer
+NoSQL数据库/缓存/存储: memcache,rethinkdb,redis,ssdb,leveldb,mongodb,cassandra,ScyllaDB,LucidDB,boltdb
 列式数据库: clickhouse,Vertica,MonetDB,InfiniDB
-图数据库: AgensGraph,
-数据仓库: Infobright,Palo,Druid,Kylin
-GPU-Powered Database: Kinetica,MapD,BlazingDB,Brytlyt,PG-Strom,Blazegraph,SQream
-NewSQL数据库: TiDB,cockroachdb,VoltDB,Clustrix, NuoDB,TokuDB, MemSQL,Couchbase,CouchDB,Riak,postgres-xl, antdb, citusDB, Greenplum
+图数据库: AgensGraph,Titan/JanusGraph,neo4j,OrientDB,Arangodb,GunDB,TigerGraph,LightGraphs,PandaGraph,Cayley,Orly,DGraph,SparkGraphX,
+数据仓库: Infobright,Palo,Druid,pinot,Kylin,Hyper
+GPU-Powered Database: Kinetica,OmniSciDB (formerly MapD Core),BlazingDB,Brytlyt,PG-Strom,Blazegraph,SQream
+NewSQL数据库: TiDB,cockroachdb,VoltDB,Clustrix, NuoDB,TokuDB, MemSQL,Couchbase,CouchDB,Riak,postgres-xl, antdb, citusDB, Greenplum,yugabytedb
 API查询语言: GraphQL,prisma.io
 API管理和测试: API Fortress,MockApi,APIJSON,Postman,Tyk,Swagger,RAP2,YApi,Eolinker,DOClever,Apizza,EasyAPI,CrapApi,apidoc
 时间序列数据库: influxdb,opentsdb,m3db,Heroic,TimeScaleDB,KairosDB,DolphinDB,Druid,Graphite,pipelinedb
