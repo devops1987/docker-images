@@ -17,12 +17,12 @@ helm应用商店: chartmuseum,kubeapps
 实时流计算: Spark （micro batch），Storm， Flink，Samza,Kafka Stream,StreamBase
 ETL工具: DataX,Kettle,Sqoop,streamSets,Apache NiFi,Kafka Connect,Debezium,Waterdrop,databus,canal
 web服务器/容器: nginx-php,apache-php,tomcat,resin
-SQL数据库: mysql,percona,mariadb,postgresql,greenplum,MyRocks
-MPP DataBase: Teradata、Greenplum、Vertica和Impala
+SQL数据库: mysql,percona,mariadb,postgresql,greenplum,MyRocks,Citus
+MPP DataBase: Teradata,Greenplum,Vertica,Impala,GPDB
 数据库中间件: proxySQL
 数据可视化: Superset,SQLPad,MetaBase,Franchise,Redash,ECharts,mapd-charting,highchart,d3.js,google chart,gephi,Sigma.js,Keylines,VivaGraph,ngraph,Linkurious,immerse,Mapv,deck.gl,DbVisualizer
 NoSQL数据库/缓存/存储: memcache,rethinkdb,redis,ssdb,leveldb,mongodb,cassandra,ScyllaDB,LucidDB,boltdb
-列式数据库: clickhouse,Vertica,MonetDB,InfiniDB,ParAccel
+列式数据库: clickhouse,Vertica,MonetDB,InfiniDB,ParAccel,EventQL,HadoopDB,Postgres-XL,RecDB,Stado,Yahoo Everest,
 图数据库: AgensGraph,Titan/JanusGraph,neo4j,OrientDB,FlockDB,Arangodb,GunDB,TigerGraph,LightGraphs,PandaGraph,Cayley,Orly,DGraph,SparkGraphX,InfiniteGraph,
 数据仓库: Infobright,Palo,Druid,pinot,Kylin,Hyper
 GPU-Powered Database: Kinetica,OmniSciDB (formerly MapD Core),BlazingDB,Brytlyt,PG-Strom,Blazegraph,SQream
@@ -42,7 +42,7 @@ API管理和测试: API Fortress,MockApi,APIJSON,Postman,Tyk,Swagger,RAP2,YApi,E
 微服务管理与持续发布: fabric8,jenkins-x,draft,knative,service-fabric
 微服务框架/组件: istio,naftis,dubbo,dubbokeeper,kong,kong-dashboard,consul,openlambda,linkerd2/Conduit,registrator
 FAAS: fission,fnproject,funktion,kubeless,nuclio,open-lambda,openfaas,openwhisk,vmware-dispatch,Claudia
-日志集群: elastic-stack(elasticsearch+cerebro+kibana)
+日志集群: elastic-stack(elasticsearch+cerebro+kibana),Elassandra
 日志采集: logstash,filebeat,logtail,log-pilot,logspout,auditbeat,hangout
 监控/APM: appdash,apm-server,Argus,bosun,cadvisor,cortex,heapster,kube-state-metrics,metrics-server,searchlight,prometheus,thanos,pinpoint,jaeger,zipkin,skywalking,kubewatch,searchlight,Molten,sensu,opencensus,opentelemetry,telegraf,zabbix,Honeycomb,Graphite,open-falcon,Elastic APM(原Opbeat),Xhprof/Xhgui
 动态性能追踪: bcc-tools,systemtap,sysdig
