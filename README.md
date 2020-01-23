@@ -13,7 +13,7 @@ kubernetes网络方案推荐使用cilium,支持vxlan,bgp以及eBPF引擎
 artifactory仓库: nexus2,nexus3,harbor,registry,quay
 helm应用商店: chartmuseum,kubeapps
 分布式存储: ceph,minio,openebs,glusterfs,EdgeFS
-大数据集群: hadoop(hdfs+yarn),hbase,spark,flink
+大数据集群: hadoop(hdfs+yarn),hbase,spark,flink,Drill
 实时流计算: Spark （micro batch），Storm， Flink，Samza,Kafka Stream,StreamBase
 ETL工具: DataX,Kettle,Sqoop,streamSets,Apache NiFi,Kafka Connect,Debezium,Waterdrop,databus,canal
 web服务器/容器: nginx-php,apache-php,tomcat,resin
