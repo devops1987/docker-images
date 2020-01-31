@@ -8,7 +8,7 @@ kubernetes网络方案推荐使用cilium,支持vxlan,bgp以及eBPF引擎
 代码仓库: gitlab-ce,gogs
 代码审核: gerrit
 编译器: numba
-持续集成/发布: jenkins,spinnaker,gitlab-ci,drone,makisu
+持续集成/发布: jenkins,jenkins-x,fabric8,spinnaker,gitlab-ci,drone,makisu
 测试: chaos-monkey,chaoskube,k8s-testsuite,test-infra,sonobuoy,PowerfulSeal,twemperf(memcached)
 artifactory仓库: nexus2,nexus3,harbor,registry,quay
 helm应用商店: chartmuseum,kubeapps
@@ -34,8 +34,8 @@ API管理和测试: API Fortress,MockApi,APIJSON,Postman,Tyk,Swagger,RAP2,YApi,E
 配置管理: zookeeper,zkui,qconf,etcd,apollo,disconf,spring-cloud-config
 定时/任务管理: xxl-job,elasticjob,escalator
 集群管理: nomad
-项目管理: jira,zentao
-企业ERP: odoo
+项目管理: jira,zentao,Redmine,Taiga,OpenProject,DotProject,Orangescrum 
+企业ERP: odoo,ADempiere,Apache OFBiz,Dolibarr,ERPNext,Metasfresh,Opentaps,WebERP,xTuple PostBooks
 开发环境SDK: golang,golang-gvm,oracle-jdk,oracle-jdk-maven
 配置管理与服务自动发现: consul,confd,containerpilot,registrator
 反向代理/ingress: fabio,traefik,envoy
@@ -47,7 +47,7 @@ FAAS: fission,fnproject,funktion,kubeless,nuclio,open-lambda,openfaas,openwhisk,
 监控/APM: appdash,apm-server,Argus,bosun,cadvisor,cortex,heapster,kube-state-metrics,metrics-server,searchlight,prometheus,thanos,pinpoint,jaeger,zipkin,skywalking,kubewatch,searchlight,Molten,sensu,opencensus,opentelemetry,telegraf,zabbix,Honeycomb,Graphite,open-falcon,Elastic APM(原Opbeat),Xhprof/Xhgui
 动态性能追踪: bcc-tools,systemtap,sysdig
 kubernetes集群安装/升级: kubespray
-kubernetes可视化管理工具: kubernetes-dashboard,weavescope,kubebox,kubedash,kube-ops-view,cabin,wayne(360),KubeSphere
+kubernetes可视化管理工具: kubernetes-dashboard,weavescope,kubebox,kubedash,kube-ops-view,cabin,wayne(360),KubeSphere,openshift,rancher
 kubernetes灾难恢复: ark
 kubernetes扩容:virtual-kubelet,cluster-capacity,hpa-operator
 开发工具: Telepresence,Keel,Apollo,Deis Workflow,Kel,
@@ -56,7 +56,7 @@ kubernetes扩容:virtual-kubelet,cluster-capacity,hpa-operator
 备份/恢复/迁移: mydumper,zkcopy,mongodb_consistent_backup
 PaaS:flynn,tsuru,service-catalog
 负载均衡: gimbal
-商业智能: MS Power BI,Superset,Metabase,CBoard,JasperSoft, OpenReports,SpagoBI,Pentaho,knowage-suite,Helical Insight,Knime,Rapidminer,Reportserver,Seal Report,Spagobi,SQL Power Wabit,Tableau Public,Zoho Reports,QlikView,SAP Business Objects,IBM Cognos Analytics, Oracle Business Intelligence,Yellowfin,WebFOCUS,TIBCO Spotfire,SAS BI,Targit,Izenda Embedded BI & Analytics,MicroStrategy,Board,Sisense, Statsbot,Panorama-Necto,InetSoft,FineBI,BIRT
+商业智能BI: MS Power BI,Superset,Metabase,CBoard,JasperSoft, OpenReports,SpagoBI,Pentaho,knowage-suite,Helical Insight,Knime,Rapidminer,Reportserver,Seal Report,Spagobi,SQL Power Wabit,Tableau Public,Zoho Reports,QlikView,SAP Business Objects,IBM Cognos Analytics, Oracle Business Intelligence,Yellowfin,WebFOCUS,TIBCO Spotfire,SAS BI,Targit,Izenda Embedded BI & Analytics,MicroStrategy,Board,Sisense, Statsbot,Panorama-Necto,InetSoft,FineBI,BIRT
 数据报表
 数据分析
 数据挖掘
@@ -118,6 +118,8 @@ Kubestack(elasticsearch,etcd,memcached,postgresql,prometheus)
 kafka-operator: Banzai Cloud(荐),Krallistic,Strimzi,Confluent
 
 https://commons.openshift.org/sig/operators.html
+
+开源协作办公: OwnCloud Documents,OnlyOffice,ResourceSpace,Pydio
 
 桌面服务(DaaS)
 ubuntu-xfce-vnc
