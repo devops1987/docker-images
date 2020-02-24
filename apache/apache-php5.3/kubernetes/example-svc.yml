@@ -9,6 +9,8 @@ metadata:
   #  kube-router.io/service.scheduler: sh
   #服务启用DSR（直接服务器返回）功能
   #  kube-router.io/service.dsr: tunnel
+  #  cilium-clustermesh Global Services
+  #  io.cilium/global-service: "true"
   labels:
     k8s-app: example-web
     #kubernetes.io/cluster-service: "true"

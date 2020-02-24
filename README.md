@@ -1,6 +1,8 @@
 常用docker容器镜像构建，kubernetes配置文件，helm模板,用于搭建基于容器的可控云计算基础设施,包括物理机裸机，虚拟机，多厂商云主机，有效规避云计算厂商锁定
-kubernetes网络方案推荐使用cilium,支持vxlan,bgp以及eBPF引擎
-容器内核参数已经为高并发大吞吐量低延迟场景优化，完美运行需要kubernetes版本>=v1.11和内核版本>=4.15，低版本kubernetes和内核需要删除sysctl相关配置，这样做会失去单实例高并发能力。
+
+kubernetes网络方案在条件允许的情况下，推荐尽量使用kube-router+cilium,支持bgp路由、ipvlan以及eBPF引擎,对clustermesh、servicemesh以及宿主机网络集成更好的支持。推荐使用Cilium替换Kube-proxy.
+
+容器内核参数已经为高并发大吞吐量低延迟场景优化，完美运行需要kubernetes版本>=v1.15和内核版本>=4.19，低版本kubernetes和内核需要删除sysctl相关配置，这样做会失去单实例高并发能力。
 宿主机系统推荐使用ubuntu或者debian并且启用apparmor enforce模式，有效对抗容器逃脱。有能力的可以部署grsecurity内核进一步增强安全,全面对抗0day漏洞。
 支持在kubernetes集群里面运行Linux桌面环境(暂无3D加速)
 如果需要基于虚拟化的隔离，使用kata-container
@@ -8,20 +10,20 @@ kubernetes网络方案推荐使用cilium,支持vxlan,bgp以及eBPF引擎
 代码仓库: gitlab-ce,gogs
 代码审核: gerrit
 编译器: numba
-持续集成/发布: jenkins,jenkins-x,fabric8,spinnaker,gitlab-ci,drone,makisu
+持续集成/发布: jenkins,jenkins-x,fabric8,spinnaker,gitlab-ci,drone,makisu,flagger,shipper
 测试: chaos-monkey,chaoskube,k8s-testsuite,test-infra,sonobuoy,PowerfulSeal,twemperf(memcached)
 artifactory仓库: nexus2,nexus3,harbor,registry,quay
 helm应用商店: chartmuseum,kubeapps
 分布式存储: ceph,minio,openebs,glusterfs,EdgeFS
 大数据集群: hadoop(hdfs+yarn),hbase,spark,flink,Drill
-实时流计算: Spark （micro batch），Storm， Flink，Samza,Kafka Stream,StreamBase
-ETL工具: DataX,Kettle,Sqoop,streamSets,Apache NiFi,Kafka Connect,Debezium,Waterdrop,databus,canal
+实时流计算: Spark （micro batch），Storm， Flink，Samza,Kafka Stream,StreamBase,Hangout,Amazon Kinesis,Apache Ignite
+ETL/CDC工具: DataX,Kettle,Sqoop,streamSets,Apache NiFi,Kafka Connect,Debezium,Waterdrop,databus,canal
 web服务器/容器: nginx-php,apache-php,tomcat,resin
 SQL数据库: mysql,percona,mariadb,postgresql,greenplum,MyRocks,Citus
 MPP DataBase: Teradata,Greenplum,Vertica,Impala,GPDB
-数据库中间件: proxySQL
+数据库中间件: proxySQL,ShardingSphere,MyCat,Vitess
 数据可视化: Superset,SQLPad,MetaBase,Franchise,Redash,ECharts,mapd-charting,highchart,d3.js,google chart,gephi,Sigma.js,Keylines,VivaGraph,ngraph,Linkurious,immerse,Mapv,deck.gl,DbVisualizer
-NoSQL数据库/缓存/存储: memcache,rethinkdb,redis,ssdb,leveldb,mongodb,cassandra,ScyllaDB,LucidDB,boltdb
+NoSQL数据库/缓存/存储: memcache,rethinkdb,redis,ssdb,leveldb,mongodb,cassandra,ScyllaDB,LucidDB,boltdb,ArangoDB,Azure DocumentDB,DynamoDB,Hazelcast,Infinispan,MarkLogic,OrientDB,
 列式数据库: clickhouse(荐),Vertica,MonetDB,InfiniDB,ParAccel,EventQL,HadoopDB,Postgres-XL,RecDB,Stado,Yahoo Everest,
 图数据库: AgensGraph,Titan/JanusGraph,neo4j,OrientDB,FlockDB,Arangodb,GunDB,TigerGraph,LightGraphs,PandaGraph,Cayley,Orly,DGraph,SparkGraphX,InfiniteGraph,
 数据仓库: Infobright,Palo,Druid,pinot,Kylin,Hyper
@@ -40,7 +42,7 @@ API管理和测试: API Fortress,MockApi,APIJSON,Postman,Tyk,Swagger,RAP2,YApi,E
 配置管理与服务自动发现: consul,confd,containerpilot,registrator
 反向代理/ingress: fabio,traefik,envoy
 微服务管理与持续发布: fabric8,jenkins-x,draft,knative,service-fabric
-微服务框架/组件: istio,naftis,dubbo,dubbokeeper,kong,kong-dashboard,consul,openlambda,linkerd2/Conduit,registrator
+微服务框架/组件: istio,naftis,dubbo,dubbokeeper,kong,kong-dashboard,consul,openlambda,linkerd2/Conduit,registrator,Maesh
 FAAS: fission,fnproject,funktion,kubeless,nuclio,open-lambda,openfaas,openwhisk,vmware-dispatch,Claudia
 日志集群: elastic-stack(elasticsearch+cerebro+kibana),Elassandra
 日志采集: logstash,filebeat,logtail,log-pilot,logspout,auditbeat,hangout
@@ -53,9 +55,10 @@ kubernetes扩容:virtual-kubelet,cluster-capacity,hpa-operator
 开发工具: Telepresence,Keel,Apollo,Deis Workflow,Kel,
 安全工具: anchore,clair,cert-manager,docker-bench-security,magic-namespace,notary,OpenSCAP,trireme,NeuVector,Deepfence,StackRox,Tenable,Cavirin,Kube-Bench,Sysdig Falco,Sysdig Secure,Kubesec.io;付费 Aquasec,flawcheck
 编排转换：kompose
-备份/恢复/迁移: mydumper,zkcopy,mongodb_consistent_backup
+备份/恢复/迁移: mydumper,zkcopy,mongodb_consistent_backup, WAL-E
 PaaS:flynn,tsuru,service-catalog
-负载均衡: gimbal
+负载均衡: gimbal,metallb,porter,GLB Director,DPDK-LVS,Jupiter,Seesaw,LoadMaster by KEMP,HAProxy,Zevenet,PEN,Gobetween
+Routing: quagga,frr(荐),Zebra, bird, bgpd
 商业智能BI: MS Power BI,Superset,Metabase,CBoard,JasperSoft, OpenReports,SpagoBI,Pentaho,knowage-suite,Helical Insight,Knime,Rapidminer,Reportserver,Seal Report,Spagobi,SQL Power Wabit,Tableau Public,Zoho Reports,QlikView,SAP Business Objects,IBM Cognos Analytics, Oracle Business Intelligence,Yellowfin,WebFOCUS,TIBCO Spotfire,SAS BI,Targit,Izenda Embedded BI & Analytics,MicroStrategy,Board,Sisense, Statsbot,Panorama-Necto,InetSoft,FineBI,BIRT
 数据报表
 数据分析
@@ -63,6 +66,7 @@ PaaS:flynn,tsuru,service-catalog
 https://github.com/thenaturalist/awesome-business-intelligence
 
 物联网开源平台: FIWARE
+机器学习: OpenNLP,Theano,Lasagne,TensorFlow,Keras,MXNet,PyTorch,Caffe,CNTK,Neon
 
 PXE装机: fai-project
 集群pod调试: kubectl-debug

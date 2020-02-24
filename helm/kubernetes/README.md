@@ -41,6 +41,7 @@ helm repo add agones https://agones.dev/chart/stable
 helm repo add svc-cat https://svc-catalog-charts.storage.googleapis.com
 helm repo add appscode https://charts.appscode.com/stable/
 helm repo add m3db https://s3.amazonaws.com/m3-helm-charts-repository/stable
+helm repo add jetstack https://charts.jetstack.io
 helm repo add banzaicloud-stable http://kubernetes-charts.banzaicloud.com/branch/master
 helm repo add presslabs https://presslabs.github.io/charts
 #Elasticsearch operator
