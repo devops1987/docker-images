@@ -1,12 +1,23 @@
 多集群cluster mesh方案规划实施
 
-kubernetes集群外高可用bgp rr路由器2台或更多，打通各虚拟网络和真实网络(安装过程略)
+1. kubernetes集群外bgp路由
 
-独立3节点kubernetes高可用集群安装rancher服务端
+  支持rr路由反射
+  高可用需要2台或更多
 
-N个kubernetes集群网络互通并且组成cluster mesh
+  用途 打通各虚拟网络和真实网络(安装过程略)
 
-所有集群网络组件都使用cilium ，kube-router
+2. rancher服务端
+
+  独立3节点kubernetes高可用集群
+
+3. 使用rancher安装无网络的k8s 集群
+
+4. 网络插件 kube-router + cilium 共同实现
+
+5. servicemesh 管理用cilium实现
+
+   N个kubernetes集群网络互通并且组成cluster mesh
 
 Pod IP CIDR 唯一
 Node IP 唯一并且可以互访
@@ -123,6 +134,7 @@ git clone https://github.com/cilium/clustermesh-tools.git
 cd clustermesh-tools
 
 todo:
+
 删除kube-proxy
 https://docs.rancher.cn/rancher2x/install-prepare/best-practices/kubernetes.html#_1-kube-apiserver
 
